@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Iansui&display=swap" rel="stylesheet">
+<title>六何寫作學習單｜阿樂的風箏</title>
+<!--
+  閱讀策略學習單範本（reading-strategy-worksheet）
+  - 這份範本示範 PIRLS 學習單，課文為自編示範文〈阿樂的風箏〉。
+  - 預設產出「通用版」（UDL，全班同一張）：每題 .ways 提供 ✏️寫一寫／🧩選詞填空（.chips 詞語盒）／☑️勾一勾 三條路徑，
+    .choose 說明可自選、.star 挑戰題。「圖示加強版」為選配。選詞填空的 .blank 可加 data-ans="答案|答案" 供對答案。
+  - 製作新學習單時：保留 <style> 與工具列，替換 .sheet 內的內容。
+  - 元件：.head 學生資料列｜.title｜.goal + .tag 策略標示｜.sec 活動區（.sec-h 色塊標頭）
+          .q 題目｜.opts 勾選選項｜.line 書寫線｜.blank 行內填空｜.flow 流程圖｜.circle 環圈圖
+          .bank 小幫手詞庫｜.check 完成檢核｜.teacher 底部三欄｜.answer 教師版
+  - 策略色：--c1..--c4 依策略步驟使用（KWL 用 3 色、SQ3R 用 5 站、PIRLS 4 層、4F 4 色）。
+  - 插圖：圖卡可用 <span><img src="data:image/png;base64,..." alt="林奶奶">林奶奶</span> 取代 <i>emoji</i>；
+    情境圖用 <div class="imgbox"><img src="data:..." alt="說明"></div>。圖片一律內嵌 base64，單一檔案才帶得走。
+  - 選配頁：詞語預教 .vocab（.vcard 詞卡）；教師版含「課程調整四面向」.adj 表；工具列「作答紀錄」產生可複製／列印的紀錄。
+  - 互動與報讀：選項 span 加 data-ok 標示正確答案（開放題不加）；.opts/.pics 預設單選，加 data-multi 可複選。
+    .blank、.line 會自動變成可打字；頁面載入後自動加上 🔊 報讀按鈕。課文頁 .passage 的段落點一下就朗讀。
+  - 字型：預設芫荽（Iansui，由 Google Fonts 載入，離線時用電腦已安裝的芫荽或標楷體），工具列可切換標楷體。
+    要預設標楷體時，在 <body> 加 class="kai"。注音版：把 --font 換成老師已安裝的注音字型。
+-->
+<style>
+:root{
+  --font:"Iansui","芫荽","標楷體","DFKai-SB","BiauKai","TW-Kai",serif;  /* 預設芫荽，沒有時用標楷體 */
+  --base:12pt;
+  --ink:#1f2937; --muted:#6b7280; --line:#9ca3af; --paper:#ffffff;
+  --c1:#2563eb; --c1b:#e8f0fe;   /* 第一層／K／S／Fact */
+  --c2:#059669; --c2b:#e6f6ef;   /* 第二層／W／Q／Feeling */
+  --c3:#d97706; --c3b:#fdf3e2;   /* 第三層／L／R／Finding */
+  --c4:#9333ea; --c4b:#f4ebfd;   /* 第四層／Future */
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#e5e7eb;color:var(--ink);font-family:var(--font);font-size:var(--base);line-height:1.5}
+body.big{--base:14pt}
+body.kai{--font:"標楷體","DFKai-SB","BiauKai","TW-Kai","Iansui",serif}
+@page{size:A4;margin:12mm}
+.toolbar{position:sticky;top:0;z-index:5;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:10px;background:#374151}
+.toolbar button{font:inherit;font-size:12pt;padding:6px 14px;border:0;border-radius:6px;background:#fff;cursor:pointer}
+.sheet{width:210mm;min-height:297mm;margin:12px auto;padding:12mm;background:var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.15);page-break-after:always;break-after:page}
+.sheet:last-child{page-break-after:auto;break-after:auto}
+.head{display:flex;justify-content:space-between;gap:8px;font-size:11pt;border-bottom:1.5px solid var(--ink);padding-bottom:4px}
+.head span{white-space:nowrap}
+.title{text-align:center;margin:6px 0 0;font-size:18pt;font-weight:700}
+.subtitle{text-align:center;font-size:12pt;margin-bottom:6px}
+.subtitle b{background:#fef3c7;padding:0 8px;border-radius:4px}
+.top{display:grid;grid-template-columns:1fr 46mm;gap:8px;margin-bottom:6px}
+.goal{border:1.5px solid #f59e0b;border-radius:8px;padding:4px 10px;font-size:10.5pt}
+.goal h3,.tag h3{margin:0 0 2px;font-size:12pt}
+.goal ol{margin:0;padding-left:1.4em}
+.tag{border:1.5px solid var(--ink);border-radius:8px;padding:4px 10px;font-size:10pt;line-height:1.35}
+.tag .lv{display:flex;align-items:center;gap:4px;margin:1px 0}
+.n{display:inline-flex;align-items:center;justify-content:center;width:1.5em;height:1.5em;border-radius:50%;color:#fff;font-weight:700;font-size:.85em;flex:none}
+.n1{background:var(--c1)}.n2{background:var(--c2)}.n3{background:var(--c3)}.n4{background:var(--c4)}
+.how{font-size:10.5pt;background:#f3f4f6;border-radius:6px;padding:2px 10px;margin-bottom:6px}
+.sec{border:1.5px solid var(--c);border-radius:8px;margin-bottom:6px;overflow:hidden;break-inside:avoid}
+.sec-h{background:var(--cb);padding:2px 10px;font-weight:700;font-size:13pt;display:flex;align-items:center;gap:6px}
+.sec-h small{font-weight:400;font-size:10.5pt;color:var(--muted)}
+.sec-b{padding:4px 10px}
+.s1{--c:var(--c1);--cb:var(--c1b)}.s2{--c:var(--c2);--cb:var(--c2b)}.s3{--c:var(--c3);--cb:var(--c3b)}.s4{--c:var(--c4);--cb:var(--c4b)}
+.row{display:grid;grid-template-columns:1fr 44mm;gap:10px}
+.q{margin:2px 0 4px}
+.q .p{font-size:9.5pt;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-left:4px;white-space:nowrap}
+.opts{display:flex;flex-wrap:wrap;gap:2px 16px;margin:2px 0 0 1.4em}
+.opts span::before{content:"☐ ";font-size:1.05em}
+.opts.in{display:inline-flex;margin-left:10px}
+.q.side{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px}
+.q.side .pics{margin:0;display:flex;gap:5px}
+.q.side .pics span{width:22mm}
+.blank{display:inline-block;min-width:6em;border-bottom:1.2px solid var(--ink);text-align:center}
+.line{border-bottom:1.2px dashed var(--line);height:1.8em;margin:0 0 0 1.4em}
+.flow{display:flex;align-items:stretch;gap:4px;margin:4px 0}
+.flow .box{flex:1;border:1.5px solid var(--c3);border-radius:8px;padding:4px 6px;min-height:16mm;font-size:11pt}
+.flow .box b{display:block;color:var(--c3)}
+.flow .ar{align-self:center;font-weight:700;color:var(--c3)}
+.circle{position:relative;width:60mm;height:60mm;border:1.5px solid var(--c2);border-radius:50%;margin:4px auto;display:flex;align-items:center;justify-content:center}
+.circle .core{width:24mm;height:24mm;border:1.5px solid var(--c2);border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:11pt}
+.bank{border:1.5px dashed var(--c);border-radius:8px;padding:4px 8px;font-size:10.5pt;background:#fffdf7}
+.bank h4{margin:0 0 2px;font-size:11pt}
+.bank p{margin:2px 0}
+.feel{display:flex;flex-wrap:wrap;gap:4px}
+.feel span{border:1px solid var(--line);border-radius:12px;padding:0 8px}
+.check{display:flex;flex-wrap:wrap;gap:2px 14px;font-size:11pt;margin:4px 0 8px;padding:4px 10px;border:1.5px solid #10b981;border-radius:8px}
+.check b{margin-right:4px}
+.check span::before{content:"☐ "}
+.teacher{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:9.5pt;break-inside:avoid}
+.teacher div{border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:#f9fafb}
+.teacher h4{margin:0 0 2px;font-size:10pt}
+.teacher ul{margin:0;padding-left:1.2em}
+.answer .title::after{content:"（教師版）";color:#dc2626;font-size:13pt}
+.answer h3{font-size:13pt;margin:10px 0 4px;border-left:5px solid var(--c1);padding-left:6px}
+.st{width:100%;border-collapse:collapse;font-size:11pt;margin:2px 0}
+.st td,.st th{border:1px solid var(--line);padding:1px 6px;vertical-align:middle;height:1.7em}
+.st th{background:var(--cb,#f3f4f6);text-align:left}
+.answer table{width:100%;border-collapse:collapse;font-size:11pt}
+.answer td,.answer th{border:1px solid var(--line);padding:3px 6px;vertical-align:top}
+.answer th{background:#f3f4f6}
+.text{font-size:12pt;line-height:1.8;border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+.text p{margin:0 0 4px;text-indent:2em}
+.text sup{color:var(--c1);font-weight:700;margin-right:2px}
+.ver{display:inline-block;font-size:10pt;border:1.5px solid var(--ink);border-radius:10px;padding:0 8px;margin-left:6px;vertical-align:middle}
+.pics{display:grid;grid-template-columns:repeat(auto-fill,22mm);gap:5px;margin:4px 0 2px 1.4em}
+.pics span{border:1.5px solid var(--line);border-radius:8px;text-align:center;padding:1px 2px 2px;font-size:10.5pt;line-height:1.25}
+.pics i{display:block;font-style:normal;font-size:17pt;line-height:1.15;font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif}
+.pics span::after{content:" ☐"}
+.pics img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;border-radius:6px;margin-bottom:1px}
+.q.side .pics span:has(img){width:24mm}
+.imgbox img{display:block;max-width:100%;max-height:60mm;margin:auto;border-radius:6px}
+.imgbox{border:1.5px dashed var(--line);border-radius:8px;min-height:30mm;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:10pt;text-align:center;padding:4px}
+body.no-answer .answer{display:none}
+@media print{
+  html,body{background:#fff}
+  .toolbar{display:none}
+  .sheet{margin:0;box-shadow:none;width:auto;min-height:0;padding:0}
+}
+
+/* ===== 互動與報讀 ===== */
+.toolbar .grp{display:flex;gap:6px;align-items:center;background:#4b5563;border-radius:8px;padding:4px 6px}
+.toolbar label{color:#fff;font-size:11pt}
+.toolbar select{font:inherit;font-size:11pt;border-radius:4px}
+.toolbar button.on{background:#fde68a}
+.opts span,.pics span{cursor:pointer;border-radius:6px;transition:background .15s}
+.opts span:hover,.pics span:hover{background:#fef9c3}
+.opts span.sel::before{content:"☑ ";color:#2563eb}
+.pics span.sel{border-color:#2563eb;background:#dbeafe}
+.pics span.sel::after{content:" ☑";color:#2563eb}
+.opts span.right,.pics span.right{background:#d1fae5;outline:2px solid #10b981}
+.opts span.retry,.pics span.retry{background:#ffedd5;outline:2px dashed #f97316}
+.fb{display:inline-block;margin-left:6px;font-size:10.5pt;font-weight:700}
+.fb.ok{color:#059669}.fb.no{color:#ea580c}
+.blank[contenteditable],.line[contenteditable]{outline:none;cursor:text;color:#1d4ed8}
+.blank[contenteditable]:focus,.line[contenteditable]:focus{background:#eff6ff}
+.speak{background:#fef08a !important;box-shadow:0 0 0 3px #facc15;border-radius:4px}
+.tts{border:0;background:#e0e7ff;border-radius:50%;width:1.6em;height:1.6em;font-size:.85em;cursor:pointer;margin-left:4px;vertical-align:middle;line-height:1}
+body.no-tts .tts{display:none}
+.text p{cursor:pointer}
+body.no-passage .passage{display:none}
+body.no-vocab .vocab{display:none}
+.passage .text{font-size:15pt;line-height:2}
+@media print{.tts,.fb{display:none}.speak{background:none !important;box-shadow:none}.opts span.right,.pics span.right,.opts span.retry,.pics span.retry{background:none;outline:none}}
+
+/* ===== UDL 通用版：每題多種作答路徑 ===== */
+.goal-line{margin-bottom:5px;display:flex;flex-wrap:wrap;gap:0 12px}
+.goal-line span{counter-increment:g}
+.goal-line span::before{content:counter(g) ". "}
+.choose{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;font-size:10.5pt;border:1.5px solid #0ea5e9;background:#f0f9ff;border-radius:8px;padding:3px 10px;margin-bottom:6px}
+.choose b{color:#0369a1}
+.udl .q{margin:1px 0 2px}
+.udl .sec{margin-bottom:4px}
+.udl .title{margin-top:2px}
+.udl .subtitle{margin-bottom:3px}
+.udl .choose,.udl .goal-line{margin-bottom:4px;padding-top:1px;padding-bottom:1px}
+.ways{display:grid;grid-template-columns:.8fr 1.35fr 1.25fr;gap:4px;margin:1px 0 2px 1.2em}
+.way{border:1px dashed var(--line);border-radius:6px;padding:1px 5px 2px;font-size:10.5pt;line-height:1.35}
+.way>b{float:left;font-size:10pt;font-weight:400;margin-right:3px;line-height:1.35}
+.way .opts{margin:0;display:flex;flex-wrap:wrap;gap:0 8px}
+.way .line{margin:0 0 0 1.4em;height:1.6em}
+.chips{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
+.chips span{border:1px solid #f59e0b;background:#fffbeb;border-radius:10px;padding:0 5px;font-size:9.5pt;line-height:1.35;cursor:pointer}
+.chips span:hover{background:#fde68a}
+.blank.right{background:#d1fae5}.blank.retry{background:#ffedd5}
+.star{border:1.5px solid #eab308;border-radius:8px;padding:3px 10px;margin-bottom:6px;font-size:11.5pt;background:#fefce8}
+.star b{color:#a16207}
+@media print{.way{border-style:dotted}}
+
+/* ===== 詞語預教頁 ===== */
+.vgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.vcard{border:1.5px solid var(--c1);border-radius:10px;padding:6px 10px;display:grid;grid-template-columns:20mm 1fr;gap:4px 8px;align-items:center;break-inside:avoid;cursor:pointer}
+.vcard .pic{grid-row:span 3;font-size:30pt;text-align:center;line-height:1;font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif}
+.vcard .pic img{width:100%;aspect-ratio:1/1;object-fit:contain;border-radius:6px}
+.vcard .w{font-size:20pt;font-weight:700;letter-spacing:2px}
+.vcard .m{font-size:11pt}
+.vcard .e{font-size:10.5pt;color:var(--muted)}
+.vcard .ok{grid-column:2;font-size:10.5pt}
+.vcard .ok span::before{content:"☐ "}
+.vcard .ok span.sel::before{content:"☑ ";color:#2563eb}
+/* ===== 課程調整四面向 ===== */
+.adj{width:100%;border-collapse:collapse;font-size:10.5pt}
+.adj th{width:16%;background:#f3f4f6;text-align:left}
+.adj td,.adj th{border:1px solid var(--line);padding:3px 6px;vertical-align:top}
+/* ===== 作答紀錄 ===== */
+#rec{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:20}
+#rec.show{display:flex}
+#rec .box{background:#fff;border-radius:12px;padding:14px 16px;width:min(560px,92vw);max-height:90vh;overflow:auto;font-size:12pt}
+#rec h3{margin:0 0 6px}
+#rec input{font:inherit;border:1px solid var(--line);border-radius:6px;padding:2px 6px;width:10em}
+#rec pre{white-space:pre-wrap;background:#f9fafb;border:1px solid var(--line);border-radius:8px;padding:8px;font-family:inherit;font-size:11pt;line-height:1.6}
+#rec button{font:inherit;font-size:11pt;padding:5px 12px;border:0;border-radius:6px;background:#e5e7eb;cursor:pointer;margin-right:6px}
+@media print{body.rec-print > *:not(#rec){display:none !important}body.rec-print #rec{position:static;display:block;background:none}body.rec-print #rec button,body.rec-print #rec label{display:none}}
+
+/* ===== 六何法分層列、思考地圖 ===== */
+.layers{border:1.5px solid var(--c1);border-radius:8px;overflow:hidden;margin-bottom:6px}
+.layer{display:grid;grid-template-columns:30mm 1fr;border-top:1px solid var(--line)}
+.layer:first-child{border-top:0}
+.layer .lb{background:var(--cb,#e8f0fe);padding:3px 6px;font-weight:700;font-size:11pt;line-height:1.3}
+.layer .lb small{display:block;font-weight:400;font-size:9pt;color:var(--muted)}
+.layer .lc{padding:2px 8px 3px;font-size:11pt}
+.layer .lc .chips{margin-top:1px}
+.core{border:1.5px solid #f472b6;background:#fdf2f8;border-radius:8px;padding:3px 10px;font-size:10.5pt;margin-bottom:5px}
+.ringrow{display:flex;align-items:center;gap:6px}.ringrow .chips{flex:1}
+.ring{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:118mm;margin:2px 0;flex:none;border:1.5px solid var(--c2);border-radius:50%/40%;padding:10px 18px}
+.ring>span.blank{min-width:0;width:100%}
+.ring .mid{border:1.5px solid var(--c2);border-radius:50%;text-align:center;font-weight:700;padding:6px 2px;font-size:11pt}
+.mflow{display:grid;grid-template-columns:1fr 26mm 1fr;gap:6px;align-items:center;margin:3px 0}
+.mflow .col{display:flex;flex-direction:column;gap:4px}
+.mflow .cell{border:1.5px solid var(--c3);border-radius:6px;padding:2px 6px;min-height:9mm;font-size:10.5pt}
+.mflow .cell b{color:var(--c3);font-size:9pt;display:block}
+.mflow .ev{border:2px solid var(--c3);border-radius:8px;text-align:center;font-weight:700;padding:8px 4px;background:var(--c3b)}
+.bubble{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin:3px 0}
+.bubble .bb{border:1.5px solid var(--c4);border-radius:50%;width:30mm;height:13mm;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.bubble .bb .blank{min-width:0;width:100%}
+.bubble .center{border:2px solid var(--c4);border-radius:50%;width:26mm;height:18mm;display:flex;align-items:center;justify-content:center;font-weight:700;background:var(--c4b)}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <div class="grp">
+    <button id="ttsBtn" class="on" onclick="toggleTTS()">報讀：開</button>
+    <label>語速 <select id="rate"><option value="0.6">慢</option><option value="0.8" selected>中</option><option value="1">快</option></select></label>
+    <button onclick="readPassage()">整篇朗讀</button>
+    <button onclick="stopTTS()">停止</button>
+  </div>
+  <div class="grp">
+    <button onclick="checkAns()">對答案</button>
+    <button onclick="clearAns()">清除作答</button>
+    <button onclick="showRecord()">作答紀錄</button>
+  </div>
+  <div class="grp">
+    <button onclick="showVer('')">全部</button>
+    <button onclick="showVer('udl')">通用版</button>
+    <button onclick="showVer('support')">圖示加強版</button>
+    <button onclick="document.body.classList.toggle('no-passage')">課文頁</button>
+    <button onclick="document.body.classList.toggle('no-vocab')">詞語預教</button>
+    <button onclick="document.body.classList.toggle('no-answer')">教師版</button>
+  </div>
+  <div class="grp">
+    <button id="fontBtn" onclick="toggleFont()">字型：芫荽</button>
+    <button onclick="document.body.classList.toggle('big')">字級放大</button>
+    <button onclick="window.print()">列印／存 PDF</button>
+  </div>
+</div>
+
+<!-- ===== 課文頁：學生閱讀與報讀用（可用工具列隱藏） ===== -->
+<section class="sheet passage" data-version="passage">
+  <div class="title">課文：〈阿樂的風箏〉</div>
+  <div class="subtitle">點一下段落就會唸給你聽；按「整篇朗讀」從頭唸到尾。</div>
+  <div class="text">
+    <p><sup>1</sup>星期六早上，風呼呼的吹。阿樂拿著爸爸幫他做的紙風箏，興奮的跑到河邊草地。他一放手，風箏晃了兩下，就「咚」的一聲掉在地上。阿樂試了三次，風箏都飛不起來，他氣得把線丟在一旁，坐在石頭上嘟著嘴。</p>
+    <p><sup>2</sup>住在隔壁的林奶奶散步經過，笑著問：「怎麼啦？」阿樂說：「這個風箏是壞的！」林奶奶撿起風箏看了看，說：「尾巴太短了，風箏會站不穩。我們一起想想辦法吧！」</p>
+    <p><sup>3</sup>他們用奶奶口袋裡的緞帶，把風箏尾巴接長。阿樂再跑一次，這次他背對著風，慢慢放線。風箏搖搖擺擺的升起來，越飛越高，像一隻紅色的小鳥。</p>
+    <p><sup>4</sup>阿樂開心的大叫：「奶奶，它飛起來了！」林奶奶說：「不是風箏壞了，是我們還沒找到方法。」阿樂看著天上的風箏，點點頭，心裡暖暖的。</p>
+  </div>
+</section>
+
+<!-- ===== 選配：詞語預教頁（學生代碼 D、E、困難 6，或老師說要預教生字詞時加入）=====
+     每張詞卡：圖示（或生圖）＋詞語＋意思＋課文例句；點詞卡會唸出詞語、意思和例句。6 到 8 個詞。 -->
+<section class="sheet vocab" data-version="vocab">
+  <div class="title">詞語預教：〈阿樂的風箏〉</div>
+  <div class="subtitle">讀課文以前，先認識這些詞語。點一下詞卡就會唸給你聽，會讀了就勾「我會讀」。</div>
+  <div class="vgrid">
+    <div class="vcard"><div class="pic">🪁</div><div class="w">風箏</div><div class="m">意思：用紙或布做成，綁上線，靠風飛上天的玩具。</div><div class="e">例句：阿樂拿著爸爸做的紙風箏。</div><div class="ok"><span>我會讀</span></div></div>
+    <div class="vcard"><div class="pic">😆</div><div class="w">興奮</div><div class="m">意思：非常高興、很期待的樣子。</div><div class="e">例句：他興奮的跑到河邊草地。</div><div class="ok"><span>我會讀</span></div></div>
+    <div class="vcard"><div class="pic">😗</div><div class="w">嘟著嘴</div><div class="m">意思：把嘴巴翹起來，表示不高興。</div><div class="e">例句：他坐在石頭上嘟著嘴。</div><div class="ok"><span>我會讀</span></div></div>
+    <div class="vcard"><div class="pic">🏠</div><div class="w">隔壁</div><div class="m">意思：住在旁邊的那一家。</div><div class="e">例句：住在隔壁的林奶奶散步經過。</div><div class="ok"><span>我會讀</span></div></div>
+    <div class="vcard"><div class="pic">🎀</div><div class="w">緞帶</div><div class="m">意思：光滑、細長的布條，常用來綁東西或裝飾。</div><div class="e">例句：他們用奶奶口袋裡的緞帶接長尾巴。</div><div class="ok"><span>我會讀</span></div></div>
+    <div class="vcard"><div class="pic">〰️</div><div class="w">搖搖擺擺</div><div class="m">意思：左右晃來晃去，不太穩。</div><div class="e">例句：風箏搖搖擺擺的升起來。</div><div class="ok"><span>我會讀</span></div></div>
+  </div>
+</section>
+
+<section class="sheet udl" data-version="udl">
+  <div class="head"><span>班級：＿＿＿＿</span><span>座號：＿＿＿</span><span>姓名：＿＿＿＿＿＿</span><span>日期：＿＿年＿＿月＿＿日</span></div>
+  <div class="title">六何寫作學習單<span class="ver">通用版</span></div>
+  <div class="subtitle">課文：<b>〈阿樂的風箏〉</b>　想一想、排一排、說一說，一塊一塊寫出來（六何法：何人、何時、何地、何事、為何、如何）</div>
+  <div class="goal goal-line"><b>學習目標：</b><span>掌握課文重點：找出六何</span><span>理解人物的轉變：兩層為何</span><span>完成課文重述，連結生活經驗</span></div>
+  <div class="core"><b>課文核心：</b>阿樂的風箏一直飛不起來，他很生氣；林奶奶幫他找出原因、接長尾巴，風箏終於飛上天，阿樂學到「不是風箏壞了，是還沒找到方法」。</div>
+  <div class="choose"><b>每一層都可以：</b><span>✏️ 自己寫</span><span>🧩 點詞語填入</span><span>🗣️ 先說再寫（老師代寫或語音輸入）</span><span>🔊 按喇叭聽題目</span></div>
+  <div class="layers">
+    <div class="layer q"><div class="lb"><span class="n n1">1</span> 三何起步<small>何人＋何地＋何事</small></div><div class="lc">圈出課文中出現的人、地點和事情。何人：<span class="blank" style="min-width:4em" data-ans="阿樂"></span>　何地：<span class="blank" style="min-width:5em" data-ans="河邊"></span>　何事：<span class="blank" style="min-width:4em" data-ans="放風箏"></span><div class="chips"><span>阿樂</span><span>林奶奶</span><span>河邊草地</span><span>放風箏</span></div></div></div>
+    <div class="layer q"><div class="lb"><span class="n n2">2</span> 五何擴寫<small>加入何時＋如何</small></div><div class="lc">加上何時、如何，把事情寫得更完整。何時：<span class="blank" style="min-width:5em" data-ans="星期六"></span>　如何：<span class="blank" style="min-width:9em" data-ans="背對|慢慢|緞帶"></span><div class="chips"><span>星期六早上</span><span>背對著風慢慢放線</span><span>用緞帶接長尾巴</span></div></div></div>
+    <div class="layer q"><div class="lb"><span class="n n3">3</span> 六何理解<small>加入兩層為何</small></div><div class="lc">① 為何阿樂一開始很生氣？<span class="blank" style="min-width:9em" data-ans="飛不起來|掉"></span><br>② 為何後來風箏飛起來了？<span class="blank" style="min-width:9em" data-ans="尾巴|緞帶|接長"></span><div class="chips"><span>風箏一直飛不起來</span><span>尾巴接長了，站得穩</span></div></div></div>
+    <div class="layer q"><div class="lb"><span class="n n4">4</span> 事件排序<small>整理事件先後</small></div><div class="lc">將課文中的事件依先後排列：<span class="blank" style="min-width:4em" data-ans="掉"></span> → <span class="blank" style="min-width:4em" data-ans="生氣"></span> → <span class="blank" style="min-width:4em" data-ans="奶奶|尾巴"></span> → <span class="blank" style="min-width:4em" data-ans="飛起來"></span><div class="chips"><span>風箏掉下來</span><span>阿樂生氣</span><span>奶奶找出原因</span><span>風箏飛起來</span></div></div></div>
+    <div class="layer q"><div class="lb"><span class="n n1">5</span> 情緒加料<small>動作＋想法＋感受</small></div><div class="lc">選一個重要事件，寫出當時的動作、想法與感受。動作：<span class="blank" style="min-width:4em"></span>　想法：<span class="blank" style="min-width:5em"></span>　感受：<span class="blank" style="min-width:3em"></span><div class="chips"><span>嘟著嘴</span><span>開心的大叫</span><span>這個風箏是壞的</span><span>它飛起來了</span><span>生氣</span><span>暖暖的</span></div></div></div>
+    <div class="layer q"><div class="lb"><span class="n n2">6</span> 三段成文<small>開始＋經過＋結果</small></div><div class="lc">開始（背景與起因）：<span class="blank" style="min-width:7em"></span><br>經過（經歷與轉折）：<span class="blank" style="min-width:7em"></span><br>結果（改變與收穫）：<span class="blank" style="min-width:7em"></span><div class="chips"><span>首先</span><span>接著</span><span>後來</span><span>最後</span></div></div></div>
+    <div class="layer q"><div class="lb"><span class="n n3">7</span> 完整寫作<small>整合成一篇短文</small></div><div class="lc">運用以上內容，寫出一篇完整的短文（約 150～200 字）。可以先說給老師聽，或用語音輸入。<div class="line"></div><div class="line"></div><div class="line"></div></div></div>
+    <div class="layer q"><div class="lb"><span class="n n4">8</span> 遷移寫作與自我檢核<small>連結自己的經驗</small></div><div class="lc">想一想：在你的生活中，有沒有「失敗後找到方法」的經驗？請寫一寫。<div class="line"></div>我會檢查：<div class="opts in" data-multi><span>事件完整</span><span>語句通順</span><span>有加入感受</span><span>有自己的想法</span></div></div></div>
+  </div>
+  <div class="check"><b>我完成了：</b><span>我找到六何</span><span>我寫出完整句子</span><span>我用了連接詞</span><span>我檢查了標點</span></div>
+</section>
+
+<section class="sheet" data-version="support">
+  <div class="head"><span>班級：＿＿＿＿</span><span>座號：＿＿＿</span><span>姓名：＿＿＿＿＿＿</span><span>日期：＿＿年＿＿月＿＿日</span></div>
+  <div class="title">六何寫作學習單<span class="ver">圖示加強版</span></div>
+  <div class="subtitle">課文：<b>〈阿樂的風箏〉</b></div>
+  <div class="top">
+    <div class="goal"><h3>學習目標</h3><ol><li>我能選出何人、何地、何事。</li><li>我能說出一句完整的話。</li></ol></div>
+    <div class="tag"><h3>策略：六何法</h3><div class="lv"><span class="n n1">1</span>三何起步</div><div class="lv"><span class="n n2">2</span>五何擴寫</div><div class="lv"><span class="n n3">3</span>六何完整</div></div>
+  </div>
+  <div class="how">作答方式：看圖，在圖卡 ☐ 打勾 ✓，再用說的完成句子。</div>
+  <div class="sec s1">
+    <div class="sec-h"><span class="n n1">1</span>三何起步 <small>選一選</small></div>
+    <div class="sec-b">
+      <div class="q side"><div>1. 何人（可選兩個）：</div><div class="pics" data-multi><span data-ok><i>👦</i>阿樂</span><span data-ok><i>👵</i>林奶奶</span><span><i>👮</i>警察</span></div></div>
+      <div class="q side"><div>2. 何地：<span class="p">第 1 段</span></div><div class="pics"><span data-ok><i>🏞️</i>河邊草地</span><span><i>🏫</i>教室</span><span><i>🏪</i>商店</span></div></div>
+      <div class="q side"><div>3. 何事：</div><div class="pics"><span data-ok><i>🪁</i>放風箏</span><span><i>⚽</i>踢球</span><span><i>🎨</i>畫畫</span></div></div>
+    </div>
+  </div>
+  <div class="sec s2">
+    <div class="sec-h"><span class="n n2">2</span>五何擴寫 <small>什麼時候？怎麼做？</small></div>
+    <div class="sec-b">
+      <div class="q side"><div>4. 何時：<span class="p">第 1 段</span></div><div class="pics"><span data-ok><i>🌅</i>星期六早上</span><span><i>🌙</i>晚上</span></div></div>
+      <div class="q side"><div>5. 如何：<span class="p">第 3 段</span></div><div class="pics"><span data-ok><i>🎀</i>接長尾巴</span><span><i>💪</i>用力丟</span></div></div>
+    </div>
+  </div>
+  <div class="sec s3">
+    <div class="sec-h"><span class="n n3">3</span>說一句完整的話 <small>可以用說的</small></div>
+    <div class="sec-b">
+      <div class="q">6. <span class="blank" style="min-width:3em"></span>早上，<span class="blank" style="min-width:3em"></span>和<span class="blank" style="min-width:3em"></span>在<span class="blank" style="min-width:3em"></span>放風箏，他們<span class="blank" style="min-width:3em"></span>，風箏就飛起來了。</div>
+    </div>
+  </div>
+
+  <div class="check"><b>我完成了：</b><span>我選好六何</span><span>我說出完整句子</span></div>
+</section>
+
+<section class="sheet answer" data-version="teacher">
+  <div class="title">六何寫作學習單</div>
+  <div class="subtitle">課文：<b>〈阿樂的風箏〉</b>（自編示範文）</div>
+  <h3>教學提示：通用版（全班）</h3>
+  <div class="teacher">
+    <div><h4>教師引導語</h4><ul><li>依學生能力選層，不必每次完成全部：基本句與原因表達用第 1～3 層；敘事組織與描寫用第 4～6 層；完整整合用第 7～8 層。</li><li>可跨層搭配；先說再寫。</li><li>依學生當次表現調整提示量，逐步減少詞語盒，支持獨立書寫。</li></ul></div>
+    <div><h4>差異化支持（同一張單子內）</h4><ul><li>寫作困難（代碼 9）：第 1～3 層點詞語組句，其餘口說由老師代寫。</li><li>LD：抄寫詞語盒的詞，不必自己想字；可語音輸入。</li><li>讀得快的學生：第 7、8 層加入動作、想法與感受。</li></ul></div>
+    <div><h4>評量重點</h4><ul><li>內容完整：交代人物、時間、地點與主要事件。</li><li>組織清楚：依序敘述，說明原因與方法。</li><li>描寫具體：加入人物心情、想法或發現。</li><li>自主修訂：檢查標點與錯字。</li></ul></div>
+  </div>
+  <h3>教學提示：圖示加強版（選配）</h3>
+  <div class="teacher">
+    <div><h4>教師引導語</h4><ul><li>老師示範把圖卡連成一句話。</li><li>第 6 題可用說的，老師代寫。</li></ul></div>
+    <div><h4>差異化支持</h4><ul><li>可只做第 1 層。</li><li>搭配圖卡排列句子。</li></ul></div>
+    <div><h4>評量重點</h4><ul><li>能選出人、地、事。</li><li>能說出完整句子。</li></ul></div>
+  </div>
+  <h3>課程調整四面向（可貼入 IEP 或教學紀錄）</h3>
+  <table class="adj">
+    <tr><th>學習內容</th><td>依學生能力選層（第 1～3、4～6、7～8 層），可跨層搭配，不必每次完成全部；目標同全班，逐步減少提示量。</td></tr>
+    <tr><th>學習歷程</th><td>課前詞語預教；採六何法分層寫作：三何起步→五何擴寫→六何理解→事件排序→情緒加料→三段成文→完整寫作→遷移寫作，像堆積木逐步建立鷹架；每層可自己寫、點詞語填入或先說再寫；段落提示、詞語盒、圖示與報讀支援。</td></tr>
+    <tr><th>學習環境</th><td>可使用平板或電腦開啟互動網頁（報讀、點選作答）；安排同儕夥伴共讀；座位靠近老師便於口說作答。</td></tr>
+    <tr><th>學習評量</th><td>允許以書寫、選詞、勾選或口說（老師代寫）任一方式作答，皆視為完成；依評量重點檢核，並以作答紀錄追蹤作答方式與正確題數。</td></tr>
+  </table>
+  <h3>課文（附段落號）</h3>
+  <div class="text">
+    <p><sup>1</sup>星期六早上，風呼呼的吹。阿樂拿著爸爸幫他做的紙風箏，興奮的跑到河邊草地。他一放手，風箏晃了兩下，就「咚」的一聲掉在地上。阿樂試了三次，風箏都飛不起來，他氣得把線丟在一旁，坐在石頭上嘟著嘴。</p>
+    <p><sup>2</sup>住在隔壁的林奶奶散步經過，笑著問：「怎麼啦？」阿樂說：「這個風箏是壞的！」林奶奶撿起風箏看了看，說：「尾巴太短了，風箏會站不穩。我們一起想想辦法吧！」</p>
+    <p><sup>3</sup>他們用奶奶口袋裡的緞帶，把風箏尾巴接長。阿樂再跑一次，這次他背對著風，慢慢放線。風箏搖搖擺擺的升起來，越飛越高，像一隻紅色的小鳥。</p>
+    <p><sup>4</sup>阿樂開心的大叫：「奶奶，它飛起來了！」林奶奶說：「不是風箏壞了，是我們還沒找到方法。」阿樂看著天上的風箏，點點頭，心裡暖暖的。</p>
+  </div>
+  <h3>通用版建議答案（任何作答方式都可）</h3>
+  <table>
+    <tr><th style="width:14%">題號</th><th>建議答案</th></tr><tr><td>1</td><td>何人：阿樂（林奶奶）；何地：河邊草地；何事：放風箏</td></tr><tr><td>2</td><td>何時：星期六早上；如何：背對著風慢慢放線（用緞帶接長尾巴）</td></tr><tr><td>3</td><td>① 風箏一直飛不起來　② 尾巴接長了，站得穩</td></tr><tr><td>4</td><td>風箏掉下來 → 阿樂生氣 → 奶奶找出原因 → 風箏飛起來</td></tr><tr><td>5</td><td>例：動作：嘟著嘴；想法：這個風箏是壞的；感受：生氣</td></tr><tr><td>6</td><td>開始：阿樂去河邊放風箏，風箏一直掉下來／經過：林奶奶發現尾巴太短，用緞帶接長／結果：風箏飛起來，阿樂學到要找方法</td></tr><tr><td>7</td><td>例：星期六早上，阿樂到河邊草地放風箏，可是風箏一直掉下來，他氣得嘟著嘴。住在隔壁的林奶奶發現風箏的尾巴太短，站不穩，就用口袋裡的緞帶幫他接長。阿樂背對著風，慢慢放線，風箏搖搖擺擺的升起來，越飛越高。阿樂開心的大叫，奶奶說：「不是風箏壞了，是我們還沒找到方法。」阿樂心裡暖暖的，他知道以後遇到困難要先找出原因。</td></tr><tr><td>8</td><td>開放作答。</td></tr>
+  </table>
+  <h3>圖示加強版建議答案</h3>
+  <table>
+    <tr><th style="width:14%">題號</th><th>建議答案</th></tr><tr><td>1–3</td><td>阿樂、林奶奶；河邊草地；放風箏</td></tr><tr><td>4–5</td><td>星期六早上；接長尾巴</td></tr><tr><td>6</td><td>星期六／阿樂／林奶奶／河邊草地／接長尾巴</td></tr>
+  </table>
+  <h3>本課主旨</h3>
+  <p style="margin:0">遇到失敗時不要急著放棄，找出原因、接受別人的幫助，就有機會成功。</p>
+</section>
+
+<div id="rec"><div class="box">
+  <h3>作答紀錄</h3>
+  <label>姓名：<input id="recName" oninput="buildRecord()"></label>
+  <pre id="recText"></pre>
+  <button onclick="copyRecord()">複製文字</button><button onclick="printRecord()">列印紀錄</button><button onclick="closeRecord()">關閉</button>
+</div></div>
+<script>
+function toggleFont(){const k=document.body.classList.toggle('kai');document.getElementById('fontBtn').textContent='字型：'+(k?'標楷體':'芫荽');}
+function showVer(v){document.querySelectorAll('.sheet[data-version]').forEach(x=>{const d=x.dataset.version;x.style.display=(!v||d===v||d==='teacher'||d==='passage')?'':'none';});}
+
+/* ---------- 報讀（瀏覽器內建語音，免網路、免安裝） ---------- */
+let ttsOn=true, voice=null;
+const synth=window.speechSynthesis;
+function pickVoice(){
+  if(!synth)return;
+  const vs=synth.getVoices();
+  voice=vs.find(v=>/zh[-_]TW/i.test(v.lang))||vs.find(v=>/zh[-_](HK|Hant)/i.test(v.lang))||vs.find(v=>/^zh/i.test(v.lang))||null;
+}
+if(synth){pickVoice();synth.onvoiceschanged=pickVoice;}
+function clean(t){
+  return t.replace(/[☐☑✓]/g,'').replace(/＿{2,}|_{2,}/g,'，空格，')
+          .replace(/①/g,'第一層').replace(/②/g,'第二層').replace(/③/g,'第三層').replace(/④/g,'第四層')
+          .replace(/→/g,'，然後，').replace(/\s+/g,' ').trim();
+}
+function textOf(el){
+  const c=el.cloneNode(true);
+  c.querySelectorAll('.tts,.fb,sup').forEach(x=>x.remove());
+  c.querySelectorAll('.blank,.line').forEach(b=>{if(!b.textContent.trim())b.textContent='＿＿';});
+  c.querySelectorAll('.opts span,.pics span').forEach(o=>o.append('，'));
+  return clean(c.textContent);
+}
+function say(list){ // list: [[元素, 文字], ...]
+  if(!synth){alert('這個瀏覽器不支援報讀，請改用 Chrome 或 Edge。');return;}
+  stopTTS();
+  list.forEach(([el,t])=>{
+    const u=new SpeechSynthesisUtterance(t);
+    u.lang='zh-TW'; if(voice)u.voice=voice;
+    u.rate=parseFloat(document.getElementById('rate').value);
+    u.onstart=()=>{document.querySelectorAll('.speak').forEach(x=>x.classList.remove('speak'));el&&el.classList.add('speak');};
+    u.onend=()=>el&&el.classList.remove('speak');
+    synth.speak(u);
+  });
+}
+function speakEl(el){ if(ttsOn) say([[el,textOf(el)]]); }
+function stopTTS(){ if(synth)synth.cancel(); document.querySelectorAll('.speak').forEach(x=>x.classList.remove('speak')); }
+function toggleTTS(){
+  ttsOn=!ttsOn; const b=document.getElementById('ttsBtn');
+  b.textContent='報讀：'+(ttsOn?'開':'關'); b.classList.toggle('on',ttsOn);
+  document.body.classList.toggle('no-tts',!ttsOn); if(!ttsOn)stopTTS();
+}
+function readPassage(){
+  const ps=[...document.querySelectorAll('.passage .text p')];
+  const t=document.querySelector('.passage .title');
+  say([[t,textOf(t)],...ps.map(p=>[p,textOf(p)])]);
+}
+function addBtn(el,target){
+  const b=document.createElement('button'); b.className='tts'; b.type='button'; b.textContent='🔊'; b.title='唸給我聽';
+  b.onclick=e=>{e.stopPropagation(); if(!ttsOn)return; say([[target||el,textOf(target||el)]]);};
+  // 放在題幹後面、選項區塊前面
+  const blk=[...el.children].find(c=>c.tagName==='DIV');
+  blk?el.insertBefore(b,blk):el.appendChild(b);
+}
+
+/* ---------- 作答互動 ---------- */
+function initInteractive(){
+  // 報讀按鈕：大題標頭、題目、學習目標、作答方式
+  document.querySelectorAll('.sheet:not(.answer) .sec-h, .sheet:not(.answer) .goal h3, .sheet:not(.answer) .how').forEach(h=>{
+    addBtn(h, h.classList.contains('sec-h')||h.classList.contains('how')?h:h.parentElement);
+  });
+  document.querySelectorAll('.sheet:not(.answer) div.q').forEach(q=>{
+    const first=q.classList.contains('side')?q.firstElementChild:q;
+    // 題目只唸題幹與選項
+    addBtn(first, q);
+  });
+  // 課文段落：點一下就唸
+  document.querySelectorAll('.text p').forEach(p=>p.addEventListener('click',()=>speakEl(p)));
+  // 選項：點選＝作答＋唸出選項
+  document.querySelectorAll('.opts, .pics').forEach(g=>{
+    const multi=g.hasAttribute('data-multi');
+    g.querySelectorAll(':scope > span').forEach(o=>{
+      o.addEventListener('click',()=>{
+        if(!multi) g.querySelectorAll(':scope > span').forEach(x=>{if(x!==o)x.classList.remove('sel','right','retry')});
+        o.classList.toggle('sel'); o.classList.remove('right','retry');
+        const fb=g.parentElement.querySelector(':scope > .fb'); if(fb)fb.remove();
+        if(o.classList.contains('sel')) speakEl(o);
+      });
+    });
+  });
+  // 詞語盒：點一下詞語，填進同一欄第一個空格
+  document.querySelectorAll('.chips span').forEach(c=>{
+    c.addEventListener('click',()=>{
+      const way=c.closest('.way')||c.closest('.q');
+      const b=[...way.querySelectorAll('.blank')].find(x=>!x.textContent.trim());
+      if(b){b.textContent=c.textContent;b.classList.remove('right','retry');}
+      speakEl(c);
+    });
+  });
+  // 填空與書寫線：可直接打字
+  document.querySelectorAll('.sheet:not(.answer) .blank, .sheet:not(.answer) .line').forEach(b=>{
+    b.setAttribute('contenteditable','true'); b.setAttribute('spellcheck','false');
+  });
+}
+const praise=['答對了，你真棒！','找到了，很仔細！','你回到課文找答案，做得好！'];
+function checkAns(){
+  let right=0,total=0;
+  document.querySelectorAll('.sheet:not(.answer) .opts, .sheet:not(.answer) .pics').forEach(g=>{
+    const opts=[...g.querySelectorAll(':scope > span')];
+    if(!opts.some(o=>o.hasAttribute('data-ok')))return; // 開放題不批改
+    if(g.closest('.ways')&&!opts.some(o=>o.classList.contains('sel')))return; // 通用版：學生選了別的作答方式
+    total++;
+    const old=g.parentElement.querySelector(':scope > .fb'); if(old)old.remove();
+    const sel=opts.filter(o=>o.classList.contains('sel'));
+    const ok=sel.length&&sel.every(o=>o.hasAttribute('data-ok'))&&opts.filter(o=>o.hasAttribute('data-ok')).every(o=>o.classList.contains('sel'));
+    sel.forEach(o=>o.classList.add(o.hasAttribute('data-ok')?'right':'retry'));
+    const fb=document.createElement('span'); fb.className='fb '+(ok?'ok':'no');
+    fb.textContent=ok?praise[total%praise.length]:(sel.length?'再回到課文找找看！':'還沒選喔');
+    g.after(fb); if(ok)right++;
+  });
+  // 選詞填空：.blank 有 data-ans（多個答案用 | 分隔）就批改
+  document.querySelectorAll('.sheet:not(.answer) .blank[data-ans]').forEach(b=>{
+    const v=b.textContent.trim(); b.classList.remove('right','retry'); if(!v)return;
+    total++; const ok=b.dataset.ans.split('|').some(a=>v.includes(a)||a.includes(v)&&v.length>1);
+    b.classList.add(ok?'right':'retry'); if(ok)right++;
+  });
+  if(ttsOn&&total) say([[null,`可以批改的有 ${total} 題，你答對 ${right} 題。`+(right===total?'全部答對，太厲害了！':'再想想看橘色的題目。')]]);
+}
+function clearAns(){
+  document.querySelectorAll('.sel,.right,.retry').forEach(x=>x.classList.remove('sel','right','retry'));
+  document.querySelectorAll('.fb').forEach(x=>x.remove());
+  document.querySelectorAll('[contenteditable]').forEach(x=>x.textContent='');
+}
+
+/* ---------- 作答紀錄（給老師做進步監控） ---------- */
+const startAt=new Date();
+function pathOf(q){
+  const used=[];
+  const ws=q.querySelectorAll(':scope .way');
+  if(ws.length){
+    const [w,f,t]=ws;
+    if(w&&[...w.querySelectorAll('[contenteditable]')].some(x=>x.textContent.trim()))used.push('寫一寫');
+    if(f&&[...f.querySelectorAll('.blank')].some(x=>x.textContent.trim()))used.push('選詞填空');
+    if(t&&t.querySelector('.sel'))used.push('勾一勾');
+  }else{
+    if(q.querySelector('.sel'))used.push('勾選');
+    if([...q.querySelectorAll('[contenteditable]')].some(x=>x.textContent.trim()))used.push('書寫');
+  }
+  return used;
+}
+function judge(q){ // 回傳 true／false／null（不批改）
+  let has=false,ok=true;
+  q.querySelectorAll('.opts,.pics').forEach(g=>{
+    const o=[...g.querySelectorAll(':scope > span')];
+    if(!o.some(x=>x.hasAttribute('data-ok'))||!o.some(x=>x.classList.contains('sel')))return;
+    has=true;
+    if(!(o.filter(x=>x.classList.contains('sel')).every(x=>x.hasAttribute('data-ok'))))ok=false;
+  });
+  q.querySelectorAll('.blank[data-ans]').forEach(b=>{
+    const v=b.textContent.trim(); if(!v)return; has=true;
+    if(!b.dataset.ans.split('|').some(a=>v.includes(a)||a.includes(v)&&v.length>1))ok=false;
+  });
+  return has?ok:null;
+}
+function buildRecord(){
+  const now=new Date(), mins=Math.max(1,Math.round((now-startAt)/60000));
+  const name=(document.getElementById('recName').value||'＿＿＿').trim();
+  const tEl=document.querySelector('.sheet:not(.answer):not(.passage):not(.vocab) .title');
+  const title=tEl?[...tEl.childNodes].filter(n=>!(n.classList&&n.classList.contains('ver'))).map(n=>n.textContent).join(''):document.title;
+  let sheets=[...document.querySelectorAll('.sheet:not(.answer):not(.passage):not(.vocab)')].filter(x=>x.style.display!=='none');
+  const used=sheets.filter(sh=>[...sh.querySelectorAll('div.q')].some(q=>pathOf(q).length));
+  if(used.length)sheets=used; else sheets=sheets.slice(0,1); // 只列出學生有作答的版本
+  let lines=[],done=0,right=0,judged=0,count={};
+  sheets.forEach(sh=>{
+    const ver=(sh.querySelector('.ver')||{}).textContent||'';
+    sh.querySelectorAll('div.q').forEach((q,i)=>{
+      const n0=q.childNodes[0], m=(n0&&n0.nodeType===3?n0.textContent:q.textContent).trim().match(/^(\d+)\./), t=m?`第 ${m[1]} 題`:`第 ${i+1} 題`;
+      const used=pathOf(q), r=judge(q);
+      if(used.length){done++;used.forEach(u=>count[u]=(count[u]||0)+1);}
+      if(r!==null){judged++;if(r)right++;}
+      lines.push(`${ver?ver+' ':''}${t}：${used.length?used.join('＋'):'未作答'}${r===null?'':(r?'（答對）':'（再練習）')}`);
+    });
+    const star=sh.querySelector('.star [contenteditable]');
+    if(star&&star.textContent.trim())lines.push('⭐ 挑戰題：有作答');
+  });
+  const ways=Object.entries(count).map(([k,v])=>`${k} ${v} 題`).join('、')||'無';
+  const txt=`【作答紀錄】${title.replace(/\s+/g,' ').trim()}
+姓名：${name}
+日期：${now.toLocaleDateString('zh-TW')} ${now.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})}　作答約 ${mins} 分鐘
+完成：${done} 題；可批改 ${judged} 題，答對 ${right} 題
+使用的作答方式：${ways}
+報讀：${ttsOn?'開啟':'關閉'}　字級：${document.body.classList.contains('big')?'放大':'一般'}
+—— 逐題 ——
+${lines.join('\n')}`;
+  document.getElementById('recText').textContent=txt;
+  return txt;
+}
+function showRecord(){buildRecord();document.getElementById('rec').classList.add('show');}
+function closeRecord(){document.getElementById('rec').classList.remove('show');}
+function copyRecord(){
+  const t=buildRecord();
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert('已複製，可以貼到紀錄表或傳給老師。'),()=>{
+    const r=document.createRange();r.selectNodeContents(document.getElementById('recText'));const s=getSelection();s.removeAllRanges();s.addRange(r);alert('請按 Ctrl＋C 複製。');});
+}
+function printRecord(){buildRecord();document.body.classList.add('rec-print');window.print();setTimeout(()=>document.body.classList.remove('rec-print'),500);}
+/* 詞語預教：點詞卡唸出；點「我會讀」打勾 */
+document.querySelectorAll('.vcard').forEach(c=>{
+  c.addEventListener('click',e=>{
+    if(e.target.closest('.ok span')){e.target.classList.toggle('sel');return;}
+    const w=c.querySelector('.w').textContent, m=c.querySelector('.m').textContent, ex=c.querySelector('.e').textContent;
+    if(ttsOn) say([[c,`${w}。${m}。${ex}`]]);
+  });
+});
+initInteractive();
+</script>
+</body>
+</html>
