@@ -215,6 +215,23 @@ body.no-vocab .vocab{display:none}
 .bubble .bb{border:1.5px solid var(--c4);border-radius:50%;width:30mm;height:13mm;display:flex;align-items:center;justify-content:center;padding:0 4px}
 .bubble .bb .blank{min-width:0;width:100%}
 .bubble .center{border:2px solid var(--c4);border-radius:50%;width:26mm;height:18mm;display:flex;align-items:center;justify-content:center;font-weight:700;background:var(--c4b)}
+
+/* ===== 檢視：縮放、全螢幕、畫筆 ===== */
+.sheet{zoom:var(--z,1)}
+.toolbar select{font:inherit;font-size:11pt;border-radius:4px;max-width:200px}
+#zoomVal{color:#fff;font-size:11pt;min-width:3.2em;text-align:center}
+#inkCanvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:4;pointer-events:none}
+body.pen #inkCanvas{pointer-events:auto;touch-action:none;cursor:crosshair}
+body.pen.erase #inkCanvas{cursor:cell}
+#penBar{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:6;display:none;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;background:#1f2937;color:#fff;border-radius:12px;padding:8px 10px;box-shadow:0 4px 16px rgba(0,0,0,.3);max-width:calc(100vw - 24px)}
+body.pen #penBar{display:flex}
+#penBar .sw{width:30px;height:30px;border-radius:50%;border:3px solid #fff;cursor:pointer;padding:0}
+#penBar .sw.on{outline:3px solid #f59e0b;outline-offset:2px}
+#penBar button.t{font:inherit;font-size:11pt;padding:5px 10px;border:0;border-radius:6px;background:#fff;color:#111;cursor:pointer;min-height:36px}
+#penBar button.t.on{background:#f59e0b;color:#fff}
+#penBar .sep{width:1px;height:26px;background:#4b5563}
+#penBar input[type=color]{width:34px;height:30px;border:0;padding:0;background:none;cursor:pointer}
+@media print{.sheet{zoom:1 !important}#inkCanvas,#penBar{display:none !important}}
 </style>
 </head>
 <body>
@@ -222,6 +239,8 @@ body.no-vocab .vocab{display:none}
   <div class="grp">
     <button id="ttsBtn" class="on" onclick="toggleTTS()">報讀：開</button>
     <label>語速 <select id="rate"><option value="0.6">慢</option><option value="0.8" selected>中</option><option value="1">快</option></select></label>
+    <label>語音 <select id="voiceSel" onchange="setVoice(this.value)"><option value="">自動（中文）</option></select></label>
+    <button onclick="testVoice()">試聽</button>
     <button onclick="readPassage()">整篇朗讀</button>
     <button onclick="stopTTS()">停止</button>
   </div>
@@ -242,6 +261,14 @@ body.no-vocab .vocab{display:none}
     <button id="fontBtn" onclick="toggleFont()">字型：芫荽</button>
     <button onclick="document.body.classList.toggle('big')">字級放大</button>
     <button onclick="window.print()">列印／存 PDF</button>
+  </div>
+  <div class="grp">
+    <button onclick="zoomBy(-0.1)" title="縮小頁面">－</button>
+    <span id="zoomVal">100%</span>
+    <button onclick="zoomBy(0.1)" title="放大頁面">＋</button>
+    <button onclick="fitWidth()">符合寬度</button>
+    <button id="fsBtn" onclick="toggleFS()">全螢幕</button>
+    <button id="penBtn" onclick="togglePen()">🖍 畫筆</button>
   </div>
 </div>
 
@@ -398,9 +425,33 @@ body.no-vocab .vocab{display:none}
   <pre id="recText"></pre>
   <button onclick="copyRecord()">複製文字</button><button onclick="printRecord()">列印紀錄</button><button onclick="closeRecord()">關閉</button>
 </div></div>
+<canvas id="inkCanvas"></canvas>
+<div id="penBar">
+  <span>畫筆</span>
+  <button class="sw on" style="background:#111827" data-c="#111827" title="黑"></button>
+  <button class="sw" style="background:#dc2626" data-c="#dc2626" title="紅"></button>
+  <button class="sw" style="background:#2563eb" data-c="#2563eb" title="藍"></button>
+  <button class="sw" style="background:#16a34a" data-c="#16a34a" title="綠"></button>
+  <button class="sw" style="background:#ea580c" data-c="#ea580c" title="橘"></button>
+  <button class="sw" style="background:#9333ea" data-c="#9333ea" title="紫"></button>
+  <input type="color" id="penColor" value="#db2777" title="自選顏色">
+  <span class="sep"></span>
+  <span>螢光筆</span>
+  <button class="sw" style="background:#fde047" data-c="#fde047" data-hl="1" title="黃"></button>
+  <button class="sw" style="background:#86efac" data-c="#86efac" data-hl="1" title="綠"></button>
+  <button class="sw" style="background:#f9a8d4" data-c="#f9a8d4" data-hl="1" title="粉紅"></button>
+  <button class="sw" style="background:#7dd3fc" data-c="#7dd3fc" data-hl="1" title="藍"></button>
+  <span class="sep"></span>
+  <button class="t sz" data-w="2">細</button><button class="t sz on" data-w="4">中</button><button class="t sz" data-w="8">粗</button><button class="t sz" data-w="14">特粗</button>
+  <span class="sep"></span>
+  <button class="t" id="eraseBtn">橡皮擦</button>
+  <button class="t" onclick="undoInk()">復原</button>
+  <button class="t" onclick="clearInk()">全部清除</button>
+  <button class="t on" onclick="togglePen(false)">完成</button>
+</div>
 <script>
 function toggleFont(){const k=document.body.classList.toggle('kai');document.getElementById('fontBtn').textContent='字型：'+(k?'標楷體':'芫荽');}
-function showVer(v){document.querySelectorAll('.sheet[data-version]').forEach(x=>{const d=x.dataset.version;x.style.display=(!v||d===v||d==='teacher'||d==='passage')?'':'none';});}
+function showVer(v){document.querySelectorAll('.sheet[data-version]').forEach(x=>{const d=x.dataset.version;x.style.display=(!v||d===v||d==='teacher'||d==='passage')?'':'none';});if(typeof drawInk==='function')requestAnimationFrame(drawInk);}
 
 /* ---------- 報讀（瀏覽器內建語音，免網路、免安裝） ---------- */
 let ttsOn=true, voice=null;
@@ -604,6 +655,117 @@ document.querySelectorAll('.vcard').forEach(c=>{
   });
 });
 initInteractive();
+
+/* ---------- 語音風格：選擇瀏覽器提供的語音 ---------- */
+let voiceName='';
+try{voiceName=localStorage.getItem('rsw-voice')||'';}catch(e){}
+function fillVoices(){
+  const sel=document.getElementById('voiceSel'); if(!sel||!synth)return;
+  const vs=synth.getVoices(); if(!vs.length)return;
+  const zh=vs.filter(v=>/^zh|cmn|yue/i.test(v.lang)).sort((a,b)=>(/TW/i.test(b.lang)-/TW/i.test(a.lang)));
+  const other=vs.filter(v=>!zh.includes(v));
+  const opt=v=>`<option value="${v.name.replace(/"/g,'&quot;')}">${v.name}（${v.lang}）</option>`;
+  sel.innerHTML='<option value="">自動（中文）</option>'+(zh.length?'<optgroup label="中文語音">'+zh.map(opt).join('')+'</optgroup>':'')+(other.length?'<optgroup label="其他語音">'+other.map(opt).join('')+'</optgroup>':'');
+  if(voiceName&&vs.some(v=>v.name===voiceName)){sel.value=voiceName;voice=vs.find(v=>v.name===voiceName);}
+}
+function setVoice(name){
+  voiceName=name; try{localStorage.setItem('rsw-voice',name);}catch(e){}
+  if(name){voice=synth.getVoices().find(v=>v.name===name)||voice;}else{pickVoice();}
+  testVoice();
+}
+function testVoice(){ if(!ttsOn)toggleTTS(); say([[null,'你好，我是報讀小幫手，這是現在的聲音。']]); }
+if(synth){fillVoices();synth.addEventListener('voiceschanged',()=>{fillVoices();});}
+
+/* ---------- 頁面縮放與全螢幕 ---------- */
+let zoom=1;
+function setZoom(z){
+  zoom=Math.min(2.5,Math.max(0.5,Math.round(z*100)/100));
+  document.documentElement.style.setProperty('--z',zoom);
+  document.getElementById('zoomVal').textContent=Math.round(zoom*100)+'%';
+  requestAnimationFrame(drawInk);
+}
+function zoomBy(d){setZoom(zoom+d);}
+function fitWidth(){
+  const sh=[...document.querySelectorAll('.sheet')].find(x=>x.offsetParent!==null); if(!sh)return;
+  const w=sh.getBoundingClientRect().width/zoom;
+  setZoom((document.documentElement.clientWidth-24)/w);
+}
+function toggleFS(){
+  if(document.fullscreenElement){document.exitFullscreen();}
+  else if(document.documentElement.requestFullscreen){document.documentElement.requestFullscreen();}
+  else{alert('這個瀏覽器不支援全螢幕，可以按 F11。');}
+}
+document.addEventListener('fullscreenchange',()=>{document.getElementById('fsBtn').textContent=document.fullscreenElement?'離開全螢幕':'全螢幕';setTimeout(drawInk,200);});
+
+/* ---------- 畫筆：筆跡跟著頁面位置，捲動、縮放都不會跑掉 ---------- */
+const ink={strokes:[],cur:null,color:'#111827',hl:false,w:4,erase:false};
+const cv=document.getElementById('inkCanvas'), cx=cv.getContext('2d');
+function sheetsVis(){return [...document.querySelectorAll('.sheet')].filter(x=>x.offsetParent!==null);}
+function sizeCanvas(){const d=window.devicePixelRatio||1;cv.width=innerWidth*d;cv.height=innerHeight*d;cx.setTransform(d,0,0,d,0,0);}
+function drawStroke(st,rect){
+  if(st.pts.length<1)return;
+  cx.save();cx.lineCap='round';cx.lineJoin='round';
+  cx.strokeStyle=st.color;cx.globalAlpha=st.hl?.4:1;cx.lineWidth=Math.max(1,st.w*rect.width);
+  cx.beginPath();
+  st.pts.forEach(([x,y],i)=>{const X=rect.left+x*rect.width,Y=rect.top+y*rect.height;i?cx.lineTo(X,Y):cx.moveTo(X,Y);});
+  if(st.pts.length===1){const[x,y]=st.pts[0];cx.lineTo(rect.left+x*rect.width+.1,rect.top+y*rect.height);}
+  cx.stroke();cx.restore();
+}
+function drawInk(){
+  cx.clearRect(0,0,innerWidth,innerHeight);
+  const all=[...document.querySelectorAll('.sheet')];
+  ink.strokes.concat(ink.cur?[ink.cur]:[]).forEach(st=>{
+    const sh=all[st.s]; if(!sh||sh.offsetParent===null)return;
+    const r=sh.getBoundingClientRect(); if(r.bottom<0||r.top>innerHeight)return;
+    drawStroke(st,r);
+  });
+}
+function hitSheet(x,y){const all=[...document.querySelectorAll('.sheet')];for(let i=0;i<all.length;i++){const sh=all[i];if(sh.offsetParent===null)continue;const r=sh.getBoundingClientRect();if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)return[i,r];}return null;}
+function eraseAt(x,y){
+  const all=[...document.querySelectorAll('.sheet')];
+  const before=ink.strokes.length;
+  ink.strokes=ink.strokes.filter(st=>{const sh=all[st.s];if(!sh||sh.offsetParent===null)return true;const r=sh.getBoundingClientRect();
+    return !st.pts.some(([px,py])=>Math.hypot(r.left+px*r.width-x,r.top+py*r.height-y)<14);});
+  if(ink.strokes.length!==before)drawInk();
+}
+cv.addEventListener('pointerdown',e=>{
+  if(!document.body.classList.contains('pen'))return;
+  cv.setPointerCapture(e.pointerId);
+  if(ink.erase){ink.cur=null;eraseAt(e.clientX,e.clientY);ink.erasing=true;return;}
+  const h=hitSheet(e.clientX,e.clientY); if(!h)return;
+  const[i,r]=h;
+  ink.cur={s:i,color:ink.color,hl:ink.hl,w:(ink.hl?ink.w*3:ink.w)/r.width,pts:[[(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]]};
+  drawInk();
+});
+cv.addEventListener('pointermove',e=>{
+  if(ink.erasing){eraseAt(e.clientX,e.clientY);return;}
+  if(!ink.cur)return;
+  const sh=document.querySelectorAll('.sheet')[ink.cur.s], r=sh.getBoundingClientRect();
+  ink.cur.pts.push([(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]);
+  drawInk();
+});
+function endStroke(){ if(ink.cur){ink.strokes.push(ink.cur);ink.cur=null;drawInk();} ink.erasing=false; }
+cv.addEventListener('pointerup',endStroke); cv.addEventListener('pointercancel',endStroke);
+cv.addEventListener('wheel',e=>{window.scrollBy(0,e.deltaY);},{passive:true});
+function togglePen(on){
+  const v=on===undefined?!document.body.classList.contains('pen'):on;
+  document.body.classList.toggle('pen',v);
+  document.getElementById('penBtn').classList.toggle('on',v);
+  if(v)stopTTS();
+}
+function undoInk(){ink.strokes.pop();drawInk();}
+function clearInk(){if(!ink.strokes.length||confirm('要清除全部筆跡嗎？')){ink.strokes=[];drawInk();}}
+document.querySelectorAll('#penBar .sw').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#penBar .sw').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  ink.color=b.dataset.c;ink.hl=!!b.dataset.hl;ink.erase=false;document.body.classList.remove('erase');document.getElementById('eraseBtn').classList.remove('on');
+}));
+document.getElementById('penColor').addEventListener('input',e=>{ink.color=e.target.value;ink.hl=false;ink.erase=false;document.body.classList.remove('erase');document.getElementById('eraseBtn').classList.remove('on');document.querySelectorAll('#penBar .sw').forEach(x=>x.classList.remove('on'));});
+document.querySelectorAll('#penBar .sz').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#penBar .sz').forEach(x=>x.classList.remove('on'));b.classList.add('on');ink.w=+b.dataset.w;}));
+document.getElementById('eraseBtn').addEventListener('click',e=>{ink.erase=!ink.erase;e.target.classList.toggle('on',ink.erase);document.body.classList.toggle('erase',ink.erase);});
+addEventListener('scroll',()=>requestAnimationFrame(drawInk),{passive:true});
+addEventListener('resize',()=>{sizeCanvas();drawInk();});
+new MutationObserver(()=>requestAnimationFrame(drawInk)).observe(document.body,{attributes:true,attributeFilter:['class'],subtree:false});
+sizeCanvas();
 </script>
 </body>
 </html>
