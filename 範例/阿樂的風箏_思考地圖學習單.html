@@ -405,7 +405,7 @@ function initInteractive(){
     addBtn(h, h.classList.contains('sec-h')||h.classList.contains('how')?h:h.parentElement);
   });
   document.querySelectorAll('.sheet:not(.answer) div.q').forEach(q=>{
-    const first=q.classList.contains('side')?q.firstElementChild:q;
+    const first=q.classList.contains('side')?q.firstElementChild:(q.classList.contains('layer')?q.querySelector('.lb'):q);
     // 題目只唸題幹與選項
     addBtn(first, q);
   });

@@ -18,6 +18,22 @@
 
 改編自：https://courses.dale.nthu.edu.tw/repo/14342
 
+## 看範例
+
+**線上範例頁**：https://sesns365.github.io/reading-strategy-worksheet/ （六種策略都能直接點開操作）
+
+![互動學習單操作示範](docs/demo.gif)
+
+| PIRLS 多層次提問 | KWL | SQ3R |
+|---|---|---|
+| [![PIRLS](docs/screenshots/pirls.png)](範例/阿樂的風箏_PIRLS學習單.pdf) | [![KWL](docs/screenshots/kwl.png)](範例/阿樂的風箏_KWL學習單.pdf) | [![SQ3R](docs/screenshots/sq3r.png)](範例/阿樂的風箏_SQ3R學習單.pdf) |
+| **4F 反思** | **六何法寫作** | **思考地圖** |
+| [![4F](docs/screenshots/4f.png)](範例/阿樂的風箏_4F學習單.pdf) | [![六何法](docs/screenshots/six-w.png)](範例/阿樂的風箏_六何法學習單.pdf) | [![思考地圖](docs/screenshots/thinking-maps.png)](範例/阿樂的風箏_思考地圖學習單.pdf) |
+
+點圖片可以看完整 PDF（課文頁、詞語預教、學生頁、教師版）。教師版附課程調整四面向與答案：
+
+<img src="docs/screenshots/teacher.png" width="420" alt="教師版">
+
 ## 最快的用法：在任何 AI 輸入一句話
 
 在 Claude、ChatGPT、Gemini 的對話框輸入：

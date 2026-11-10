@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>閱讀策略學習單小幫手</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Iansui&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f8fafc;--card:#fff;--ink:#1f2937;--sub:#4b5563;--line:#e5e7eb;--acc:#2563eb;--acc2:#f59e0b}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0f172a;--card:#1e293b;--ink:#f1f5f9;--sub:#cbd5e1;--line:#334155;--acc:#60a5fa}}
+:root[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--ink:#f1f5f9;--sub:#cbd5e1;--line:#334155;--acc:#60a5fa}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Iansui,"Noto Sans TC",sans-serif;line-height:1.7}
+main{max-width:1080px;margin:0 auto;padding:28px 16px 48px}
+h1{font-size:2rem;margin:.2em 0}
+h2{font-size:1.35rem;margin:1.8em 0 .6em;border-left:6px solid var(--acc);padding-left:10px}
+p.lead{color:var(--sub);font-size:1.08rem;margin:.3em 0 1em}
+.steps{display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.95rem}
+.steps li::before{content:counter(s) ". ";color:var(--acc);font-weight:700}
+.demo{width:100%;border-radius:12px;border:1px solid var(--line);display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.card .shot{height:300px;overflow:hidden;border-bottom:1px solid var(--line);background:#fff}
+.card .shot img{width:100%;display:block}
+.card .body{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:6px}
+.card h3{margin:0;font-size:1.15rem}
+.card p{margin:0;color:var(--sub);font-size:.95rem}
+.btns{display:flex;gap:8px;margin-top:auto;padding-top:8px;flex-wrap:wrap}
+.btns a{text-decoration:none;border-radius:8px;padding:6px 12px;font-size:.95rem;border:1px solid var(--acc);color:var(--acc)}
+.btns a.main{background:var(--acc);color:#fff}
+.install{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+code,pre{font-family:ui-monospace,Consolas,monospace}
+pre{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;overflow-x:auto;margin:.4em 0}
+footer{margin-top:40px;color:var(--sub);font-size:.9rem}
+a{color:var(--acc)}
+</style>
+</head>
+<body>
+<main>
+  <h1>閱讀策略學習單小幫手</h1>
+  <p class="lead">貼上課文、用自己的話描述學生，AI 就會依序分析並推薦閱讀策略，做出全班通用（UDL）、可報讀與線上作答的學習單，附 PDF、Word 與教師版。Claude、ChatGPT、Gemini 都能用。</p>
+  <ol class="steps">
+    <li>分析文本</li><li>分析學生</li><li>判斷閱讀歷程</li><li>推薦策略</li><li>UDL 調整</li><li>產生學習單</li><li>交付前自我檢查</li>
+  </ol>
+
+  <h2>操作示範</h2>
+  <img class="demo" src="docs/demo.gif" alt="互動學習單操作示範：課文點讀、勾一勾、選詞填空、寫一寫、對答案、作答紀錄、教師版">
+
+  <h2>六種策略範例（示範課文〈阿樂的風箏〉）</h2>
+  <div class="grid" id="grid"></div>
+
+  <h2>怎麼安裝</h2>
+  <div class="install">
+    <p>最快的方式：在 Claude、ChatGPT 或 Gemini 的對話框輸入</p>
+    <pre>安裝skill
+https://github.com/sesns365/reading-strategy-worksheet</pre>
+    <p>想每次都能用，請看 <a href="https://github.com/sesns365/reading-strategy-worksheet#安裝方式">GitHub 上的安裝說明</a>（Claude 技能、ChatGPT GPT、Gemini 技能）。</p>
+  </div>
+
+  <footer>由特工365 整理。改編自：<a href="https://courses.dale.nthu.edu.tw/repo/14342">https://courses.dale.nthu.edu.tw/repo/14342</a></footer>
+</main>
+<script>
+const items=[
+  ["PIRLS","pirls","PIRLS 多層次提問","閱讀中。活動一 ① 直接提取 ② 直接推論；活動二 ③ 詮釋整合 ④ 比較評估。"],
+  ["KWL","kwl","KWL","閱讀前。K 我知道、W 我想知道、環圈圖，讀完再寫 L 我學到了。"],
+  ["SQ3R","sq3r","SQ3R","四個活動：瀏覽提問、分站閱讀表、照順序複述、回答自己的問題。"],
+  ["4F","4f","4F 反思","閱讀後。事實、感受、發現、未來，連結生活行動。"],
+  ["六何法","six-w","六何法寫作","八層積木式寫作，從三何起步到 150～200 字完整寫作。"],
+  ["思考地圖","thinking-maps","思考地圖","流程圖、因果圖、氣泡圖，把思考畫出來。"]
+];
+const g=document.getElementById('grid');
+for(const [k,slug,name,desc] of items){
+  const html=`範例/${encodeURIComponent('阿樂的風箏_'+k+'學習單')}.html`;
+  const pdf=`範例/${encodeURIComponent('阿樂的風箏_'+k+'學習單')}.pdf`;
+  g.insertAdjacentHTML('beforeend',`<div class="card"><a class="shot" href="${html}"><img loading="lazy" src="docs/screenshots/${slug}.png" alt="${name}學習單畫面"></a>
+  <div class="body"><h3>${name}</h3><p>${desc}</p><div class="btns"><a class="main" href="${html}">開啟互動範例</a><a href="${pdf}">PDF</a></div></div></div>`);
+}
+</script>
+</body>
+</html>
