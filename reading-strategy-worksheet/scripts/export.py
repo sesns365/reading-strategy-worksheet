@@ -101,7 +101,10 @@ def to_docx(html: Path, out: Path) -> bool:
 
     FONT = DOCX_FONT
     COLORS = {"s1": "E8F0FE", "s2": "E6F6EF", "s3": "FDF3E2", "s4": "F4EBFD"}
-    NUM = {"1": "①", "2": "②", "3": "③", "4": "④", "5": "⑤", "6": "⑥", "7": "⑦"}
+    STRONG = {"s1": "2563EB", "s2": "059669", "s3": "D97706", "s4": "9333EA"}
+    LAYER = [("EA580C", "FFF1E6"), ("059669", "E7F7EF"), ("2563EB", "E8F0FE"), ("9333EA", "F4EBFD"),
+             ("E11D48", "FDE8EC"), ("16A34A", "E9F8EE"), ("7C3AED", "F1EBFD"), ("0284C7", "E0F2FE")]
+    NUM = {"1": "①", "2": "②", "3": "③", "4": "④", "5": "⑤", "6": "⑥", "7": "⑦", "8": "⑧", "9": "⑨"}
 
     soup = BeautifulSoup(html.read_text(encoding="utf-8"), "html.parser")
     doc = Document()
@@ -124,6 +127,62 @@ def to_docx(html: Path, out: Path) -> bool:
         shd.set(qn("w:color"), "auto")
         shd.set(qn("w:fill"), hexcolor)
         tcPr.append(shd)
+
+    def font_run(r, size=None, bold=False, color=None):
+        r.font.name = FONT
+        r._element.get_or_add_rPr().get_or_add_rFonts().set(qn("w:eastAsia"), FONT)
+        r.bold = bold
+        if size:
+            r.font.size = Pt(size)
+        if color:
+            r.font.color.rgb = RGBColor.from_string(color)
+        return r
+
+    def shade_run(r, hexcolor):
+        shd = OxmlElement("w:shd")
+        shd.set(qn("w:val"), "clear")
+        shd.set(qn("w:color"), "auto")
+        shd.set(qn("w:fill"), hexcolor)
+        r._element.get_or_add_rPr().append(shd)
+
+    def borders(t, color="CBD5E1", sz=8, inside=True):
+        tblPr = t._tbl.tblPr
+        for old in tblPr.findall(qn("w:tblBorders")):
+            tblPr.remove(old)
+        b = OxmlElement("w:tblBorders")
+        for e in ("top", "left", "bottom", "right", "insideH", "insideV"):
+            x = OxmlElement(f"w:{e}")
+            x.set(qn("w:val"), "single" if inside or e in ("top", "left", "bottom", "right") else "nil")
+            x.set(qn("w:sz"), str(sz))
+            x.set(qn("w:color"), color)
+            b.append(x)
+        tblPr.append(b)
+
+    def ruled(c, n, color="BFC7D2", height=20):
+        """書寫橫線：段落下框線（含 between，連續段落每行都有線）。"""
+        for _ in range(n):
+            p = c.add_paragraph()
+            p.paragraph_format.line_spacing = Pt(height)
+            p.paragraph_format.space_after = Pt(0)
+            pPr = p._p.get_or_add_pPr()
+            bdr = OxmlElement("w:pBdr")
+            for side in ("bottom", "between"):
+                e = OxmlElement(f"w:{side}")
+                e.set(qn("w:val"), "single")
+                e.set(qn("w:sz"), "6")
+                e.set(qn("w:space"), "1")
+                e.set(qn("w:color"), color)
+                bdr.append(e)
+            pPr.append(bdr)
+
+    def chips_para(c, el, size=9.5):
+        p = c.add_paragraph()
+        p.paragraph_format.space_before = Pt(2)
+        font_run(p.add_run("詞語盒　"), size=size - 0.5, color="92400E")
+        for sp in el.find_all("span"):
+            shade_run(font_run(p.add_run(f" {sp.get_text(strip=True)} "), size=size), "FFF2C2")
+            p.add_run("　")
+        return p
 
     def has(el, c):
         return isinstance(el, Tag) and c in (el.get("class") or [])
@@ -157,38 +216,45 @@ def to_docx(html: Path, out: Path) -> bool:
             return False
 
     def ways_table(target, el):
-        """通用版三種作答路徑：一列三格。"""
+        """通用版三種作答路徑：一個作答框，左寫、中填、右勾。"""
         ws_ = el.find_all(class_="way", recursive=False)
         names = {"✏️": "✏️ 寫一寫", "🧩": "🧩 選詞填空", "☑️": "☑️ 勾一勾"}
-        t = table(target, 1, len(ws_), [44, 66, 60][:len(ws_)] if len(ws_) == 3 else None)
+        fills = ["FFFFFF", "FFFCF2", "F7FAFF"]
+        t = table(target, 1, len(ws_), [38, 74, 58][:len(ws_)] if len(ws_) == 3 else None)
+        borders(t, "CFD6E0", 8)
         for i, w in enumerate(ws_):
             c = t.cell(0, i)
             clear_first(c)
+            if len(ws_) == 3:
+                shade(c, fills[i])
             lab = w.find("b")
             ltxt = lab.get_text(strip=True) if lab else ""
             if lab:
                 lab.extract()
-            para(c, names.get(ltxt, ltxt), size=9, color="6B7280")
+            para(c, names.get(ltxt, ltxt), size=8.5, color="64748B")
             body = []
+            nlines = 0
 
             def flush():
                 if "".join(body).strip():
-                    para(c, "".join(body).strip(), size=10.5)
+                    para(c, "".join(body).strip(), size=11)
                 body.clear()
             for k in w.children:
                 if has(k, "line"):
                     flush()
-                    para(c, "＿" * 9, size=10)
+                    nlines += 1
                 elif has(k, "opts"):
                     flush()
                     for o in k.find_all("span", recursive=False):
-                        para(c, "☐ " + o.get_text(" ", strip=True), size=10)
+                        para(c, "□ " + o.get_text(" ", strip=True), size=10.5)
                 elif has(k, "chips"):
                     flush()
-                    para(c, inline(k), size=9.5)
+                    chips_para(c, k)
                 else:
                     body.append(inline(k))
             flush()
+            if nlines:
+                ruled(c, nlines + 1, height=18)
 
     def pic_cards(target, el):
         """含圖片的圖卡：做成一列表格，每格＝圖片＋☐ 文字。"""
@@ -205,7 +271,7 @@ def to_docx(html: Path, out: Path) -> bool:
                 if ic:
                     para(c, ic.get_text(strip=True), size=18, align=WD_ALIGN_PARAGRAPH.CENTER)
             label = "".join(str(x) for x in sp.strings if not (x.parent.name == "i")).strip()
-            para(c, "☐ " + label, size=10, align=WD_ALIGN_PARAGRAPH.CENTER)
+            para(c, "□ " + label, size=10, align=WD_ALIGN_PARAGRAPH.CENTER)
 
     def inline(el) -> str:
         """把元素轉成一行文字，套用勾選、填空、層次符號等。"""
@@ -225,9 +291,9 @@ def to_docx(html: Path, out: Path) -> bool:
         if has(el, "chips"):
             return "（詞語：" + "／".join(c.get_text(strip=True) for c in el.find_all("span")) + "）"
         if has(el, "opts"):
-            return "　".join("☐ " + s.get_text(strip=True) for s in el.find_all("span", recursive=False))
+            return "　".join("□ " + s.get_text(strip=True) for s in el.find_all("span", recursive=False))
         if has(el, "pics"):
-            return "　".join("☐ " + s.get_text(" ", strip=True) for s in el.find_all("span", recursive=False))
+            return "　".join("□ " + s.get_text(" ", strip=True) for s in el.find_all("span", recursive=False))
         if el.name == "small":
             return "　" + el.get_text(strip=True)
         return "".join(inline(c) for c in el.children)
@@ -237,12 +303,7 @@ def to_docx(html: Path, out: Path) -> bool:
         for i, part in enumerate(text.split("\n")):
             if i:
                 p.add_run().add_break()
-            r = p.add_run(part.strip() if i else part.rstrip())
-            r.bold = bold
-            if size:
-                r.font.size = Pt(size)
-            if color:
-                r.font.color.rgb = RGBColor.from_string(color)
+            font_run(p.add_run(part.strip() if i else part.rstrip()), size, bold, color)
         if align:
             p.alignment = align
         return p
@@ -259,6 +320,7 @@ def to_docx(html: Path, out: Path) -> bool:
         for row in t.rows:
             for i, c in enumerate(row.cells):
                 c.width = Mm(ws[i])
+        borders(t, "94A3B8", 6)
         return t
 
     def clear_first(cell):
@@ -273,6 +335,9 @@ def to_docx(html: Path, out: Path) -> bool:
                 para(target, str(el).strip())
             return
         if not isinstance(el, Tag) or el.name in ("script", "style"):
+            return
+        if has(el, "chips"):
+            chips_para(target, el)
             return
         if has(el, "row"):
             kids = [c for c in el.children if isinstance(c, Tag)]
@@ -298,29 +363,31 @@ def to_docx(html: Path, out: Path) -> bool:
             # 六何法八層：左欄層名、右欄任務
             rows_ = [k for k in el.children if has(k, "layer")]
             t = table(target, len(rows_), 2, [38, 148])
+            borders(t, "CBD5E1", 8)
             for i, k in enumerate(rows_):
                 lb, lc = k.find(class_="lb"), k.find(class_="lc")
                 c0, c1 = t.cell(i, 0), t.cell(i, 1)
                 clear_first(c0)
                 clear_first(c1)
-                shade(c0, "EEF2FF")
+                lc_, lbg = LAYER[i % len(LAYER)]
+                shade(c0, lbg)
                 sm = lb.find("small") if lb else None
                 smt = sm.extract().get_text(strip=True) if sm else ""
-                para(c0, inline(lb).strip(), bold=True, size=11)
+                para(c0, inline(lb).strip(), bold=True, size=12, color=lc_)
                 if smt:
-                    para(c0, smt, size=9, color="6B7280")
+                    para(c0, smt, size=9, color="475569")
                 buf = []
                 for x in (lc.children if lc else []):
                     if has(x, "line"):
                         if "".join(buf).strip():
                             para(c1, "".join(buf).strip(), size=11)
                         buf = []
-                        para(c1, "＿" * 26, size=11)
+                        ruled(c1, 1)
                     elif has(x, "chips"):
                         if "".join(buf).strip():
                             para(c1, "".join(buf).strip(), size=11)
                         buf = []
-                        para(c1, inline(x), size=9.5)
+                        chips_para(c1, x)
                     else:
                         buf.append(inline(x))
                 if "".join(buf).strip():
@@ -366,7 +433,7 @@ def to_docx(html: Path, out: Path) -> bool:
             for k in el.children:
                 if isinstance(k, Tag):
                     if has(k, "chips"):
-                        para(target, "　　" + inline(k), size=10)
+                        chips_para(target, k)
                     else:
                         block(target, k)
             return
@@ -427,6 +494,9 @@ def to_docx(html: Path, out: Path) -> bool:
                 if inner is not None and inner.find("img"):
                     pic_cards(target, inner)
                     continue
+                if has(k, "chips"):
+                    chips_para(target, k)
+                    continue
                 if has(k, "pics") or has(k, "opts"):
                     para(target, "　　" + inline(k), size=12)
                 else:
@@ -467,11 +537,13 @@ def to_docx(html: Path, out: Path) -> bool:
                 c = t.cell(ri, ci)
                 if rs > 1 or cs > 1:
                     c = c.merge(t.cell(ri + rs - 1, ci + cs - 1))
-                c.text = td.get_text(" ", strip=True)
+                clear_first(c)
+                para(c, td.get_text(" ", strip=True), size=11, bold=td.name == "th")
                 if td.name == "th":
-                    shade(c, "F3F4F6")
-                    for run in c.paragraphs[0].runs:
-                        run.bold = True
+                    shade(c, "EEF2F7")
+            from docx.shared import Mm as _Mm
+            for r_ in t.rows[1:]:
+                r_.height = _Mm(8)
             return
         if el.name in ("ul", "ol"):
             for i, li in enumerate(el.find_all("li", recursive=False), 1):
@@ -511,9 +583,14 @@ def to_docx(html: Path, out: Path) -> bool:
                 if ver:
                     vtxt = "【" + ver.get_text(strip=True) + "】"
                     ver.extract()
-                para(doc, inline(el).strip() + vtxt + extra, size=18, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER)
+                para(doc, inline(el).strip() + vtxt + extra, size=20, bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, color="0F172A")
             elif has(el, "subtitle"):
-                para(doc, inline(el).strip(), align=WD_ALIGN_PARAGRAPH.CENTER)
+                lg = el.select_one(".legend")
+                lgt = lg.extract().get_text(strip=True) if lg else ""
+                sp = para(doc, inline(el).strip(), size=12, align=WD_ALIGN_PARAGRAPH.CENTER, color="334155")
+                if lgt:
+                    font_run(sp.add_run("　　" + lgt), size=9.5, color="64748B")
+                sp.paragraph_format.space_after = Pt(6)
             elif has(el, "top"):
                 kids = [c for c in el.children if isinstance(c, Tag)]
                 t = table(doc, 1, len(kids))
@@ -533,12 +610,13 @@ def to_docx(html: Path, out: Path) -> bool:
                 c = t.cell(0, 0)
                 clear_first(c)
                 shade(c, "F0F9FF" if has(el, "choose") else "FEFCE8")
+                borders(t, "EAB308" if has(el, "star") else "BAE6FD", 8)
                 lines = [x for x in el.children if has(x, "line")]
                 for x in lines:
                     x.extract()
                 para(c, inline(el).strip() if has(el, "star") else "　".join(x.get_text(strip=True) for x in el.find_all(["b", "span"])), size=10.5)
-                for _ in lines:
-                    para(c, "＿" * 40, size=10)
+                if lines:
+                    ruled(c, len(lines) + 1, "D4C27A")
             elif has(el, "how"):
                 t = table(doc, 1, 1)
                 c = t.cell(0, 0)
@@ -547,12 +625,11 @@ def to_docx(html: Path, out: Path) -> bool:
             elif has(el, "sec"):
                 cls = next((c for c in el.get("class", []) if c in COLORS), "s1")
                 t = table(doc, 2, 1)
+                borders(t, STRONG[cls], 12, inside=False)
                 h = t.cell(0, 0)
-                h.text = inline(el.select_one(".sec-h")).strip()
-                shade(h, COLORS[cls])
-                for run in h.paragraphs[0].runs:
-                    run.bold = True
-                    run.font.size = Pt(13)
+                clear_first(h)
+                shade(h, STRONG[cls])
+                para(h, inline(el.select_one(".sec-h")).strip(), size=13, bold=True, color="FFFFFF")
                 b = t.cell(1, 0)
                 clear_first(b)
                 body = el.select_one(".sec-b")
@@ -562,7 +639,12 @@ def to_docx(html: Path, out: Path) -> bool:
                 gap.paragraph_format.space_after = Pt(0)
                 gap.add_run(" ").font.size = Pt(4)
             elif has(el, "check"):
-                para(doc, "我完成了：" + "　".join("☐ " + s.get_text(strip=True) for s in el.find_all("span")), size=11)
+                t = table(doc, 1, 1)
+                borders(t, "A7F3D0", 6)
+                c = t.cell(0, 0)
+                clear_first(c)
+                shade(c, "ECFDF5")
+                para(c, "我完成了：　" + "　".join("□ " + s.get_text(strip=True) for s in el.find_all("span")), size=11, color="065F46", align=WD_ALIGN_PARAGRAPH.CENTER)
             elif has(el, "teacher"):
                 kids = [c for c in el.children if isinstance(c, Tag)]
                 t = table(doc, 1, len(kids))

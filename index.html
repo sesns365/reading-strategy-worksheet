@@ -75,9 +75,10 @@ const g=document.getElementById('grid');
 for(const [k,slug,name,desc] of items){
   const html=`範例/${encodeURIComponent('阿樂的風箏_'+k+'學習單')}.html`;
   const pdf=`範例/${encodeURIComponent('阿樂的風箏_'+k+'學習單')}.pdf`;
+  const docx=`範例/${encodeURIComponent('阿樂的風箏_'+k+'學習單')}.docx`;
   const tpdf=`範例/${encodeURIComponent('阿樂的風箏_'+k+'學習單_教師版')}.pdf`;
   g.insertAdjacentHTML('beforeend',`<div class="card"><a class="shot" href="${html}"><img loading="lazy" src="docs/screenshots/${slug}.png" alt="${name}學習單畫面"></a>
-  <div class="body"><h3>${name}</h3><p>${desc}</p><div class="btns"><a class="main" href="${html}">開啟互動範例</a><a href="${pdf}">學生 PDF</a><a href="${tpdf}">教師版 PDF</a></div></div></div>`);
+  <div class="body"><h3>${name}</h3><p>${desc}</p><div class="btns"><a class="main" href="${html}">開啟互動範例</a><a href="${pdf}">學生 PDF</a><a href="${docx}">Word</a><a href="${tpdf}">教師版 PDF</a></div></div></div>`);
 }
 </script>
 </body>

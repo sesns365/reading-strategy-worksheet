@@ -190,6 +190,53 @@ body.no-vocab .vocab{display:none}
 .udl .way:first-child{position:relative;padding-left:1.6em}
 .udl .star .line,.udl .sec-b>.line{height:2.1em;border-bottom:1.2px solid #c7cdd6}
 
+/* ===== 學生頁視覺：依原始範例「大字體、色塊分區、欄位清楚、低干擾」 ===== */
+.udl .head{border-bottom:0;font-size:11.5pt;padding:0 2px 3px;color:#334155}
+.udl .title{font-size:20pt;letter-spacing:1px;margin:2px 0 0;color:#0f172a}
+.udl .subtitle{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;font-size:11pt;margin:2px 0 7px;padding-bottom:6px;border-bottom:2px solid #e2e8f0}
+.udl .subtitle b{background:none;color:#334155;padding:0;font-size:12.5pt}
+.udl .legend{margin:0;color:#475569;font-size:10pt;background:#f1f5f9;border-radius:999px;padding:1px 12px}
+.udl .sec{border:1.6px solid var(--c);border-radius:10px;margin-bottom:5px;background:#fff}
+.udl .sec-h{background:var(--c);color:#fff;font-size:13pt;padding:2px 10px;letter-spacing:.5px}
+.udl .sec-h .n{background:#fff;color:var(--c);width:1.55em;height:1.55em;font-size:.9em}
+.udl .sec-h .tts{background:rgba(255,255,255,.9)}
+.udl .sec-b{padding:3px 10px 5px}
+.udl .q{font-size:12.5pt;margin:1px 0 4px;color:#111827;line-height:1.4}
+.udl .q:last-child{margin-bottom:2px}
+.udl .q .p{border:0;background:#f1f5f9;color:#475569;border-radius:999px;padding:0 8px;font-size:9.5pt}
+/* 三種作答方式合成一個清楚的作答框 */
+.udl .ways{gap:0;border:1.3px solid #cfd6e0;border-radius:8px;overflow:hidden;margin:2px 0 0 1.3em;background:#fff;grid-template-columns:.85fr 1.5fr 1.15fr}
+.udl .way{border:0;border-radius:0;border-left:1.3px solid #e2e8f0;padding:2px 7px 3px;font-size:10.5pt;line-height:1.45}
+.udl .way:first-child{border-left:0}
+.udl .way:nth-child(2){background:#fffcf2}
+.udl .way:nth-child(3){background:#f7faff}
+.udl .chips{gap:3px;margin-top:2px}
+.udl .chips span{border:1px solid #fbbf24;background:#fff7d6;border-radius:999px;padding:0 8px;font-size:9.5pt;line-height:1.4}
+.udl .opts{gap:0 10px}
+.udl .opts span::before{content:"";display:inline-block;width:.8em;height:.8em;border:1.4px solid #475569;border-radius:3px;margin-right:5px;vertical-align:-.05em;background:#fff}
+.udl .opts span.sel::before{content:"✓";color:#fff;background:#2563eb;border-color:#2563eb;font-size:.75em;line-height:.95em;text-align:center;width:1.07em;height:1.07em}
+.udl .blank{border-bottom:1.4px solid #334155}
+.udl .st{font-size:11.5pt}
+.udl .st td,.udl .st th{border-color:#cfd6e0;height:2em;padding:2px 7px}
+.udl .st th{background:var(--cb,#f1f5f9);color:#1f2937}
+.udl .star{border:0;border-left:6px solid #eab308;background:#fefce8;border-radius:8px;padding:5px 12px 6px;font-size:12pt}
+.udl .check{border:0;background:#ecfdf5;border-radius:999px;justify-content:center;padding:4px 14px;font-size:11pt;color:#065f46}
+.udl .check span::before{content:"";display:inline-block;width:.8em;height:.8em;border:1.4px solid #059669;border-radius:3px;margin-right:4px;vertical-align:-.05em}
+.udl .layers{border-radius:10px;border-width:1.6px}
+.udl .layer .lb{font-size:11.5pt;display:flex;flex-direction:column;justify-content:center}
+.udl .layer .lc{font-size:11.5pt;padding:4px 10px 5px}
+.udl .core{border:0;background:#fdf2f8;border-radius:10px;padding:5px 12px;font-size:11pt}
+.udl .mflow .cell,.udl .flow .box{border-radius:8px;background:#fff}
+.udl .ring{background:#fbfffd}
+.udl .layer:nth-child(1){--lc:#ea580c;--lbg:#fff1e6}.udl .layer:nth-child(2){--lc:#059669;--lbg:#e7f7ef}.udl .layer:nth-child(3){--lc:#2563eb;--lbg:#e8f0fe}.udl .layer:nth-child(4){--lc:#9333ea;--lbg:#f4ebfd}.udl .layer:nth-child(5){--lc:#e11d48;--lbg:#fde8ec}.udl .layer:nth-child(6){--lc:#16a34a;--lbg:#e9f8ee}.udl .layer:nth-child(7){--lc:#7c3aed;--lbg:#f1ebfd}.udl .layer:nth-child(8){--lc:#0284c7;--lbg:#e0f2fe}
+.udl .layers{border-color:#cbd5e1}
+.udl .layer{grid-template-columns:36mm 1fr;border-top-color:#e2e8f0}
+.udl .layer .lb{background:var(--lbg);color:var(--lc);display:grid;grid-template-columns:auto 1fr;column-gap:6px;align-content:center;align-items:center;padding:4px 6px;font-size:12pt}
+.udl .layer .lb .n{grid-row:span 2;background:var(--lc);width:1.8em;height:1.8em;font-size:1em}
+.udl .layer .lb small{color:#475569;font-size:9pt;grid-column:2}
+.udl .layer .lb .tts{grid-column:2;justify-self:start}
+@media print{.udl .way{border-style:solid}.udl .sec-h,.udl .way,.udl .star,.udl .check,.udl .core{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
 /* ===== 詞語預教頁 ===== */
 .vgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .vcard{border:1.5px solid var(--c1);border-radius:10px;padding:6px 10px;display:grid;grid-template-columns:20mm 1fr;gap:4px 8px;align-items:center;break-inside:avoid;cursor:pointer}
