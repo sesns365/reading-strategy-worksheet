@@ -40,7 +40,7 @@ a{color:var(--acc)}
 <body>
 <main>
   <h1>閱讀策略學習單小幫手</h1>
-  <p class="lead">貼上課文、用自己的話描述學生，AI 就會依序分析並推薦閱讀策略，做出全班通用（UDL）、可報讀與線上作答的學習單，附 PDF、Word 與教師版。Claude、ChatGPT、Gemini 都能用。</p>
+  <p class="lead">貼上課文、用自己的話描述學生，AI 就會依序分析並推薦閱讀策略，只做這一課的一份學習單：全班通用（UDL）、版面乾淨可直接書寫、可報讀與線上作答，字型可選芫荽、標楷或芫荽注音，另附 PDF、Word 與教師版。Claude、ChatGPT、Gemini 都能用。</p>
   <ol class="steps">
     <li>分析文體特性／教學目標</li><li>分析學生需求</li><li>判斷學習歷程需求</li><li>選擇策略</li><li>通用設計學習</li><li>生成通用設計教材</li><li>教師修正後形成教材</li>
   </ol>
@@ -75,8 +75,9 @@ const g=document.getElementById('grid');
 for(const [k,slug,name,desc] of items){
   const html=`範例/${encodeURIComponent('阿樂的風箏_'+k+'學習單')}.html`;
   const pdf=`範例/${encodeURIComponent('阿樂的風箏_'+k+'學習單')}.pdf`;
+  const tpdf=`範例/${encodeURIComponent('阿樂的風箏_'+k+'學習單_教師版')}.pdf`;
   g.insertAdjacentHTML('beforeend',`<div class="card"><a class="shot" href="${html}"><img loading="lazy" src="docs/screenshots/${slug}.png" alt="${name}學習單畫面"></a>
-  <div class="body"><h3>${name}</h3><p>${desc}</p><div class="btns"><a class="main" href="${html}">開啟互動範例</a><a href="${pdf}">PDF</a></div></div></div>`);
+  <div class="body"><h3>${name}</h3><p>${desc}</p><div class="btns"><a class="main" href="${html}">開啟互動範例</a><a href="${pdf}">學生 PDF</a><a href="${tpdf}">教師版 PDF</a></div></div></div>`);
 }
 </script>
 </body>

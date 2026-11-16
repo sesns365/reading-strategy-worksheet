@@ -2,7 +2,8 @@
 """把閱讀策略學習單 HTML 轉成 PDF 與 Word（.docx）。
 
 用法：
-    python export.py 學習單.html            # 同時輸出 PDF 與 DOCX
+    python export.py 學習單.html            # 輸出學生用 PDF、DOCX，與「_教師版.pdf」
+    （學生檔只含課文頁與學習單；教師版 PDF 含教師版與教學分析）
     python export.py 學習單.html --pdf      # 只輸出 PDF
     python export.py 學習單.html --docx     # 只輸出 DOCX
     python export.py 學習單.html --iansui   # Word 改用芫荽字型（老師電腦需已安裝芫荽）
@@ -19,16 +20,34 @@ from pathlib import Path
 
 
 # ---------------------------------------------------------------- PDF
-def to_pdf(html: Path, out: Path) -> bool:
+SHOW_ALL = "document.body.classList.remove('no-answer','no-analysis');"
+TEACHER_ONLY = SHOW_ALL + "document.querySelectorAll('.sheet:not(.answer)').forEach(e=>e.style.display='none');"
+
+
+def to_pdf(html: Path, out: Path, js: str = "") -> bool:
     try:
         from playwright.sync_api import sync_playwright
     except ImportError:
-        return pdf_by_browser(html, out)
+        if not js:
+            return pdf_by_browser(html, out)
+        # 沒有 playwright：另存一份只顯示教師頁的暫存 HTML 再列印
+        src = html.read_text(encoding="utf-8")
+        src = src.replace('<body class="', '<body data-x="', 1)
+        src = src.replace("</head>", "<style>.sheet:not(.answer){display:none !important}</style></head>", 1)
+        tmp = html.with_name(".__teacher_tmp.html")
+        tmp.write_text(src, encoding="utf-8")
+        try:
+            return pdf_by_browser(tmp, out)
+        finally:
+            tmp.unlink(missing_ok=True)
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page()
         pg.goto(html.resolve().as_uri())
-        pg.wait_for_timeout(300)
+        if js:
+            pg.evaluate(js)
+        pg.evaluate("document.fonts.ready")
+        pg.wait_for_timeout(800)
         pg.pdf(path=str(out), format="A4", print_background=True,
                margin={"top": "12mm", "bottom": "12mm", "left": "12mm", "right": "12mm"})
         b.close()
@@ -471,7 +490,12 @@ def to_docx(html: Path, out: Path) -> bool:
             if txt:
                 para(target, txt)
 
-    sheets = soup.select(".sheet")
+    # Word 只放學生用的頁面（課文頁、學習單）；教師版與教學分析另出 PDF
+    hidden = (soup.body.get("class") or []) if soup.body else []
+    sheets = [sh for sh in soup.select(".sheet")
+              if not ("answer" in (sh.get("class") or []))
+              and not (sh.get("data-version") in ("vocab",) and "no-vocab" in hidden)
+              and not (sh.get("data-version") == "support" and "no-support" in hidden)]
     for si, sh in enumerate(sheets):
         if si:
             doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
@@ -573,6 +597,8 @@ def main():
     want_docx = "--pdf" not in flags or "--docx" in flags
     if want_pdf:
         to_pdf(html, html.with_suffix(".pdf"))
+        if "--no-teacher" not in flags and not to_pdf(html, html.with_name(html.stem + "_教師版.pdf"), TEACHER_ONLY):
+            print("教師版 PDF 需要 playwright；或用瀏覽器開啟 HTML，按「教師版」「教學分析」後列印。")
     if want_docx:
         to_docx(html, html.with_suffix(".docx"))
 

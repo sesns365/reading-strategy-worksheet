@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Iansui&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Iansui&family=Bpmf+Iansui&display=swap" rel="stylesheet">
 <title>閱讀中：PIRLS 多層次閱讀理解提問單｜阿樂的風箏</title>
 <!--
   閱讀策略學習單範本（reading-strategy-worksheet）
   - 這份範本示範 PIRLS 學習單，課文為自編示範文〈阿樂的風箏〉。
   - 預設產出「通用版」（UDL，全班同一張）：每題 .ways 提供 ✏️寫一寫／🧩選詞填空（.chips 詞語盒）／☑️勾一勾 三條路徑，
-    .choose 說明可自選、.star 挑戰題。「圖示加強版」為選配。選詞填空的 .blank 可加 data-ans="答案|答案" 供對答案。
+    .star 挑戰題。學生頁只放題目與作答空間，學習目標、策略說明、教學提示一律放教師版。
+    「詞語預教」「圖示加強版」為選配，老師要求才保留（預設隱藏，不需要時整段刪除）。選詞填空的 .blank 可加 data-ans="答案|答案" 供對答案。
   - 製作新學習單時：保留 <style> 與工具列，替換 .sheet 內的內容。
   - 元件：.head 學生資料列｜.title｜.goal + .tag 策略標示｜.sec 活動區（.sec-h 色塊標頭）
           .q 題目｜.opts 勾選選項｜.line 書寫線｜.blank 行內填空｜.flow 流程圖｜.circle 環圈圖
@@ -22,12 +23,15 @@
   - 選配頁：詞語預教 .vocab（.vcard 詞卡）；教師版含「課程調整四面向」.adj 表；工具列「作答紀錄」產生可複製／列印的紀錄。
   - 互動與報讀：選項 span 加 data-ok 標示正確答案（開放題不加）；.opts/.pics 預設單選，加 data-multi 可複選。
     .blank、.line 會自動變成可打字；頁面載入後自動加上 🔊 報讀按鈕。課文頁 .passage 的段落點一下就朗讀。
-  - 字型：預設芫荽（Iansui，由 Google Fonts 載入，離線時用電腦已安裝的芫荽或標楷體），工具列可切換標楷體。
-    要預設標楷體時，在 <body> 加 class="kai"。注音版：把 --font 換成老師已安裝的注音字型。
+  - 字型（都符合教育部標準字形）：預設芫荽 Iansui；body 加 class="kai" 為標楷（教育部標準楷書優先）；
+    class="bpmf" 為芫荽注音 Bpmf Iansui（字旁自動帶注音）。芫荽與芫荽注音由 Google Fonts 載入，工具列可三種切換。
+    不用黑體：標題、題目、內文同一種字型，學生看到的字形和課本筆順一致。
+  - 開啟時只顯示課文頁與學生學習單；教師版、教學分析預設隱藏（body 的 no-answer、no-analysis），工具列按鈕可顯示。
 -->
 <style>
 :root{
-  --font:"Iansui","芫荽","標楷體","DFKai-SB","BiauKai","TW-Kai",serif;  /* 預設芫荽，沒有時用標楷體 */
+  --kai:"TW-MOE-Std-Kai","教育部標準楷書","edukai","TW-Kai","全字庫正楷體","標楷體","DFKai-SB","BiauKai";
+  --font:"Iansui","芫荽",var(--kai),serif;  /* 預設芫荽，沒有時用標楷 */
   --base:12pt;
   --ink:#1f2937; --muted:#6b7280; --line:#9ca3af; --paper:#ffffff;
   --c1:#2563eb; --c1b:#e8f0fe;   /* 第一層／K／S／Fact */
@@ -38,7 +42,11 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:#e5e7eb;color:var(--ink);font-family:var(--font);font-size:var(--base);line-height:1.5}
 body.big{--base:14pt}
-body.kai{--font:"標楷體","DFKai-SB","BiauKai","TW-Kai","Iansui",serif}
+body.kai{--font:var(--kai),"Iansui",serif}
+body.bpmf{--font:"Bpmf Iansui","Iansui",var(--kai),serif}
+body.bpmf .sheet{letter-spacing:.02em}
+body.bpmf .head{font-family:"Iansui",var(--kai),serif}
+body.no-support .sheet[data-version="support"]{display:none}
 @page{size:A4;margin:12mm}
 .toolbar{position:sticky;top:0;z-index:5;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:10px;background:#374151}
 .toolbar button{font:inherit;font-size:12pt;padding:6px 14px;border:0;border-radius:6px;background:#fff;cursor:pointer}
@@ -167,6 +175,20 @@ body.no-vocab .vocab{display:none}
 .star{border:1.5px solid #eab308;border-radius:8px;padding:3px 10px;margin-bottom:6px;font-size:11.5pt;background:#fefce8}
 .star b{color:#a16207}
 @media print{.way{border-style:dotted}}
+/* 學生頁：只留題目與作答空間 */
+.udl .choose,.udl .goal-line,.udl .sec-h small,.udl .title .ver{display:none}
+.udl .subtitle{color:var(--muted);font-size:11pt}
+.udl .subtitle b{color:var(--ink)}
+.udl .legend{margin-left:10px;white-space:nowrap}
+.udl .q{font-size:12.5pt;margin:3px 0 5px}
+.udl .ways{grid-template-columns:1fr 1.3fr 1.15fr;gap:5px}
+/* ✏️ 寫一寫：整格都是書寫橫線，格子多高就有幾條線 */
+.udl .way:first-child{display:flex;flex-direction:column;min-height:2.4em;
+  background:repeating-linear-gradient(to bottom,transparent 0 calc(1.9em - 1px),#c7cdd6 calc(1.9em - 1px) 1.9em) 0 .2em/100% 1.9em}
+.udl .way:first-child .line{flex:1;border:0;margin:0;min-height:1.9em;height:auto;line-height:1.9em}
+.udl .way:first-child>b{float:none;position:absolute;left:4px;top:1px;opacity:.85}
+.udl .way:first-child{position:relative;padding-left:1.6em}
+.udl .star .line,.udl .sec-b>.line{height:2.1em;border-bottom:1.2px solid #c7cdd6}
 
 /* ===== 詞語預教頁 ===== */
 .vgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
@@ -239,7 +261,7 @@ body.pen #penBar{display:flex}
 @media print{.sheet{zoom:1 !important}#inkCanvas,#penBar{display:none !important}}
 </style>
 </head>
-<body>
+<body class="no-answer no-analysis no-vocab no-support">
 <div class="toolbar">
   <div class="grp">
     <button id="ttsBtn" class="on" onclick="toggleTTS()">報讀：開</button>
@@ -255,9 +277,7 @@ body.pen #penBar{display:flex}
     <button onclick="showRecord()">作答紀錄</button>
   </div>
   <div class="grp">
-    <button onclick="showVer('')">全部</button>
-    <button onclick="showVer('udl')">通用版</button>
-    <button onclick="showVer('support')">圖示加強版</button>
+    <button onclick="document.body.classList.toggle('no-support')">圖示加強版</button>
     <button onclick="document.body.classList.toggle('no-passage')">課文頁</button>
     <button onclick="document.body.classList.toggle('no-vocab')">詞語預教</button>
     <button onclick="document.body.classList.toggle('no-answer')">教師版</button>
@@ -310,12 +330,10 @@ body.pen #penBar{display:flex}
      題目與目標全班相同，只是表達方式不同；最後有 ⭐ 挑戰題給想多想一點的學生。 -->
 <section class="sheet udl" data-version="udl">
   <div class="head"><span>班級：＿＿＿＿</span><span>座號：＿＿＿</span><span>姓名：＿＿＿＿＿＿</span><span>日期：＿＿年＿＿月＿＿日</span></div>
-  <div class="title">閱讀中：PIRLS 多層次閱讀理解提問單<span class="ver">通用版</span></div>
-  <div class="subtitle">課文：<b>〈阿樂的風箏〉</b>　策略：PIRLS 四層次（①找得到嗎 ②想得到嗎 ③能連結嗎 ④能判斷嗎）</div>
-  <div class="goal goal-line"><b>學習目標：</b><span>① 找出人、事、時、地、物</span><span>② 根據線索推想原因與心情</span><span>③ 整理故事變化，說出作者想表達的</span><span>④ 說出自己的看法並連結經驗</span></div>
-  <div class="choose"><b>每一題，選一種你喜歡的方式回答：</b><span>✏️ 寫一寫</span><span>🧩 選詞填空</span><span>☑️ 勾一勾</span><span>🗣️ 說給老師聽</span><span>🔊 可以按喇叭聽題目</span></div>
+  <div class="title">閱讀中：PIRLS 多層次閱讀理解提問單</div>
+  <div class="subtitle">課文：<b>〈阿樂的風箏〉</b><span class="legend">✏️ 寫一寫　🧩 選詞填空　☑️ 勾一勾　🗣️ 說一說</span></div>
   <div class="sec s1">
-    <div class="sec-h"><span class="n n1">1</span>活動一｜第一層 直接提取：找得到嗎？ <small>人、事、時、地、物；回到課文找答案</small></div>
+    <div class="sec-h"><span class="n n1">1</span>活動一｜第一層 直接提取：找得到嗎？</div>
     <div class="sec-b">
       <div class="q">1. 阿樂在什麼時候、去哪裡放風箏？<span class="p">第 1 段</span>
         <div class="ways"><div class="way"><b title="寫一寫">✏️</b><div class="line"></div></div><div class="way"><b title="選詞填空">🧩</b>阿樂在<span class="blank" style="min-width:5em" data-ans="星期六"></span>，到<span class="blank" style="min-width:5em" data-ans="河邊"></span>放風箏。<div class="chips"><span>星期六早上</span><span>河邊草地</span><span>學校操場</span></div></div><div class="way"><b title="勾一勾">☑️</b><div class="opts"><span data-ok>🌅 星期六早上，在河邊</span><span>🌙 星期天晚上，在公園</span><span>🎒 放學後，在操場</span></div></div></div></div>
@@ -324,7 +342,7 @@ body.pen #penBar{display:flex}
     </div>
   </div>
   <div class="sec s2">
-    <div class="sec-h"><span class="n n2">2</span>活動一｜第二層 直接推論：想得到嗎？ <small>為什麼？接下來？</small></div>
+    <div class="sec-h"><span class="n n2">2</span>活動一｜第二層 直接推論：想得到嗎？</div>
     <div class="sec-b">
       <div class="q">3. 為什麼風箏一開始飛不起來？<span class="p">第 2 段</span>
         <div class="ways"><div class="way"><b title="寫一寫">✏️</b><div class="line"></div></div><div class="way"><b title="選詞填空">🧩</b>因為風箏的<span class="blank" style="min-width:4em" data-ans="尾巴"></span>太<span class="blank" style="min-width:3em" data-ans="短"></span>，站不穩。<div class="chips"><span>尾巴</span><span>翅膀</span><span>短</span><span>長</span></div></div><div class="way"><b title="勾一勾">☑️</b><div class="opts"><span data-ok>✂️ 尾巴太短</span><span>🍃 那天沒有風</span><span>💔 風箏是壞的</span></div></div></div></div>
@@ -333,14 +351,14 @@ body.pen #penBar{display:flex}
     </div>
   </div>
   <div class="sec s3">
-    <div class="sec-h"><span class="n n3">3</span>活動二｜第三層 詮釋整合：能連結嗎？ <small>作者真正想表達什麼？</small></div>
+    <div class="sec-h"><span class="n n3">3</span>活動二｜第三層 詮釋整合：能連結嗎？</div>
     <div class="sec-b">
       <div class="q">5. 阿樂的心情怎麼變？作者想告訴我們什麼？<span class="p">第 1→4 段</span>
         <div class="ways"><div class="way"><b title="寫一寫">✏️</b><div class="line"></div><div class="line"></div></div><div class="way"><b title="選詞填空">🧩</b>阿樂從<span class="blank" style="min-width:3em" data-ans="生氣"></span>變成<span class="blank" style="min-width:3em" data-ans="開心"></span>；作者想告訴我們，失敗時要<span class="blank" style="min-width:4em" data-ans="找方法|原因"></span>。<div class="chips"><span>生氣</span><span>開心</span><span>找方法</span><span>放棄</span></div></div><div class="way"><b title="勾一勾">☑️</b><div class="opts"><span data-ok>失敗時要找原因、換方法</span><span>風箏很容易壞掉</span><span>奶奶很會做風箏</span></div></div></div></div>
     </div>
   </div>
   <div class="sec s4">
-    <div class="sec-h"><span class="n n4">4</span>活動二｜第四層 比較評估：能判斷嗎？ <small>你同意嗎？為什麼？</small></div>
+    <div class="sec-h"><span class="n n4">4</span>活動二｜第四層 比較評估：能判斷嗎？</div>
     <div class="sec-b">
       <div class="q">6. 奶奶說：「不是風箏壞了，是我們還沒找到方法。」你同意嗎？<span class="p">第 4 段</span>
         <div class="ways"><div class="way"><b title="寫一寫">✏️</b><div class="line"></div><div class="line"></div></div><div class="way"><b title="選詞填空">🧩</b>我<span class="blank" style="min-width:4em"></span>，因為<span class="blank" style="min-width:7em"></span>。<div class="chips"><span>同意</span><span>不同意</span><span>換了方法就成功了</span><span>東西真的壞了</span></div></div><div class="way"><b title="勾一勾">☑️</b><div class="opts"><span>👍 同意</span><span>👎 不同意</span><span>🗣️ 我想說給老師聽</span></div></div></div></div>
@@ -424,6 +442,9 @@ body.pen #penBar{display:flex}
 <section class="sheet answer" data-version="teacher">
   <div class="title">閱讀中：PIRLS 多層次閱讀理解提問單</div>
   <div class="subtitle">課文：<b>〈阿樂的風箏〉</b>（自編示範文）</div>
+  <h3>學習目標與策略</h3>
+  <p style="margin:2px 0">策略：PIRLS 四層次（①找得到嗎 ②想得到嗎 ③能連結嗎 ④能判斷嗎）</p>
+  <ol style="margin:2px 0 6px;padding-left:1.4em"><li>找出人、事、時、地、物</li><li>根據線索推想原因與心情</li><li>整理故事變化，說出作者想表達的</li><li>說出自己的看法並連結經驗</li></ol>
   <h3>教學提示：通用版（全班）</h3>
   <div class="teacher">
     <div><h4>教師引導語</h4><ul><li>發下前先說明：每題選一種方式回答就好，三種方式都一樣棒。</li><li>分段閱讀：依題目段落提示回課文找證據，再作答。</li><li>第二層追問「你怎麼知道？」；第三層引導「作者真正想表達什麼？」</li></ul></div>
@@ -568,7 +589,14 @@ body.pen #penBar{display:flex}
   <button class="t on" onclick="togglePen(false)">完成</button>
 </div>
 <script>
-function toggleFont(){const k=document.body.classList.toggle('kai');document.getElementById('fontBtn').textContent='字型：'+(k?'標楷體':'芫荽');}
+const FONTS=[['','芫荽'],['kai','標楷'],['bpmf','芫荽注音']];
+function setFont(i){const b=document.body;b.classList.remove('kai','bpmf');if(FONTS[i][0])b.classList.add(FONTS[i][0]);
+  document.getElementById('fontBtn').textContent='字型：'+FONTS[i][1];try{localStorage.setItem('rsw-font',FONTS[i][0])}catch(e){}
+  if(typeof drawInk==='function')setTimeout(drawInk,300);}
+function curFont(){const c=document.body.classList;return c.contains('kai')?1:c.contains('bpmf')?2:0;}
+function toggleFont(){setFont((curFont()+1)%FONTS.length);}
+(function(){let k=null;try{k=localStorage.getItem('rsw-font')}catch(e){}
+  const i=k!==null?FONTS.findIndex(f=>f[0]===k):curFont();setFont(i<0?0:i);})();
 function showVer(v){document.querySelectorAll('.sheet[data-version]').forEach(x=>{const d=x.dataset.version;x.style.display=(!v||d===v||d==='teacher'||d==='passage'||d==='analysis')?'':'none';});if(typeof drawInk==='function')requestAnimationFrame(drawInk);}
 
 /* ---------- 報讀（瀏覽器內建語音，免網路、免安裝） ---------- */
