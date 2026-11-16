@@ -503,7 +503,7 @@ body.pen #penBar{display:flex}
     <tr><td>事件排序</td><td>Thinking Maps、PIRLS</td><td>建立故事發展順序</td><td>協助學生掌握故事脈絡。</td></tr>
     <tr><td>4F 反思</td><td>4F</td><td>促進閱讀遷移</td><td>把「找方法」連結到自己的學習與生活。</td></tr>
   </table>
-  <p style="margin:6px 0 0"><b>決策：</b>依分析主推「PIRLS 閱讀提問」。本份是 SQ3R 學習單範例，示範老師直接指定策略時的產出（本課分析未列為主推，長篇或說明文較適合）。</p>
+  <p style="margin:6px 0 0"><b>決策：</b>依分析本課採用「PIRLS 閱讀提問」。本份是 SQ3R 學習單範例，示範老師直接指定策略時的產出（本課分析未列為主推，長篇或說明文較適合）。</p>
 </section>
 <canvas id="inkCanvas"></canvas>
 <div id="penBar">
@@ -657,6 +657,27 @@ function clearAns(){
 
 /* ---------- 作答紀錄（給老師做進步監控） ---------- */
 const startAt=new Date();
+function secName(q){
+  const lb=q.classList.contains('layer')&&q.querySelector('.lb');
+  const h=lb||(q.closest('.sec')||{}).querySelector?.call(q.closest('.sec'),'.sec-h');
+  if(!h)return '';
+  const c=h.cloneNode(true); c.querySelectorAll('small,.tts,.n').forEach(x=>x.remove());
+  return c.textContent.replace(/\s+/g,' ').trim();
+}
+function nextSteps(d){
+  const out=[], uniq=a=>[...new Set(a)];
+  const used=Object.values(d.count).reduce((a,b)=>a+b,0)||1;
+  const tick=(d.count['勾一勾']||0)+(d.count['勾選']||0), write=(d.count['寫一寫']||0)+(d.count['書寫']||0), fill=d.count['選詞填空']||0;
+  if(d.total&&d.done<d.total/2)out.push('完成不到一半：下次把任務切小、一次做一節，或先用圖示加強版，完成後再回到通用版。');
+  if(d.blankSec.length&&d.done>=d.total/2)out.push('沒有作答的部分：'+uniq(d.blankSec).join('、')+'。可先口頭引導這一節，或確認是否需要報讀。');
+  if(d.wrongSec.length)out.push('需要再練習：'+uniq(d.wrongSec).join('、')+'。下次在這一節加上段落號、關鍵句提示或示範一題。');
+  if(tick/used>=0.6)out.push('多數用「勾一勾」：理解可能已建立，表達需要鷹架。下次多鼓勵「選詞填空」的句型，再逐步撤到「寫一寫」。');
+  else if(fill/used>=0.5)out.push('多數用「選詞填空」：句型鷹架有效。下次可減少詞語盒的詞，或試著改用「寫一寫」。');
+  else if(write/used>=0.6&&d.judged&&d.right===d.judged)out.push('多數用「寫一寫」且都答對：可以挑戰⭐題，或試下一層次的策略。');
+  if(d.judged&&d.right/d.judged>=0.8&&!d.wrongSec.length)out.push('答對率高：可減少提示、提高層次（例如多做詮釋整合、比較評估題）。');
+  if(d.tts)out.push('有開報讀：持續提供報讀，並觀察是否能逐步自己朗讀。');
+  return out.length?out.map((x,i)=>(i+1)+'. '+x).join('\n'):'1. 作答量還不夠，請完成更多題目後再看建議。';
+}
 function pathOf(q){
   const used=[];
   const ws=q.querySelectorAll(':scope .way');
@@ -693,14 +714,14 @@ function buildRecord(){
   let sheets=[...document.querySelectorAll('.sheet:not(.answer):not(.passage):not(.vocab)')].filter(x=>x.style.display!=='none');
   const used=sheets.filter(sh=>[...sh.querySelectorAll('div.q')].some(q=>pathOf(q).length));
   if(used.length)sheets=used; else sheets=sheets.slice(0,1); // 只列出學生有作答的版本
-  let lines=[],done=0,right=0,judged=0,count={};
+  let lines=[],done=0,right=0,judged=0,count={},total=0,wrongSec=[],blankSec=[];
   sheets.forEach(sh=>{
     const ver=(sh.querySelector('.ver')||{}).textContent||'';
     sh.querySelectorAll('div.q').forEach((q,i)=>{
       const n0=q.childNodes[0], m=(n0&&n0.nodeType===3?n0.textContent:q.textContent).trim().match(/^(\d+)\./), t=m?`第 ${m[1]} 題`:`第 ${i+1} 題`;
-      const used=pathOf(q), r=judge(q);
-      if(used.length){done++;used.forEach(u=>count[u]=(count[u]||0)+1);}
-      if(r!==null){judged++;if(r)right++;}
+      const used=pathOf(q), r=judge(q), sec=secName(q); total++;
+      if(used.length){done++;used.forEach(u=>count[u]=(count[u]||0)+1);}else if(sec)blankSec.push(sec);
+      if(r!==null){judged++;if(r)right++;else if(sec)wrongSec.push(sec);}
       lines.push(`${ver?ver+' ':''}${t}：${used.length?used.join('＋'):'未作答'}${r===null?'':(r?'（答對）':'（再練習）')}`);
     });
     const star=sh.querySelector('.star [contenteditable]');
@@ -714,7 +735,10 @@ function buildRecord(){
 使用的作答方式：${ways}
 報讀：${ttsOn?'開啟':'關閉'}　字級：${document.body.classList.contains('big')?'放大':'一般'}
 —— 逐題 ——
-${lines.join('\n')}`;
+${lines.join('\n')}
+—— 給老師的下一步建議 ——
+${nextSteps({total,done,judged,right,count,wrongSec,blankSec,tts:ttsOn})}
+（可以把整段紀錄貼回 AI，請它依「模組六 學生表現回饋」調整下一份學習單。）`;
   document.getElementById('recText').textContent=txt;
   return txt;
 }
