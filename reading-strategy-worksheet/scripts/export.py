@@ -6,7 +6,7 @@
     （學生檔只含課文頁與學習單；教師版 PDF 含教師版與教學分析）
     python export.py 學習單.html --pdf      # 只輸出 PDF
     python export.py 學習單.html --docx     # 只輸出 DOCX
-    python export.py 學習單.html --iansui   # Word 改用芫荽字型（老師電腦需已安裝芫荽）
+    python export.py 學習單.html --kai      # Word 改用標楷體（預設和 PDF 一樣用芫荽，並把芫荽嵌入 Word 檔）
 
 需求：
     PDF ：playwright（pip install playwright && playwright install chromium）
@@ -178,10 +178,14 @@ def to_docx(html: Path, out: Path) -> bool:
     def chips_para(c, el, size=9.5):
         p = c.add_paragraph()
         p.paragraph_format.space_before = Pt(2)
-        font_run(p.add_run("詞語盒　"), size=size - 0.5, color="92400E")
         for sp in el.find_all("span"):
-            shade_run(font_run(p.add_run(f" {sp.get_text(strip=True)} "), size=size), "FFF2C2")
-            p.add_run("　")
+            r = font_run(p.add_run(f" {sp.get_text(strip=True)} "), size=size, color="1F2937")
+            shade_run(r, "FFF7D6")
+            bdr = OxmlElement("w:bdr")
+            for k_, v_ in (("val", "single"), ("sz", "4"), ("space", "0"), ("color", "FBBF24")):
+                bdr.set(qn(f"w:{k_}"), v_)
+            r._element.get_or_add_rPr().append(bdr)
+            p.add_run(" ")
         return p
 
     def has(el, c):
@@ -231,8 +235,11 @@ def to_docx(html: Path, out: Path) -> bool:
             ltxt = lab.get_text(strip=True) if lab else ""
             if lab:
                 lab.extract()
-            para(c, names.get(ltxt, ltxt), size=8.5, color="64748B")
-            body = []
+            icon = ltxt
+            if i == 0:
+                para(c, icon, size=9).paragraph_format.line_spacing = 1.0
+            body = [icon + " "] if i == 1 else []
+            first_opt = [i == 2]
             nlines = 0
 
             def flush():
@@ -246,7 +253,9 @@ def to_docx(html: Path, out: Path) -> bool:
                 elif has(k, "opts"):
                     flush()
                     for o in k.find_all("span", recursive=False):
-                        para(c, "□ " + o.get_text(" ", strip=True), size=10.5)
+                        pre = icon + " " if first_opt[0] else "　 "
+                        first_opt[0] = False
+                        para(c, pre + "□ " + o.get_text(" ", strip=True), size=10.5)
                 elif has(k, "chips"):
                     flush()
                     chips_para(c, k)
@@ -254,7 +263,7 @@ def to_docx(html: Path, out: Path) -> bool:
                     body.append(inline(k))
             flush()
             if nlines:
-                ruled(c, nlines + 1, height=18)
+                ruled(c, nlines, height=18)
 
     def pic_cards(target, el):
         """含圖片的圖卡：做成一列表格，每格＝圖片＋☐ 文字。"""
@@ -321,6 +330,21 @@ def to_docx(html: Path, out: Path) -> bool:
             for i, c in enumerate(row.cells):
                 c.width = Mm(ws[i])
         borders(t, "94A3B8", 6)
+        tblPr = t._tbl.tblPr
+        mar = OxmlElement("w:tblCellMar")
+        for side, v in (("top", 30), ("left", 100), ("bottom", 30), ("right", 100)):
+            e = OxmlElement(f"w:{side}")
+            e.set(qn("w:w"), str(v))
+            e.set(qn("w:type"), "dxa")
+            mar.append(e)
+        tblPr.append(mar)
+        nxt = t._tbl.getnext()
+        if nxt is not None and nxt.tag == qn("w:p") and not len(nxt):
+            from docx.text.paragraph import Paragraph
+            gp = Paragraph(nxt, target)
+            gp.paragraph_format.space_after = Pt(0)
+            gp.paragraph_format.space_before = Pt(0)
+            gp.paragraph_format.line_spacing = Pt(4)
         return t
 
     def clear_first(cell):
@@ -420,14 +444,15 @@ def to_docx(html: Path, out: Path) -> bool:
         if has(el, "bubble"):
             kids = [k for k in el.children if isinstance(k, Tag)]
             t = table(target, 1, len(kids))
+            borders(t, "A78BFA", 10)
             for i, k in enumerate(kids):
                 c = t.cell(0, i)
                 clear_first(c)
                 if has(k, "center"):
                     shade(c, "F3E8FF")
-                    para(c, k.get_text(strip=True), bold=True, align=WD_ALIGN_PARAGRAPH.CENTER)
+                    para(c, k.get_text(strip=True), bold=True, size=12, align=WD_ALIGN_PARAGRAPH.CENTER, color="6B21A8")
                 else:
-                    para(c, "（　　　　　）", align=WD_ALIGN_PARAGRAPH.CENTER)
+                    ruled(c, 1, "C4B5FD", height=22)
             return
         if has(el, "ringrow"):
             for k in el.children:
@@ -438,16 +463,18 @@ def to_docx(html: Path, out: Path) -> bool:
                         block(target, k)
             return
         if has(el, "ring"):
+            # 環圈圖：外框綠色、中間主題格，其他格是書寫線
             kids = [k for k in el.children if isinstance(k, Tag)]
-            t = table(target, 3, 3, [50, 50, 50])
+            t = table(target, 3, 3, [40, 40, 40])
+            borders(t, "059669", 12, inside=False)
             for i, k in enumerate(kids[:9]):
                 c = t.cell(i // 3, i % 3)
                 clear_first(c)
                 if has(k, "mid"):
                     shade(c, "ECFDF5")
-                    para(c, k.get_text(strip=True), bold=True, align=WD_ALIGN_PARAGRAPH.CENTER)
+                    para(c, k.get_text(strip=True), bold=True, size=12, align=WD_ALIGN_PARAGRAPH.CENTER, color="065F46")
                 else:
-                    para(c, "\n", size=11)
+                    ruled(c, 1, height=22)
             return
         if has(el, "imgbox") and el.find("img"):
             if not add_img(target, el.find("img"), 70):
@@ -475,7 +502,7 @@ def to_docx(html: Path, out: Path) -> bool:
                     subs.append(k)
                 else:
                     first.append(inline(k))
-            para(target, "".join(first).strip())
+            para(target, "".join(first).strip(), size=12.5 if in_udl[0] else None)
             for k in subs:
                 if any(has(k, c) for c in ("flow", "mflow", "bubble", "ring", "ringrow", "layers")) or k.name == "table":
                     block(target, k)
@@ -543,7 +570,7 @@ def to_docx(html: Path, out: Path) -> bool:
                     shade(c, "EEF2F7")
             from docx.shared import Mm as _Mm
             for r_ in t.rows[1:]:
-                r_.height = _Mm(8)
+                r_.height = _Mm(10 if in_udl[0] else 7)
             return
         if el.name in ("ul", "ol"):
             for i, li in enumerate(el.find_all("li", recursive=False), 1):
@@ -568,7 +595,9 @@ def to_docx(html: Path, out: Path) -> bool:
               if not ("answer" in (sh.get("class") or []))
               and not (sh.get("data-version") in ("vocab",) and "no-vocab" in hidden)
               and not (sh.get("data-version") == "support" and "no-support" in hidden)]
+    in_udl = [False]
     for si, sh in enumerate(sheets):
+        in_udl[0] = "udl" in (sh.get("class") or []) or sh.get("data-version") in ("udl", "indiv", "support")
         if si:
             doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
         for el in sh.children:
@@ -591,6 +620,13 @@ def to_docx(html: Path, out: Path) -> bool:
                 if lgt:
                     font_run(sp.add_run("　　" + lgt), size=9.5, color="64748B")
                 sp.paragraph_format.space_after = Pt(6)
+                pPr = sp._p.get_or_add_pPr()
+                bd = OxmlElement("w:pBdr")
+                e = OxmlElement("w:bottom")
+                for k_, v_ in (("val", "single"), ("sz", "12"), ("space", "4"), ("color", "E2E8F0")):
+                    e.set(qn(f"w:{k_}"), v_)
+                bd.append(e)
+                pPr.append(bd)
             elif has(el, "top"):
                 kids = [c for c in el.children if isinstance(c, Tag)]
                 t = table(doc, 1, len(kids))
@@ -629,7 +665,14 @@ def to_docx(html: Path, out: Path) -> bool:
                 h = t.cell(0, 0)
                 clear_first(h)
                 shade(h, STRONG[cls])
-                para(h, inline(el.select_one(".sec-h")).strip(), size=13, bold=True, color="FFFFFF")
+                sh_ = el.select_one(".sec-h")
+                bn = sh_.select_one(".n")
+                btxt = bn.extract().get_text(strip=True) if bn else ""
+                hp = h.add_paragraph()
+                if btxt:
+                    shade_run(font_run(hp.add_run(f" {btxt} "), 12, True, STRONG[cls]), "FFFFFF")
+                    hp.add_run(" ")
+                font_run(hp.add_run(inline(sh_).strip()), 13.5, True, "FFFFFF")
                 b = t.cell(1, 0)
                 clear_first(b)
                 body = el.select_one(".sec-b")
@@ -659,11 +702,109 @@ def to_docx(html: Path, out: Path) -> bool:
             else:
                 block(doc, el)
     doc.save(str(out))
+    if FONT == "Iansui":
+        text = "".join(t.text for t in doc.element.body.iter(qn("w:t")) if t.text)
+        if embed_font(out, "Iansui", text):
+            print("Word 已嵌入芫荽字型（只含用到的字），沒有安裝芫荽的電腦也會顯示一樣的版面。")
     print(f"DOCX：{out}")
     return True
 
 
-DOCX_FONT = "標楷體"
+DOCX_FONT = "Iansui"
+
+
+def find_iansui():
+    """找芫荽 TTF：scripts/fonts、使用者字型資料夾、Windows 字型，最後從 Google Fonts 下載。"""
+    import os
+    here = Path(__file__).resolve().parent
+    cands = [here / "fonts" / "Iansui.ttf", Path.home() / ".fonts" / "Iansui.ttf",
+             Path.home() / ".local/share/fonts/Iansui.ttf", Path.home() / "Library/Fonts/Iansui-Regular.ttf",
+             Path(os.environ.get("LOCALAPPDATA", "")) / "Microsoft/Windows/Fonts/Iansui-Regular.ttf",
+             Path("C:/Windows/Fonts/Iansui-Regular.ttf")]
+    for c in cands:
+        if c.is_file():
+            return c.read_bytes()
+    try:
+        import re
+        import urllib.request
+        req = urllib.request.Request("https://fonts.googleapis.com/css2?family=Iansui", headers={"User-Agent": "Mozilla/5.0"})
+        css = urllib.request.urlopen(req, timeout=30).read().decode()
+        url = re.search(r"url\((https://[^)]+\.ttf)\)", css).group(1)
+        data = urllib.request.urlopen(url, timeout=120).read()
+        (here / "fonts").mkdir(exist_ok=True)
+        (here / "fonts" / "Iansui.ttf").write_bytes(data)
+        return data
+    except Exception:
+        return None
+
+
+def embed_font(docx: Path, name: str, text: str) -> bool:
+    """把字型（只取用到的字）嵌入 .docx，讓 Word 檔在沒裝字型的電腦也和 PDF 一樣。"""
+    import io
+    import re
+    import uuid
+    import zipfile
+    data = find_iansui()
+    if not data:
+        print("找不到芫荽字型檔，Word 未嵌入字型（老師電腦有安裝芫荽就會一樣）。")
+        return False
+    try:
+        from fontTools import subset
+        from fontTools.ttLib import TTFont
+        f = TTFont(io.BytesIO(data))
+        o = subset.Options()
+        o.layout_features = ["*"]
+        o.name_IDs = ["*"]
+        o.notdef_outline = True
+        o.glyph_names = True
+        o.legacy_kern = True
+        o.hinting = True
+        sub = subset.Subsetter(o)
+        chars = set(text) | set("０１２３４５６７８９0123456789，。、；：？！「」（）＿─—→…·／　 ")
+        sub.populate(text="".join(chars))
+        sub.subset(f)
+        buf = io.BytesIO()
+        f.save(buf)
+        data = buf.getvalue()
+    except ImportError:
+        pass  # 沒有 fonttools 就嵌入整套字型（檔案較大）
+    guid = str(uuid.uuid4()).upper()
+    hx = guid.replace("-", "")
+    key = bytes(int(hx[i:i + 2], 16) for i in range(30, -1, -2))
+    obf = bytearray(data)
+    for i in range(32):
+        obf[i] ^= key[i % 16]
+    src = zipfile.ZipFile(docx)
+    items = {n: src.read(n) for n in src.namelist()}
+    src.close()
+    ft = items["word/fontTable.xml"].decode("utf-8")
+    emb = f'<w:embedRegular r:id="rIdEmb1" w:fontKey="{{{guid}}}"/><w:embedBold r:id="rIdEmb1" w:fontKey="{{{guid}}}"/>'
+    if f'w:name="{name}"' in ft:
+        ft = re.sub(rf'(<w:font w:name="{name}"[^>]*>)', r"\1" + emb.replace("\\", "\\\\"), ft, count=1)
+    else:
+        ft = ft.replace("</w:fonts>", f'<w:font w:name="{name}"><w:charset w:val="88"/><w:family w:val="auto"/><w:pitch w:val="variable"/>{emb}</w:font></w:fonts>')
+    if "xmlns:r=" not in ft[:600]:
+        ft = ft.replace("<w:fonts ", '<w:fonts xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" ', 1)
+    items["word/fontTable.xml"] = ft.encode("utf-8")
+    items["word/_rels/fontTable.xml.rels"] = (
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        '<Relationship Id="rIdEmb1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/font" Target="fonts/font1.odttf"/>'
+        '</Relationships>').encode()
+    items["word/fonts/font1.odttf"] = bytes(obf)
+    ct = items["[Content_Types].xml"].decode("utf-8")
+    if 'Extension="odttf"' not in ct:
+        ct = ct.replace("<Types ", "<Types ", 1).replace(
+            "</Types>", '<Default Extension="odttf" ContentType="application/vnd.openxmlformats-officedocument.obfuscatedFont"/></Types>')
+    items["[Content_Types].xml"] = ct.encode("utf-8")
+    st = items["word/settings.xml"].decode("utf-8")
+    if "embedTrueTypeFonts" not in st:
+        st = re.sub(r"(<w:settings[^>]*>)", r"\1<w:embedTrueTypeFonts/><w:saveSubsetFonts/>", st, count=1)
+    items["word/settings.xml"] = st.encode("utf-8")
+    with zipfile.ZipFile(docx, "w", zipfile.ZIP_DEFLATED) as z:
+        for n, b in items.items():
+            z.writestr(n, b)
+    return True
 
 
 def main():
@@ -673,8 +814,15 @@ def main():
         sys.exit(1)
     html = Path(sys.argv[1])
     flags = set(sys.argv[2:])
-    if "--font=芫荽" in flags or "--iansui" in flags:
-        DOCX_FONT = "Iansui"
+    if "--kai" in flags or "--font=標楷" in flags:
+        DOCX_FONT = "標楷體"
+    elif "--iansui" not in flags:
+        # 跟著網頁設定：<body class="kai"> 就用標楷體，否則和 PDF 一樣用芫荽
+        head = html.read_text(encoding="utf-8")
+        import re as _re
+        m = _re.search(r"<body[^>]*class=\"([^\"]*)\"", head)
+        if m and "kai" in m.group(1).split():
+            DOCX_FONT = "標楷體"
     want_pdf = "--docx" not in flags or "--pdf" in flags
     want_docx = "--pdf" not in flags or "--docx" in flags
     if want_pdf:
