@@ -112,7 +112,7 @@ body.kai{--font:"標楷體","DFKai-SB","BiauKai","TW-Kai","Iansui",serif}
 .q.side .pics span:has(img){width:24mm}
 .imgbox img{display:block;max-width:100%;max-height:60mm;margin:auto;border-radius:6px}
 .imgbox{border:1.5px dashed var(--line);border-radius:8px;min-height:30mm;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:10pt;text-align:center;padding:4px}
-body.no-answer .answer{display:none}
+body.no-answer .answer:not(.analysis){display:none}
 @media print{
   html,body{background:#fff}
   .toolbar{display:none}
@@ -216,6 +216,11 @@ body.no-vocab .vocab{display:none}
 .bubble .bb .blank{min-width:0;width:100%}
 .bubble .center{border:2px solid var(--c4);border-radius:50%;width:26mm;height:18mm;display:flex;align-items:center;justify-content:center;font-weight:700;background:var(--c4b)}
 
+.analysis .flowline{display:flex;flex-wrap:wrap;gap:4px;align-items:center;justify-content:center;margin:6px 0 4px;font-size:10pt}
+.analysis .flowline span{background:#e0f2fe;border:1px solid #7dd3fc;border-radius:6px;padding:2px 6px}
+.analysis .flowline i{font-style:normal;color:#0284c7;font-weight:700}
+.analysis table td,.analysis table th{font-size:10pt}
+body.no-analysis .sheet.analysis{display:none}
 /* ===== 檢視：縮放、全螢幕、畫筆 ===== */
 .sheet{zoom:var(--z,1)}
 .toolbar select{font:inherit;font-size:11pt;border-radius:4px;max-width:200px}
@@ -256,6 +261,7 @@ body.pen #penBar{display:flex}
     <button onclick="document.body.classList.toggle('no-passage')">課文頁</button>
     <button onclick="document.body.classList.toggle('no-vocab')">詞語預教</button>
     <button onclick="document.body.classList.toggle('no-answer')">教師版</button>
+    <button onclick="document.body.classList.toggle('no-analysis')">教學分析</button>
   </div>
   <div class="grp">
     <button id="fontBtn" onclick="toggleFont()">字型：芫荽</button>
@@ -425,6 +431,78 @@ body.pen #penBar{display:flex}
   <pre id="recText"></pre>
   <button onclick="copyRecord()">複製文字</button><button onclick="printRecord()">列印紀錄</button><button onclick="closeRecord()">關閉</button>
 </div></div>
+<!-- ===== 教學分析（教師用）：模組一到三的分析表，依原始資料 AI 提示詞公式 ===== -->
+<section class="sheet answer analysis" data-version="analysis">
+  <div class="title">教學分析：〈阿樂的風箏〉<span class="ver">教師用</span></div>
+  <div class="subtitle">依序分析，最後才產生學習單（教師修正後形成教材）</div>
+  <div class="flowline"><span>分析文體特性／教學目標</span><i>→</i><span>分析學生需求</span><i>→</i><span>判斷學習歷程需求</span><i>→</i><span>選擇策略</span><i>→</i><span>通用設計學習</span><i>→</i><span>生成通用設計教材</span><i>→</i><span>教師修正後形成教材</span></div>
+
+  <h3>模組一｜文本分析：表 1-1</h3>
+  <table>
+    <tr><th style="width:16%">項目</th><th>分析內容</th></tr>
+    <tr><td>文體類型</td><td>記敘文（生活故事），透過孩子放風箏的經驗敘述事件，最後由長輩的一句話點出道理。</td></tr>
+    <tr><td>主題</td><td>遇到失敗時找出原因、換個方法，就有機會成功。</td></tr>
+    <tr><td>核心概念</td><td>1. 失敗時不急著放棄。2. 找出問題的原因並修正。3. 接受別人的協助。4. 換方法後再試一次。</td></tr>
+    <tr><td>教學重點</td><td>①掌握故事發展（起因→經過→結果）。②理解阿樂的心情變化（生氣→開心）。③理解「尾巴太短→接長→飛起來」的因果關係。④理解奶奶那句話想傳達的道理。⑤連結自身經驗，反思失敗與找方法的關係。</td></tr>
+  </table>
+  <h3>模組一｜本課適合培養的閱讀理解能力（以 PIRLS 理解歷程對照）：表 1-2</h3>
+  <p style="margin:0 0 4px;font-size:10pt;color:#4b5563">此表以 PIRLS 理解歷程作為分析架構，不代表已選用 PIRLS 策略；策略在模組三依文本與學生狀況決定。</p>
+  <table>
+    <tr><th style="width:16%">理解歷程（PIRLS）</th><th style="width:30%">本課可培養能力</th><th>教學重點</th></tr>
+    <tr><td>直接提取訊息</td><td>找出人物、時間、地點、做法</td><td>阿樂什麼時候、在哪裡放風箏？誰幫助他？用什麼接長尾巴？</td></tr>
+    <tr><td>推論整合</td><td>推論人物心情、原因、結果</td><td>為什麼風箏飛不起來？阿樂嘟著嘴時心情如何？</td></tr>
+    <tr><td>詮釋整合</td><td>整合事件與人物改變</td><td>阿樂的心情怎麼改變？作者想告訴我們什麼？</td></tr>
+    <tr><td>評鑑分析</td><td>評價角色做法、連結生活</td><td>你同意「不是風箏壞了，是還沒找到方法」嗎？你遇過類似的事嗎？</td></tr>
+  </table>
+
+  <h3>模組二｜學生閱讀困難分析：表 2</h3>
+  <table>
+    <tr><th style="width:12%">學生類型</th><th style="width:30%">可能的閱讀困難</th><th>教學支持策略（閱讀前／閱讀中／閱讀後）</th></tr>
+    <tr><td>一般學生</td><td>能理解情節，但較難推論奶奶那句話的道理，容易停留在「風箏飛起來了」的故事內容。</td><td>1. 閱讀前：預測故事，預教「嘟著嘴、緞帶、背對著風」。2. 閱讀中：用故事結構圖整理「失敗→找原因→修正→成功」。3. 閱讀後：用提問連結生活經驗，理解主旨。</td></tr>
+    <tr><td>ADHD</td><td>容易跳讀，忽略「尾巴太短」這個關鍵原因，以及阿樂心情的轉變。</td><td>1. 閱讀前：設定閱讀目標（找出風箏飛起來的原因）。2. 閱讀中：一次讀一段，圈出關鍵句與心情詞。3. 閱讀後：用事件排序卡重述故事。</td></tr>
+    <tr><td>ASD</td><td>依字面理解，不易推論「嘟著嘴、把線丟在一旁」代表的情緒，也較難理解奶奶話中的意思。</td><td>1. 閱讀前：介紹人物與放風箏的情境。2. 閱讀中：用人物情緒圖與因果圖，把動作和心情連起來。3. 閱讀後：用句型「我認為……因為……」討論奶奶的話。</td></tr>
+    <tr><td>LD</td><td>「緞帶、搖搖擺擺」等詞辨識與句意理解較吃力，容易漏掉接長尾巴的步驟。</td><td>1. 閱讀前：預教生字詞，搭配圖片或實物（緞帶、風箏）。2. 閱讀中：教師示範朗讀、分段閱讀，搭配故事地圖。3. 閱讀後：用圖像、排序或口語重述完成理解，降低書寫負擔。</td></tr>
+  </table>
+
+  <h3>模組三｜閱讀理解需求分析：表 3-1</h3>
+  <table>
+    <tr><th style="width:7%">順序</th><th style="width:15%">閱讀理解能力</th><th>與本課內容的關聯</th><th style="width:28%">教學重點</th></tr>
+    <tr><td>1</td><td>因果分析</td><td>本課核心是「飛不起來→發現尾巴太短→接長→飛起來」，因果是理解全文的關鍵。</td><td>建立事件間的因果連結。</td></tr>
+    <tr><td>2</td><td>人物情緒理解</td><td>阿樂從生氣、失望到開心，心情變化是故事的主線。</td><td>理解人物情緒與事件的關聯。</td></tr>
+    <tr><td>3</td><td>推論理解</td><td>需從「嘟著嘴」推論心情，從奶奶的話推論道理。</td><td>從文字線索推論想法與寓意。</td></tr>
+    <tr><td>4</td><td>主旨統整</td><td>最後一句「不是風箏壞了，是還沒找到方法」點出主旨。</td><td>歸納作者想傳達的價值。</td></tr>
+    <tr><td>5</td><td>情節統整</td><td>依起因、經過、結果整理故事。</td><td>掌握故事結構與事件順序。</td></tr>
+    <tr><td>6</td><td>提取訊息</td><td>找出時間、地點、人物與做法，是後續推論的基礎。</td><td>擷取課文中的重要資訊。</td></tr>
+    <tr><td>7</td><td>評鑑反思</td><td>思考阿樂一開始的反應與後來的做法。</td><td>建立面對挫折的正向態度。</td></tr>
+    <tr><td>8</td><td>生活連結</td><td>連結自己做事失敗再嘗試的經驗。</td><td>將閱讀所得遷移到生活。</td></tr>
+  </table>
+  <h3>模組三｜閱讀理解策略決策：表 3-2</h3>
+  <table>
+    <tr><th style="width:20%">閱讀策略</th><th style="width:14%">建議程度</th><th>選擇理由</th></tr>
+    <tr><td>PIRLS 閱讀提問</td><td>★★★★★</td><td>能循序培養提取、推論、詮釋與評鑑，最符合本課的閱讀歷程與班上學生需求。</td></tr>
+    <tr><td>Thinking Maps（思考地圖）</td><td>★★★★☆</td><td>事件順序、因果與人物特質明確，適合用流程圖、因果圖整理。</td></tr>
+    <tr><td>4F 反思</td><td>★★★★☆</td><td>主旨與面對失敗有關，適合讀後連結生活。</td></tr>
+    <tr><td>KWL</td><td>★★★☆☆</td><td>可於閱讀前喚起放風箏、做事失敗的經驗，提高動機。</td></tr>
+  </table>
+  <h3>模組三｜策略應用規劃：表 3-3</h3>
+  <table>
+    <tr><th style="width:15%">閱讀策略</th><th style="width:13%">教學階段</th><th>培養能力</th><th>建議搭配活動</th><th>可規劃教材類型</th></tr>
+    <tr><td>PIRLS</td><td>閱讀中、閱讀後</td><td>提取訊息、推論理解、主旨統整、評鑑反思</td><td>分層提問、重點討論</td><td>閱讀理解學習單、分層提問單</td></tr>
+    <tr><td>Thinking Maps</td><td>閱讀中</td><td>情節統整、因果分析、人物特質</td><td>事件排序、因果分析</td><td>圖像組織教材、故事結構整理單</td></tr>
+    <tr><td>4F</td><td>閱讀後</td><td>評鑑反思、生活連結</td><td>個人反思、經驗分享</td><td>反思紀錄單</td></tr>
+    <tr><td>KWL</td><td>閱讀前</td><td>建立先備知識、閱讀預測</td><td>經驗分享、預測故事</td><td>閱讀前引導單、預測單</td></tr>
+  </table>
+  <h3>模組三｜後續教材規劃建議：表 3-4</h3>
+  <table>
+    <tr><th style="width:16%">建議教材方向</th><th style="width:20%">對應策略</th><th style="width:20%">設計目的</th><th>建議理由</th></tr>
+    <tr><td>PIRLS 閱讀提問</td><td>PIRLS</td><td>培養閱讀理解歷程</td><td>依提取、推論、詮釋、評鑑設計分層提問（本份學習單）。</td></tr>
+    <tr><td>因果圖</td><td>Thinking Maps、PIRLS</td><td>建立因果概念</td><td>理解「尾巴太短→接長→飛起來」的核心歷程。</td></tr>
+    <tr><td>人物情緒分析</td><td>Thinking Maps</td><td>理解人物心理歷程</td><td>掌握阿樂心情變化與事件的關聯。</td></tr>
+    <tr><td>事件排序</td><td>Thinking Maps、PIRLS</td><td>建立故事發展順序</td><td>協助學生掌握故事脈絡。</td></tr>
+    <tr><td>4F 反思</td><td>4F</td><td>促進閱讀遷移</td><td>把「找方法」連結到自己的學習與生活。</td></tr>
+  </table>
+  <p style="margin:6px 0 0"><b>決策：</b>依分析主推「PIRLS 閱讀提問」。本份是 4F 反思學習單範例（表 3-2 的閱讀後策略），示範老師選用備選策略或直接指定時的產出。</p>
+</section>
 <canvas id="inkCanvas"></canvas>
 <div id="penBar">
   <span>畫筆</span>
@@ -451,7 +529,7 @@ body.pen #penBar{display:flex}
 </div>
 <script>
 function toggleFont(){const k=document.body.classList.toggle('kai');document.getElementById('fontBtn').textContent='字型：'+(k?'標楷體':'芫荽');}
-function showVer(v){document.querySelectorAll('.sheet[data-version]').forEach(x=>{const d=x.dataset.version;x.style.display=(!v||d===v||d==='teacher'||d==='passage')?'':'none';});if(typeof drawInk==='function')requestAnimationFrame(drawInk);}
+function showVer(v){document.querySelectorAll('.sheet[data-version]').forEach(x=>{const d=x.dataset.version;x.style.display=(!v||d===v||d==='teacher'||d==='passage'||d==='analysis')?'':'none';});if(typeof drawInk==='function')requestAnimationFrame(drawInk);}
 
 /* ---------- 報讀（瀏覽器內建語音，免網路、免安裝） ---------- */
 let ttsOn=true, voice=null;
