@@ -35,15 +35,17 @@
 
 ## 看範例
 
-**線上範例頁**：https://sesns365.github.io/reading-strategy-worksheet/ （六種策略都能直接點開操作）
+**線上範例頁**：https://sesns365.github.io/reading-strategy-worksheet/ （九種策略都能直接點開操作）
 
 ![互動學習單操作示範](docs/demo.gif)
 
 | PIRLS 多層次提問 | KWL | SQ3R |
 |---|---|---|
 | [![PIRLS](docs/screenshots/pirls.png)](範例/阿樂的風箏_PIRLS學習單.pdf) | [![KWL](docs/screenshots/kwl.png)](範例/阿樂的風箏_KWL學習單.pdf) | [![SQ3R](docs/screenshots/sq3r.png)](範例/阿樂的風箏_SQ3R學習單.pdf) |
-| **4F 反思** | **六何法寫作** | **思考地圖** |
+| **4F 反思** | **六何法** | **思考地圖** |
 | [![4F](docs/screenshots/4f.png)](範例/阿樂的風箏_4F學習單.pdf) | [![六何法](docs/screenshots/six-w.png)](範例/阿樂的風箏_六何法學習單.pdf) | [![思考地圖](docs/screenshots/thinking-maps.png)](範例/阿樂的風箏_思考地圖學習單.pdf) |
+| **故事地圖** | **交互教學** | **找大意** |
+| [![故事地圖](docs/screenshots/story-map.png)](範例/阿樂的風箏_故事地圖學習單.pdf) | [![交互教學](docs/screenshots/reciprocal.png)](範例/阿樂的風箏_交互教學學習單.pdf) | [![找大意](docs/screenshots/gist.png)](範例/阿樂的風箏_找大意學習單.pdf) |
 
 點圖片可以看學生用 PDF（課文頁＋學習單）；`範例/` 也有可編輯的 Word 檔（.docx，版面和網頁一樣）；教師版另有一份 PDF（`範例/` 裡檔名有「_教師版」的，含學習目標、教學提示、課程調整、答案與教學分析）。
 
@@ -82,8 +84,11 @@ https://raw.githubusercontent.com/sesns365/reading-strategy-worksheet/main/gpt-g
 | SQ3R | 長文、容易分心、抓不到重點 | 四個活動：瀏覽提問、分站閱讀表、照順序複述、回答自己的問題 |
 | PIRLS 多層次提問 | 理解檢核、推論困難 | 活動一 ① 直接提取 ② 直接推論；活動二 ③ 詮釋整合 ④ 比較評估 |
 | 4F 反思 | 品格、SEL、不敢表達 | 事實、感受、發現、未來 |
-| 六何法寫作 | 句子寫不完整、讀後寫作 | 八層積木式寫作，依能力選層 |
+| 六何法 | 抓不到重點、識字困難、輕度智障 | 閱讀理解：找何人何時何地何事、想為何與如何、用六何串成摘要（分層寫作請用[六何法分層寫作小幫手](https://github.com/sesns365/six-w-writing)） |
 | 思考地圖 | 需要視覺結構、因果與順序明顯 | 流程圖、因果圖、氣泡圖（說明文可用樹狀圖） |
+| 故事地圖（特教實證） | 讀後即忘、自閉症、學障、輕度智障 | 主角與背景、問題、經過、結果與啟示（故事結構教學） |
+| 交互教學（特教實證） | 推論困難、小組合作 | 預測、提問、澄清、摘要，學生輪流當小老師（Palincsar & Brown、CSR） |
+| 找大意（特教實證） | 抓不到重點、長文、說明文 | 每段找最重要的人和事，寫十個字左右的大意，再串成全文大意（PALS Get the Gist） |
 
 分析完只產出這一課的一份學習單。所有學習單都是 **UDL 通用版**：全班同一張，每題都能選 ✏️ 寫一寫、🧩 選詞填空、☑️ 勾一勾，也可以口說；最後有 ⭐ 挑戰題。範例都在 `範例/` 資料夾（示範課文〈阿樂的風箏〉）。
 
@@ -149,7 +154,7 @@ Claude Code 使用者可直接把 `reading-strategy-worksheet` 資料夾放到 `
 
 ### 三種 AI 的差別
 
-- **Claude**：規則最完整，含六種策略範例檔；Claude Code 可直接匯出 PDF 與 Word。
+- **Claude**：規則最完整，含九種策略範例檔；Claude Code 可直接匯出 PDF 與 Word。
 - **Gemini**：匯入同一份 skill，規則一樣完整；技能模式不能搭配 Canvas。
 - **ChatGPT**：用精簡版指示加知識檔，流程與模板相同；有程式碼解譯器時可另外產出 Word。
 - 不論哪一種，PDF 都可以在瀏覽器開啟 HTML 後「列印 → 另存為 PDF」。

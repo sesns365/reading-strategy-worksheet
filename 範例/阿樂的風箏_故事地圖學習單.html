@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Iansui&family=Bpmf+Iansui&display=swap" rel="stylesheet">
+<title>閱讀中：故事地圖學習單｜阿樂的風箏</title>
+<!--
+  閱讀策略學習單範本（reading-strategy-worksheet）
+  - 這份範本示範 PIRLS 學習單，課文為自編示範文〈阿樂的風箏〉。
+  - 預設產出「通用版」（UDL，全班同一張）：每題 .ways 提供 ✏️寫一寫／🧩選詞填空（.chips 詞語盒）／☑️勾一勾 三條路徑，
+    .star 挑戰題。學生頁只放題目與作答空間，學習目標、策略說明、教學提示一律放教師版。
+    「詞語預教」「圖示加強版」為選配，老師要求才保留（預設隱藏，不需要時整段刪除）。選詞填空的 .blank 可加 data-ans="答案|答案" 供對答案。
+  - 製作新學習單時：保留 <style> 與工具列，替換 .sheet 內的內容。
+  - 元件：.head 學生資料列｜.title｜.goal + .tag 策略標示｜.sec 活動區（.sec-h 色塊標頭）
+          .q 題目｜.opts 勾選選項｜.line 書寫線｜.blank 行內填空｜.flow 流程圖｜.circle 環圈圖
+          .bank 小幫手詞庫｜.check 完成檢核｜.teacher 底部三欄｜.answer 教師版
+  - 策略色：--c1..--c4 依策略步驟使用（KWL 用 3 色、SQ3R 用 5 站、PIRLS 4 層、4F 4 色）。
+  - 插圖：圖卡可用 <span><img src="data:image/png;base64,..." alt="林奶奶">林奶奶</span> 取代 <i>emoji</i>；
+    情境圖用 <div class="imgbox"><img src="data:..." alt="說明"></div>。圖片一律內嵌 base64，單一檔案才帶得走。
+  - 選配頁：詞語預教 .vocab（.vcard 詞卡）；教師版含「課程調整四面向」.adj 表；工具列「作答紀錄」產生可複製／列印的紀錄。
+  - 互動與報讀：選項 span 加 data-ok 標示正確答案（開放題不加）；.opts/.pics 預設單選，加 data-multi 可複選。
+    .blank、.line 會自動變成可打字；頁面載入後自動加上 🔊 報讀按鈕。課文頁 .passage 的段落點一下就朗讀。
+  - 字型（都符合教育部標準字形）：預設芫荽 Iansui；body 加 class="kai" 為標楷（教育部標準楷書優先）；
+    class="bpmf" 為芫荽注音 Bpmf Iansui（字旁自動帶注音）。芫荽與芫荽注音由 Google Fonts 載入，工具列可三種切換。
+    不用黑體：標題、題目、內文同一種字型，學生看到的字形和課本筆順一致。
+  - 開啟時只顯示課文頁與學生學習單；教師版、教學分析預設隱藏（body 的 no-answer、no-analysis），工具列按鈕可顯示。
+-->
+<style>
+:root{
+  --kai:"TW-MOE-Std-Kai","教育部標準楷書","edukai","TW-Kai","全字庫正楷體","標楷體","DFKai-SB","BiauKai";
+  --font:"Iansui","芫荽",var(--kai),serif;  /* 預設芫荽，沒有時用標楷 */
+  --base:12pt;
+  --ink:#1f2937; --muted:#6b7280; --line:#9ca3af; --paper:#ffffff;
+  --c1:#2563eb; --c1b:#e8f0fe;   /* 第一層／K／S／Fact */
+  --c2:#059669; --c2b:#e6f6ef;   /* 第二層／W／Q／Feeling */
+  --c3:#d97706; --c3b:#fdf3e2;   /* 第三層／L／R／Finding */
+  --c4:#9333ea; --c4b:#f4ebfd;   /* 第四層／Future */
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#e5e7eb;color:var(--ink);font-family:var(--font);font-size:var(--base);line-height:1.5}
+body.big{--base:14pt}
+body.kai{--font:var(--kai),"Iansui",serif}
+body.bpmf{--font:"Bpmf Iansui","Iansui",var(--kai),serif}
+body.bpmf .sheet{letter-spacing:.02em}
+body.bpmf .head{font-family:"Iansui",var(--kai),serif}
+body.no-support .sheet[data-version="support"]{display:none}
+@page{size:A4;margin:12mm}
+.toolbar{position:sticky;top:0;z-index:5;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:10px;background:#374151}
+.toolbar button{font:inherit;font-size:12pt;padding:6px 14px;border:0;border-radius:6px;background:#fff;cursor:pointer}
+.sheet{width:210mm;min-height:297mm;margin:12px auto;padding:12mm;background:var(--paper);box-shadow:0 2px 8px rgba(0,0,0,.15);page-break-after:always;break-after:page}
+.sheet:last-child{page-break-after:auto;break-after:auto}
+.head{display:flex;justify-content:space-between;gap:8px;font-size:11pt;border-bottom:1.5px solid var(--ink);padding-bottom:4px}
+.head span{white-space:nowrap}
+.title{text-align:center;margin:6px 0 0;font-size:18pt;font-weight:700}
+.subtitle{text-align:center;font-size:12pt;margin-bottom:6px}
+.subtitle b{background:#fef3c7;padding:0 8px;border-radius:4px}
+.top{display:grid;grid-template-columns:1fr 46mm;gap:8px;margin-bottom:6px}
+.goal{border:1.5px solid #f59e0b;border-radius:8px;padding:4px 10px;font-size:10.5pt}
+.goal h3,.tag h3{margin:0 0 2px;font-size:12pt}
+.goal ol{margin:0;padding-left:1.4em}
+.tag{border:1.5px solid var(--ink);border-radius:8px;padding:4px 10px;font-size:10pt;line-height:1.35}
+.tag .lv{display:flex;align-items:center;gap:4px;margin:1px 0}
+.n{display:inline-flex;align-items:center;justify-content:center;width:1.5em;height:1.5em;border-radius:50%;color:#fff;font-weight:700;font-size:.85em;flex:none}
+.n1{background:var(--c1)}.n2{background:var(--c2)}.n3{background:var(--c3)}.n4{background:var(--c4)}
+.how{font-size:10.5pt;background:#f3f4f6;border-radius:6px;padding:2px 10px;margin-bottom:6px}
+.sec{border:1.5px solid var(--c);border-radius:8px;margin-bottom:6px;overflow:hidden;break-inside:avoid}
+.sec-h{background:var(--cb);padding:2px 10px;font-weight:700;font-size:13pt;display:flex;align-items:center;gap:6px}
+.sec-h small{font-weight:400;font-size:10.5pt;color:var(--muted)}
+.sec-b{padding:4px 10px}
+.s1{--c:var(--c1);--cb:var(--c1b)}.s2{--c:var(--c2);--cb:var(--c2b)}.s3{--c:var(--c3);--cb:var(--c3b)}.s4{--c:var(--c4);--cb:var(--c4b)}
+.row{display:grid;grid-template-columns:1fr 44mm;gap:10px}
+.q{margin:2px 0 4px}
+.q .p{font-size:9.5pt;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-left:4px;white-space:nowrap}
+.opts{display:flex;flex-wrap:wrap;gap:2px 16px;margin:2px 0 0 1.4em}
+.opts span::before{content:"☐ ";font-size:1.05em}
+.opts.in{display:inline-flex;margin-left:10px}
+.q.side{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px}
+.q.side .pics{margin:0;display:flex;gap:5px}
+.q.side .pics span{width:22mm}
+.blank{display:inline-block;min-width:6em;border-bottom:1.2px solid var(--ink);text-align:center}
+.line{border-bottom:1.2px dashed var(--line);height:1.8em;margin:0 0 0 1.4em}
+.flow{display:flex;align-items:stretch;gap:4px;margin:4px 0}
+.flow .box{flex:1;border:1.5px solid var(--c3);border-radius:8px;padding:4px 6px;min-height:16mm;font-size:11pt}
+.flow .box b{display:block;color:var(--c3)}
+.flow .ar{align-self:center;font-weight:700;color:var(--c3)}
+.circle{position:relative;width:60mm;height:60mm;border:1.5px solid var(--c2);border-radius:50%;margin:4px auto;display:flex;align-items:center;justify-content:center}
+.circle .core{width:24mm;height:24mm;border:1.5px solid var(--c2);border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:11pt}
+.bank{border:1.5px dashed var(--c);border-radius:8px;padding:4px 8px;font-size:10.5pt;background:#fffdf7}
+.bank h4{margin:0 0 2px;font-size:11pt}
+.bank p{margin:2px 0}
+.feel{display:flex;flex-wrap:wrap;gap:4px}
+.feel span{border:1px solid var(--line);border-radius:12px;padding:0 8px}
+.check{display:flex;flex-wrap:wrap;gap:2px 14px;font-size:11pt;margin:4px 0 8px;padding:4px 10px;border:1.5px solid #10b981;border-radius:8px}
+.check b{margin-right:4px}
+.check span::before{content:"☐ "}
+.teacher{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:9.5pt;break-inside:avoid}
+.teacher div{border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:#f9fafb}
+.teacher h4{margin:0 0 2px;font-size:10pt}
+.teacher ul{margin:0;padding-left:1.2em}
+.answer .title::after{content:"（教師版）";color:#dc2626;font-size:13pt}
+.answer h3{font-size:13pt;margin:10px 0 4px;border-left:5px solid var(--c1);padding-left:6px}
+.st{width:100%;border-collapse:collapse;font-size:11pt;margin:2px 0}
+.st td,.st th{border:1px solid var(--line);padding:1px 6px;vertical-align:middle;height:1.7em}
+.st th{background:var(--cb,#f3f4f6);text-align:left}
+.answer table{width:100%;border-collapse:collapse;font-size:11pt}
+.answer td,.answer th{border:1px solid var(--line);padding:3px 6px;vertical-align:top}
+.answer th{background:#f3f4f6}
+.text{font-size:12pt;line-height:1.8;border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+.text p{margin:0 0 4px;text-indent:2em}
+.text sup{color:var(--c1);font-weight:700;margin-right:2px}
+.ver{display:inline-block;font-size:10pt;border:1.5px solid var(--ink);border-radius:10px;padding:0 8px;margin-left:6px;vertical-align:middle}
+.pics{display:grid;grid-template-columns:repeat(auto-fill,22mm);gap:5px;margin:4px 0 2px 1.4em}
+.pics span{border:1.5px solid var(--line);border-radius:8px;text-align:center;padding:1px 2px 2px;font-size:10.5pt;line-height:1.25}
+.pics i{display:block;font-style:normal;font-size:17pt;line-height:1.15;font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif}
+.pics span::after{content:" ☐"}
+.pics img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;border-radius:6px;margin-bottom:1px}
+.q.side .pics span:has(img){width:24mm}
+.imgbox img{display:block;max-width:100%;max-height:60mm;margin:auto;border-radius:6px}
+.imgbox{border:1.5px dashed var(--line);border-radius:8px;min-height:30mm;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:10pt;text-align:center;padding:4px}
+body.no-answer .answer:not(.analysis){display:none}
+@media print{
+  html,body{background:#fff}
+  .toolbar{display:none}
+  .sheet{margin:0;box-shadow:none;width:auto;min-height:0;padding:0}
+}
+
+/* ===== 互動與報讀 ===== */
+.toolbar .grp{display:flex;gap:6px;align-items:center;background:#4b5563;border-radius:8px;padding:4px 6px}
+.toolbar label{color:#fff;font-size:11pt}
+.toolbar select{font:inherit;font-size:11pt;border-radius:4px}
+.toolbar button.on{background:#fde68a}
+.opts span,.pics span{cursor:pointer;border-radius:6px;transition:background .15s}
+.opts span:hover,.pics span:hover{background:#fef9c3}
+.opts span.sel::before{content:"☑ ";color:#2563eb}
+.pics span.sel{border-color:#2563eb;background:#dbeafe}
+.pics span.sel::after{content:" ☑";color:#2563eb}
+.opts span.right,.pics span.right{background:#d1fae5;outline:2px solid #10b981}
+.opts span.retry,.pics span.retry{background:#ffedd5;outline:2px dashed #f97316}
+.fb{display:inline-block;margin-left:6px;font-size:10.5pt;font-weight:700}
+.fb.ok{color:#059669}.fb.no{color:#ea580c}
+.blank[contenteditable],.line[contenteditable]{outline:none;cursor:text;color:#1d4ed8}
+.blank[contenteditable]:focus,.line[contenteditable]:focus{background:#eff6ff}
+.speak{background:#fef08a !important;box-shadow:0 0 0 3px #facc15;border-radius:4px}
+.tts{border:0;background:#e0e7ff;border-radius:50%;width:1.6em;height:1.6em;font-size:.85em;cursor:pointer;margin-left:4px;vertical-align:middle;line-height:1}
+body.no-tts .tts{display:none}
+.text p{cursor:pointer}
+body.no-passage .passage{display:none}
+body.no-vocab .vocab{display:none}
+.passage .text{font-size:15pt;line-height:2}
+@media print{.tts,.fb{display:none}.speak{background:none !important;box-shadow:none}.opts span.right,.pics span.right,.opts span.retry,.pics span.retry{background:none;outline:none}}
+
+/* ===== UDL 通用版：每題多種作答路徑 ===== */
+.goal-line{margin-bottom:5px;display:flex;flex-wrap:wrap;gap:0 12px}
+.goal-line span{counter-increment:g}
+.goal-line span::before{content:counter(g) ". "}
+.choose{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;font-size:10.5pt;border:1.5px solid #0ea5e9;background:#f0f9ff;border-radius:8px;padding:3px 10px;margin-bottom:6px}
+.choose b{color:#0369a1}
+.udl .q{margin:1px 0 2px}
+.udl .sec{margin-bottom:4px}
+.udl .title{margin-top:2px}
+.udl .subtitle{margin-bottom:3px}
+.udl .choose,.udl .goal-line{margin-bottom:4px;padding-top:1px;padding-bottom:1px}
+.ways{display:grid;grid-template-columns:.8fr 1.35fr 1.25fr;gap:4px;margin:1px 0 2px 1.2em}
+.way{border:1px dashed var(--line);border-radius:6px;padding:1px 5px 2px;font-size:10.5pt;line-height:1.35}
+.way>b{float:left;font-size:10pt;font-weight:400;margin-right:3px;line-height:1.35}
+.way .opts{margin:0;display:flex;flex-wrap:wrap;gap:0 8px}
+.way .line{margin:0 0 0 1.4em;height:1.6em}
+.chips{display:flex;flex-wrap:wrap;gap:3px;margin-top:2px}
+.chips span{border:1px solid #f59e0b;background:#fffbeb;border-radius:10px;padding:0 5px;font-size:9.5pt;line-height:1.35;cursor:pointer}
+.chips span:hover{background:#fde68a}
+.blank.right{background:#d1fae5}.blank.retry{background:#ffedd5}
+.star{border:1.5px solid #eab308;border-radius:8px;padding:3px 10px;margin-bottom:6px;font-size:11.5pt;background:#fefce8}
+.star b{color:#a16207}
+@media print{.way{border-style:dotted}}
+/* 學生頁：只留題目與作答空間 */
+.udl .choose,.udl .goal-line,.udl .sec-h small,.udl .title .ver{display:none}
+.udl .subtitle{color:var(--muted);font-size:11pt}
+.udl .subtitle b{color:var(--ink)}
+.udl .legend{margin-left:10px;white-space:nowrap}
+.udl .q{font-size:12.5pt;margin:3px 0 5px}
+.udl .ways{grid-template-columns:1fr 1.3fr 1.15fr;gap:5px}
+/* ✏️ 寫一寫：整格都是書寫橫線，格子多高就有幾條線 */
+.udl .way:first-child{display:flex;flex-direction:column;min-height:2.4em;
+  background:repeating-linear-gradient(to bottom,transparent 0 calc(1.9em - 1px),#c7cdd6 calc(1.9em - 1px) 1.9em) 0 .2em/100% 1.9em}
+.udl .way:first-child .line{flex:1;border:0;margin:0;min-height:1.9em;height:auto;line-height:1.9em}
+.udl .way:first-child>b{float:none;position:absolute;left:4px;top:1px;opacity:.85}
+.udl .way:first-child{position:relative;padding-left:1.6em}
+.udl .star .line,.udl .sec-b>.line{height:2.1em;border-bottom:1.2px solid #c7cdd6}
+
+/* ===== 學生頁視覺：依原始範例「大字體、色塊分區、欄位清楚、低干擾」 ===== */
+.udl .head{border-bottom:0;font-size:11.5pt;padding:0 2px 3px;color:#334155}
+.udl .title{font-size:20pt;letter-spacing:1px;margin:2px 0 0;color:#0f172a}
+.udl .subtitle{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;font-size:11pt;margin:2px 0 7px;padding-bottom:6px;border-bottom:2px solid #e2e8f0}
+.udl .subtitle b{background:none;color:#334155;padding:0;font-size:12.5pt}
+.udl .legend{margin:0;color:#475569;font-size:10pt;background:#f1f5f9;border-radius:999px;padding:1px 12px}
+.udl .sec{border:1.6px solid var(--c);border-radius:10px;margin-bottom:5px;background:#fff}
+.udl .sec-h{background:var(--c);color:#fff;font-size:13pt;padding:2px 10px;letter-spacing:.5px}
+.udl .sec-h .n{background:#fff;color:var(--c);width:1.55em;height:1.55em;font-size:.9em}
+.udl .sec-h .tts{background:rgba(255,255,255,.9)}
+.udl .sec-b{padding:3px 10px 5px}
+.udl .q{font-size:12.5pt;margin:1px 0 4px;color:#111827;line-height:1.4}
+.udl .q:last-child{margin-bottom:2px}
+.udl .q .p{border:0;background:#f1f5f9;color:#475569;border-radius:999px;padding:0 8px;font-size:9.5pt}
+/* 三種作答方式合成一個清楚的作答框 */
+.udl .ways{gap:0;border:1.3px solid #cfd6e0;border-radius:8px;overflow:hidden;margin:2px 0 0 1.3em;background:#fff;grid-template-columns:.85fr 1.5fr 1.15fr}
+.udl .way{border:0;border-radius:0;border-left:1.3px solid #e2e8f0;padding:2px 7px 3px;font-size:10.5pt;line-height:1.45}
+.udl .way:first-child{border-left:0}
+.udl .way:nth-child(2){background:#fffcf2}
+.udl .way:nth-child(3){background:#f7faff}
+.udl .chips{gap:3px;margin-top:2px}
+.udl .chips span{border:1px solid #fbbf24;background:#fff7d6;border-radius:999px;padding:0 8px;font-size:9.5pt;line-height:1.4}
+.udl .opts{gap:0 10px}
+.udl .opts span::before{content:"";display:inline-block;width:.8em;height:.8em;border:1.4px solid #475569;border-radius:3px;margin-right:5px;vertical-align:-.05em;background:#fff}
+.udl .opts span.sel::before{content:"✓";color:#fff;background:#2563eb;border-color:#2563eb;font-size:.75em;line-height:.95em;text-align:center;width:1.07em;height:1.07em}
+.udl .blank{border-bottom:1.4px solid #334155}
+.udl .st{font-size:11.5pt}
+.udl .st td,.udl .st th{border-color:#cfd6e0;height:2em;padding:2px 7px}
+.udl .st th{background:var(--cb,#f1f5f9);color:#1f2937}
+.udl .star{border:0;border-left:6px solid #eab308;background:#fefce8;border-radius:8px;padding:5px 12px 6px;font-size:12pt}
+.udl .check{border:0;background:#ecfdf5;border-radius:999px;justify-content:center;padding:4px 14px;font-size:11pt;color:#065f46}
+.udl .check span::before{content:"";display:inline-block;width:.8em;height:.8em;border:1.4px solid #059669;border-radius:3px;margin-right:4px;vertical-align:-.05em}
+.udl .layers{border-radius:10px;border-width:1.6px}
+.udl .layer .lb{font-size:11.5pt;display:flex;flex-direction:column;justify-content:center}
+.udl .layer .lc{font-size:11.5pt;padding:4px 10px 5px}
+.udl .core{border:0;background:#fdf2f8;border-radius:10px;padding:5px 12px;font-size:11pt}
+.udl .mflow .cell,.udl .flow .box{border-radius:8px;background:#fff}
+.udl .ring{background:#fbfffd}
+.udl .layer:nth-child(1){--lc:#ea580c;--lbg:#fff1e6}.udl .layer:nth-child(2){--lc:#059669;--lbg:#e7f7ef}.udl .layer:nth-child(3){--lc:#2563eb;--lbg:#e8f0fe}.udl .layer:nth-child(4){--lc:#9333ea;--lbg:#f4ebfd}.udl .layer:nth-child(5){--lc:#e11d48;--lbg:#fde8ec}.udl .layer:nth-child(6){--lc:#16a34a;--lbg:#e9f8ee}.udl .layer:nth-child(7){--lc:#7c3aed;--lbg:#f1ebfd}.udl .layer:nth-child(8){--lc:#0284c7;--lbg:#e0f2fe}
+.udl .layers{border-color:#cbd5e1}
+.udl .layer{grid-template-columns:36mm 1fr;border-top-color:#e2e8f0}
+.udl .layer .lb{background:var(--lbg);color:var(--lc);display:grid;grid-template-columns:auto 1fr;column-gap:6px;align-content:center;align-items:center;padding:4px 6px;font-size:12pt}
+.udl .layer .lb .n{grid-row:span 2;background:var(--lc);width:1.8em;height:1.8em;font-size:1em}
+.udl .layer .lb small{color:#475569;font-size:9pt;grid-column:2}
+.udl .layer .lb .tts{grid-column:2;justify-self:start}
+@media print{.udl .way{border-style:solid}.udl .sec-h,.udl .way,.udl .star,.udl .check,.udl .core{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* ===== 詞語預教頁 ===== */
+.vgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.vcard{border:1.5px solid var(--c1);border-radius:10px;padding:6px 10px;display:grid;grid-template-columns:20mm 1fr;gap:4px 8px;align-items:center;break-inside:avoid;cursor:pointer}
+.vcard .pic{grid-row:span 3;font-size:30pt;text-align:center;line-height:1;font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif}
+.vcard .pic img{width:100%;aspect-ratio:1/1;object-fit:contain;border-radius:6px}
+.vcard .w{font-size:20pt;font-weight:700;letter-spacing:2px}
+.vcard .m{font-size:11pt}
+.vcard .e{font-size:10.5pt;color:var(--muted)}
+.vcard .ok{grid-column:2;font-size:10.5pt}
+.vcard .ok span::before{content:"☐ "}
+.vcard .ok span.sel::before{content:"☑ ";color:#2563eb}
+/* ===== 課程調整四面向 ===== */
+.adj{width:100%;border-collapse:collapse;font-size:10.5pt}
+.adj th{width:16%;background:#f3f4f6;text-align:left}
+.adj td,.adj th{border:1px solid var(--line);padding:3px 6px;vertical-align:top}
+/* ===== 作答紀錄 ===== */
+#rec{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:20}
+#rec.show{display:flex}
+#rec .box{background:#fff;border-radius:12px;padding:14px 16px;width:min(560px,92vw);max-height:90vh;overflow:auto;font-size:12pt}
+#rec h3{margin:0 0 6px}
+#rec input{font:inherit;border:1px solid var(--line);border-radius:6px;padding:2px 6px;width:10em}
+#rec pre{white-space:pre-wrap;background:#f9fafb;border:1px solid var(--line);border-radius:8px;padding:8px;font-family:inherit;font-size:11pt;line-height:1.6}
+#rec button{font:inherit;font-size:11pt;padding:5px 12px;border:0;border-radius:6px;background:#e5e7eb;cursor:pointer;margin-right:6px}
+@media print{body.rec-print > *:not(#rec){display:none !important}body.rec-print #rec{position:static;display:block;background:none}body.rec-print #rec button,body.rec-print #rec label{display:none}}
+
+/* ===== 六何法分層列、思考地圖 ===== */
+.layers{border:1.5px solid var(--c1);border-radius:8px;overflow:hidden;margin-bottom:6px}
+.layer{display:grid;grid-template-columns:30mm 1fr;border-top:1px solid var(--line)}
+.layer:first-child{border-top:0}
+.layer .lb{background:var(--cb,#e8f0fe);padding:3px 6px;font-weight:700;font-size:11pt;line-height:1.3}
+.layer .lb small{display:block;font-weight:400;font-size:9pt;color:var(--muted)}
+.layer .lc{padding:2px 8px 3px;font-size:11pt}
+.layer .lc .chips{margin-top:1px}
+.core{border:1.5px solid #f472b6;background:#fdf2f8;border-radius:8px;padding:3px 10px;font-size:10.5pt;margin-bottom:5px}
+.ringrow{display:flex;align-items:center;gap:6px}.ringrow .chips{flex:1}
+.ring{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:118mm;margin:2px 0;flex:none;border:1.5px solid var(--c2);border-radius:50%/40%;padding:10px 18px}
+.ring>span.blank{min-width:0;width:100%}
+.ring .mid{border:1.5px solid var(--c2);border-radius:50%;text-align:center;font-weight:700;padding:6px 2px;font-size:11pt}
+.mflow{display:grid;grid-template-columns:1fr 26mm 1fr;gap:6px;align-items:center;margin:3px 0}
+.mflow .col{display:flex;flex-direction:column;gap:4px}
+.mflow .cell{border:1.5px solid var(--c3);border-radius:6px;padding:2px 6px;min-height:9mm;font-size:10.5pt}
+.mflow .cell b{color:var(--c3);font-size:9pt;display:block}
+.mflow .ev{border:2px solid var(--c3);border-radius:8px;text-align:center;font-weight:700;padding:8px 4px;background:var(--c3b)}
+.bubble{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;margin:3px 0}
+.bubble .bb{border:1.5px solid var(--c4);border-radius:50%;width:30mm;height:13mm;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.bubble .bb .blank{min-width:0;width:100%}
+.bubble .center{border:2px solid var(--c4);border-radius:50%;width:26mm;height:18mm;display:flex;align-items:center;justify-content:center;font-weight:700;background:var(--c4b)}
+
+.analysis .flowline{display:flex;flex-wrap:wrap;gap:4px;align-items:center;justify-content:center;margin:6px 0 4px;font-size:10pt}
+.analysis .flowline span{background:#e0f2fe;border:1px solid #7dd3fc;border-radius:6px;padding:2px 6px}
+.analysis .flowline i{font-style:normal;color:#0284c7;font-weight:700}
+.analysis table td,.analysis table th{font-size:10pt}
+body.no-analysis .sheet.analysis{display:none}
+/* ===== 檢視：縮放、全螢幕、畫筆 ===== */
+.sheet{zoom:var(--z,1)}
+.toolbar select{font:inherit;font-size:11pt;border-radius:4px;max-width:200px}
+#zoomVal{color:#fff;font-size:11pt;min-width:3.2em;text-align:center}
+#inkCanvas{position:fixed;inset:0;width:100vw;height:100vh;z-index:4;pointer-events:none}
+body.pen #inkCanvas{pointer-events:auto;touch-action:none;cursor:crosshair}
+body.pen.erase #inkCanvas{cursor:cell}
+#penBar{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:6;display:none;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;background:#1f2937;color:#fff;border-radius:12px;padding:8px 10px;box-shadow:0 4px 16px rgba(0,0,0,.3);max-width:calc(100vw - 24px)}
+body.pen #penBar{display:flex}
+#penBar .sw{width:30px;height:30px;border-radius:50%;border:3px solid #fff;cursor:pointer;padding:0}
+#penBar .sw.on{outline:3px solid #f59e0b;outline-offset:2px}
+#penBar button.t{font:inherit;font-size:11pt;padding:5px 10px;border:0;border-radius:6px;background:#fff;color:#111;cursor:pointer;min-height:36px}
+#penBar button.t.on{background:#f59e0b;color:#fff}
+#penBar .sep{width:1px;height:26px;background:#4b5563}
+#penBar input[type=color]{width:34px;height:30px;border:0;padding:0;background:none;cursor:pointer}
+@media print{.sheet{zoom:1 !important}#inkCanvas,#penBar{display:none !important}}
+</style>
+</head>
+<body class="no-answer no-analysis no-vocab no-support">
+<div class="toolbar">
+  <div class="grp">
+    <button id="ttsBtn" class="on" onclick="toggleTTS()">報讀：開</button>
+    <label>語速 <select id="rate"><option value="0.6">慢</option><option value="0.8" selected>中</option><option value="1">快</option></select></label>
+    <label>語音 <select id="voiceSel" onchange="setVoice(this.value)"><option value="">自動（中文）</option></select></label>
+    <button onclick="testVoice()">試聽</button>
+    <button onclick="readPassage()">整篇朗讀</button>
+    <button onclick="stopTTS()">停止</button>
+  </div>
+  <div class="grp">
+    <button onclick="checkAns()">對答案</button>
+    <button onclick="clearAns()">清除作答</button>
+    <button onclick="showRecord()">作答紀錄</button>
+  </div>
+  <div class="grp">
+    <button onclick="document.body.classList.toggle('no-passage')">課文頁</button>
+    <button onclick="document.body.classList.toggle('no-answer')">教師版</button>
+    <button onclick="document.body.classList.toggle('no-analysis')">教學分析</button>
+  </div>
+  <div class="grp">
+    <button id="fontBtn" onclick="toggleFont()">字型：芫荽</button>
+    <button onclick="document.body.classList.toggle('big')">字級放大</button>
+    <button onclick="window.print()">列印／存 PDF</button>
+  </div>
+  <div class="grp">
+    <button onclick="zoomBy(-0.1)" title="縮小頁面">－</button>
+    <span id="zoomVal">100%</span>
+    <button onclick="zoomBy(0.1)" title="放大頁面">＋</button>
+    <button onclick="fitWidth()">符合寬度</button>
+    <button id="fsBtn" onclick="toggleFS()">全螢幕</button>
+    <button id="penBtn" onclick="togglePen()">🖍 畫筆</button>
+  </div>
+</div>
+
+<!-- ===== 課文頁：學生閱讀與報讀用（可用工具列隱藏） ===== -->
+<section class="sheet passage" data-version="passage">
+  <div class="title">課文：〈阿樂的風箏〉</div>
+  <div class="subtitle">點一下段落就會唸給你聽；按「整篇朗讀」從頭唸到尾。</div>
+  <div class="text">
+    <p><sup>1</sup>星期六早上，風呼呼的吹。阿樂拿著爸爸幫他做的紙風箏，興奮的跑到河邊草地。他一放手，風箏晃了兩下，就「咚」的一聲掉在地上。阿樂試了三次，風箏都飛不起來，他氣得把線丟在一旁，坐在石頭上嘟著嘴。</p>
+    <p><sup>2</sup>住在隔壁的林奶奶散步經過，笑著問：「怎麼啦？」阿樂說：「這個風箏是壞的！」林奶奶撿起風箏看了看，說：「尾巴太短了，風箏會站不穩。我們一起想想辦法吧！」</p>
+    <p><sup>3</sup>他們用奶奶口袋裡的緞帶，把風箏尾巴接長。阿樂再跑一次，這次他背對著風，慢慢放線。風箏搖搖擺擺的升起來，越飛越高，像一隻紅色的小鳥。</p>
+    <p><sup>4</sup>阿樂開心的大叫：「奶奶，它飛起來了！」林奶奶說：「不是風箏壞了，是我們還沒找到方法。」阿樂看著天上的風箏，點點頭，心裡暖暖的。</p>
+  </div>
+</section>
+
+
+<section class="sheet udl" data-version="udl">
+  <div class="head"><span>班級：＿＿＿＿</span><span>座號：＿＿＿</span><span>姓名：＿＿＿＿＿＿</span><span>日期：＿＿年＿＿月＿＿日</span></div>
+  <div class="title">閱讀中：故事地圖學習單</div>
+  <div class="subtitle">課文：<b>〈阿樂的風箏〉</b><span class="legend">✏️ 寫一寫　🧩 選詞填空　☑️ 勾一勾　🗣️ 說一說</span></div>
+  <div class="sec s1">
+    <div class="sec-h"><span class="n n1">1</span>故事的開始：主角與背景</div>
+    <div class="sec-b">
+      <div class="q">1. 把故事的主角和背景填進表格：<table class="st"><tr><th style="width:30%">故事元素</th><th>回到課文找答案</th><th style="width:14%">段落</th></tr><tr><td><b>主角</b>　<small>主要在說誰？</small></td><td><span class="blank" style="min-width:12em" data-ans="阿樂"></span></td><td>第 1 段</td></tr><tr><td><b>時間</b>　<small>什麼時候？</small></td><td><span class="blank" style="min-width:12em" data-ans="星期六"></span></td><td>第 1 段</td></tr><tr><td><b>地點</b>　<small>在哪裡？</small></td><td><span class="blank" style="min-width:12em" data-ans="河邊"></span></td><td>第 1 段</td></tr><tr><td><b>配角</b>　<small>還有誰？</small></td><td><span class="blank" style="min-width:12em" data-ans="林奶奶|奶奶"></span></td><td>第 2 段</td></tr></table><div class="chips"><span>阿樂</span><span>林奶奶</span><span>星期六早上</span><span>河邊草地</span><span>學校</span></div></div>
+    </div>
+  </div>
+  <div class="sec s2">
+    <div class="sec-h"><span class="n n2">2</span>問題：主角遇到什麼困難？</div>
+    <div class="sec-b">
+      <div class="q">2. 阿樂遇到什麼問題？<span class="p">第 1 段</span>
+        <div class="ways"><div class="way"><b title="寫一寫">✏️</b><div class="line"></div></div><div class="way"><b title="選詞填空">🧩</b>阿樂的<span class="blank" style="min-width:3em" data-ans="風箏"></span>一直<span class="blank" style="min-width:5em" data-ans="飛不起來|掉"></span>，他很<span class="blank" style="min-width:3em" data-ans="生氣"></span>。<div class="chips"><span>風箏</span><span>飛不起來</span><span>生氣</span><span>開心</span></div></div><div class="way"><b title="勾一勾">☑️</b><div class="opts"><span data-ok>🪁 風箏一直飛不起來，他很生氣</span><span>🐦 小鳥飛走了，他很難過</span><span>🎒 書包不見了，他很著急</span></div></div></div></div>
+    </div>
+  </div>
+  <div class="sec s3">
+    <div class="sec-h"><span class="n n3">3</span>經過：怎麼解決問題？</div>
+    <div class="sec-b">
+      <div class="q">3. 依順序寫出解決問題的經過：<span class="p">第 2、3 段</span><div class="flow"><div class="box"><b>1 發現原因</b><span class="blank" style="min-width:7em" data-ans="尾巴太短"></span></div><div class="ar">→</div><div class="box"><b>2 想辦法</b><span class="blank" style="min-width:7em" data-ans="緞帶|接長"></span></div><div class="ar">→</div><div class="box"><b>3 再試一次</b><span class="blank" style="min-width:7em" data-ans="背對|慢慢"></span></div></div><div class="chips"><span>尾巴太短</span><span>用緞帶接長尾巴</span><span>背對著風慢慢放線</span><span>買新風箏</span></div><div style="margin-top:2px">☑️ 或勾選正確的經過：<div class="opts in"><span data-ok>發現尾巴太短→用緞帶接長→背對著風再試</span><span>買新風箏→跑得更快→飛起來</span></div></div></div>
+    </div>
+  </div>
+  <div class="sec s4">
+    <div class="sec-h"><span class="n n4">4</span>結果與啟示：最後怎麼了？學到什麼？</div>
+    <div class="sec-b">
+      <div class="q">4. 故事的結果是什麼？阿樂學到什麼？<span class="p">第 4 段</span>
+        <div class="ways"><div class="way"><b title="寫一寫">✏️</b><div class="line"></div><div class="line"></div></div><div class="way"><b title="選詞填空">🧩</b>最後風箏<span class="blank" style="min-width:4em" data-ans="飛起來"></span>了，阿樂學到<span class="blank" style="min-width:7em" data-ans="方法|找"></span>。<div class="chips"><span>飛起來</span><span>失敗時要找方法</span><span>風箏很難做</span></div></div><div class="way"><b title="勾一勾">☑️</b><div class="opts"><span data-ok>🪁 風箏飛起來了，失敗時要找原因、想方法</span><span>😢 風箏壞了，以後不玩了</span></div></div></div></div>
+    </div>
+  </div>
+  <div class="star"><b>⭐ 挑戰題：</b>你有沒有遇過「一直失敗、後來找到方法」的事？用故事地圖說說看。<div class="line"></div></div>
+  <div class="check"><b>我完成了：</b><span>我找到主角和背景</span><span>我說出問題</span><span>我排好經過</span><span>我說出結果和啟示</span></div>
+</section>
+
+
+<section class="sheet answer" data-version="teacher">
+  <div class="title">閱讀中：故事地圖學習單</div>
+  <div class="subtitle">課文：<b>〈阿樂的風箏〉</b>（自編示範文）</div>
+  <h3>學習目標與策略</h3>
+  <p style="margin:2px 0">策略：故事結構（主角、背景、問題、經過、結果、啟示）</p>
+  <ol style="margin:2px 0 6px;padding-left:1.4em"><li>找出故事的主角、時間、地點</li><li>說出主角遇到的問題和解決經過</li><li>說出結果和故事帶來的啟示</li></ol>
+  <h3>教學提示：通用版（全班）</h3>
+  <div class="teacher">
+    <div><h4>教師引導語</h4><ul><li>發下前先說明：每題選一種方式回答就好，三種方式都一樣棒。</li><li>先介紹故事地圖六個元素，用學生熟悉的故事示範一次，再讀本課。</li><li>每找到一個元素就問「課文哪一段寫的？」；經過部分先口說順序再填。</li><li>讀後用故事地圖重述全文，之後可逐步撤除表格提示。</li><li>實證依據：故事結構（故事文法）教學是學障、自閉症與輕度智障學生記敘文理解的實證教學策略。</li></ul></div>
+    <div><h4>差異化支持（同一張單子內）</h4><ul><li>讀後即忘（代碼 1）、抓不到重點（代碼 3）：表格就是提示，讀一段填一格。</li><li>ASD：配合情緒圖示說出主角的問題與心情。</li><li>LD：經過與結果可點詞語或勾選。</li><li>讀得快的學生：自己寫並做挑戰題。</li></ul></div>
+    <div><h4>評量重點</h4><ul><li>能指出主角、時間、地點、配角。</li><li>能說出主角的問題與解決經過。</li><li>能說出結果與啟示，並用故事地圖重述。</li></ul></div>
+  </div>
+  <h3>課程調整四面向（可貼入 IEP 或教學紀錄）</h3>
+  <table class="adj">
+    <tr><th>學習內容</th><td>題目主軸與全班相同，不降低目標；以⭐挑戰題提供加深。需要時加做圖示加強版（題數精簡、保留核心題）。</td></tr>
+    <tr><th>學習歷程</th><td>課前詞語預教；採故事結構（故事地圖）：依主角、背景、問題、經過、結果、啟示逐項整理，以表格與流程圖提供結構鷹架，讀後用地圖重述；每題提供多種作答路徑；段落提示、詞語盒、圖示與報讀支援。</td></tr>
+    <tr><th>學習環境</th><td>可使用平板或電腦開啟互動網頁（報讀、點選作答）；安排同儕夥伴共讀；座位靠近老師便於口說作答。</td></tr>
+    <tr><th>學習評量</th><td>允許以書寫、選詞、勾選或口說（老師代寫）任一方式作答，皆視為完成；依評量重點檢核，並以作答紀錄追蹤作答方式與正確題數。</td></tr>
+  </table>
+  <h3>課文（附段落號）</h3>
+  <div class="text">
+    <p><sup>1</sup>星期六早上，風呼呼的吹。阿樂拿著爸爸幫他做的紙風箏，興奮的跑到河邊草地。他一放手，風箏晃了兩下，就「咚」的一聲掉在地上。阿樂試了三次，風箏都飛不起來，他氣得把線丟在一旁，坐在石頭上嘟著嘴。</p>
+    <p><sup>2</sup>住在隔壁的林奶奶散步經過，笑著問：「怎麼啦？」阿樂說：「這個風箏是壞的！」林奶奶撿起風箏看了看，說：「尾巴太短了，風箏會站不穩。我們一起想想辦法吧！」</p>
+    <p><sup>3</sup>他們用奶奶口袋裡的緞帶，把風箏尾巴接長。阿樂再跑一次，這次他背對著風，慢慢放線。風箏搖搖擺擺的升起來，越飛越高，像一隻紅色的小鳥。</p>
+    <p><sup>4</sup>阿樂開心的大叫：「奶奶，它飛起來了！」林奶奶說：「不是風箏壞了，是我們還沒找到方法。」阿樂看著天上的風箏，點點頭，心裡暖暖的。</p>
+  </div>
+  <h3>通用版建議答案（任何作答方式都可）</h3>
+  <table>
+    <tr><th style="width:14%">題號</th><th>建議答案</th></tr><tr><td>1</td><td>主角：阿樂；時間：星期六早上；地點：河邊草地；配角：林奶奶</td></tr><tr><td>2</td><td>風箏一直飛不起來，阿樂很生氣</td></tr><tr><td>3</td><td>發現尾巴太短 → 用緞帶把尾巴接長 → 背對著風慢慢放線</td></tr><tr><td>4</td><td>風箏飛起來了；失敗時要找出原因、想辦法</td></tr><tr><td>⭐</td><td>開放作答，需有問題、經過、結果。</td></tr>
+  </table>
+  <h3>本課主旨</h3>
+  <p style="margin:0">遇到失敗時不要急著放棄，找出原因、接受別人的幫助，就有機會成功。</p>
+</section>
+
+<div id="rec"><div class="box">
+  <h3>作答紀錄</h3>
+  <label>姓名：<input id="recName" oninput="buildRecord()"></label>
+  <pre id="recText"></pre>
+  <button onclick="copyRecord()">複製文字</button><button onclick="printRecord()">列印紀錄</button><button onclick="closeRecord()">關閉</button>
+</div></div>
+<!-- ===== 教學分析（教師用）：模組一到三的分析表，依原始資料 AI 提示詞公式 ===== -->
+<section class="sheet answer analysis" data-version="analysis">
+  <div class="title">教學分析：〈阿樂的風箏〉<span class="ver">教師用</span></div>
+  <div class="subtitle">依序分析，最後才產生學習單（教師修正後形成教材）</div>
+  <div class="flowline"><span>分析文體特性／教學目標</span><i>→</i><span>分析學生需求</span><i>→</i><span>判斷學習歷程需求</span><i>→</i><span>選擇策略</span><i>→</i><span>通用設計學習</span><i>→</i><span>生成通用設計教材</span><i>→</i><span>教師修正後形成教材</span></div>
+
+  <h3>模組一｜文本分析：表 1-1</h3>
+  <table>
+    <tr><th style="width:16%">項目</th><th>分析內容</th></tr>
+    <tr><td>文體類型</td><td>記敘文（生活故事），透過孩子放風箏的經驗敘述事件，最後由長輩的一句話點出道理。</td></tr>
+    <tr><td>主題</td><td>遇到失敗時找出原因、換個方法，就有機會成功。</td></tr>
+    <tr><td>核心概念</td><td>1. 失敗時不急著放棄。2. 找出問題的原因並修正。3. 接受別人的協助。4. 換方法後再試一次。</td></tr>
+    <tr><td>教學重點</td><td>①掌握故事發展（起因→經過→結果）。②理解阿樂的心情變化（生氣→開心）。③理解「尾巴太短→接長→飛起來」的因果關係。④理解奶奶那句話想傳達的道理。⑤連結自身經驗，反思失敗與找方法的關係。</td></tr>
+  </table>
+  <h3>模組一｜本課適合培養的閱讀理解能力（以 PIRLS 理解歷程對照）：表 1-2</h3>
+  <p style="margin:0 0 4px;font-size:10pt;color:#4b5563">此表以 PIRLS 理解歷程作為分析架構，不代表已選用 PIRLS 策略；策略在模組三依文本與學生狀況決定。</p>
+  <table>
+    <tr><th style="width:16%">理解歷程（PIRLS）</th><th style="width:30%">本課可培養能力</th><th>教學重點</th></tr>
+    <tr><td>直接提取訊息</td><td>找出人物、時間、地點、做法</td><td>阿樂什麼時候、在哪裡放風箏？誰幫助他？用什麼接長尾巴？</td></tr>
+    <tr><td>推論整合</td><td>推論人物心情、原因、結果</td><td>為什麼風箏飛不起來？阿樂嘟著嘴時心情如何？</td></tr>
+    <tr><td>詮釋整合</td><td>整合事件與人物改變</td><td>阿樂的心情怎麼改變？作者想告訴我們什麼？</td></tr>
+    <tr><td>評鑑分析</td><td>評價角色做法、連結生活</td><td>你同意「不是風箏壞了，是還沒找到方法」嗎？你遇過類似的事嗎？</td></tr>
+  </table>
+
+  <h3>模組二｜學生閱讀困難分析：表 2</h3>
+  <table>
+    <tr><th style="width:12%">學生類型</th><th style="width:30%">可能的閱讀困難</th><th>教學支持策略（閱讀前／閱讀中／閱讀後）</th></tr>
+    <tr><td>一般學生</td><td>能理解情節，但較難推論奶奶那句話的道理，容易停留在「風箏飛起來了」的故事內容。</td><td>1. 閱讀前：預測故事，預教「嘟著嘴、緞帶、背對著風」。2. 閱讀中：用故事結構圖整理「失敗→找原因→修正→成功」。3. 閱讀後：用提問連結生活經驗，理解主旨。</td></tr>
+    <tr><td>ADHD</td><td>容易跳讀，忽略「尾巴太短」這個關鍵原因，以及阿樂心情的轉變。</td><td>1. 閱讀前：設定閱讀目標（找出風箏飛起來的原因）。2. 閱讀中：一次讀一段，圈出關鍵句與心情詞。3. 閱讀後：用事件排序卡重述故事。</td></tr>
+    <tr><td>ASD</td><td>依字面理解，不易推論「嘟著嘴、把線丟在一旁」代表的情緒，也較難理解奶奶話中的意思。</td><td>1. 閱讀前：介紹人物與放風箏的情境。2. 閱讀中：用人物情緒圖與因果圖，把動作和心情連起來。3. 閱讀後：用句型「我認為……因為……」討論奶奶的話。</td></tr>
+    <tr><td>LD</td><td>「緞帶、搖搖擺擺」等詞辨識與句意理解較吃力，容易漏掉接長尾巴的步驟。</td><td>1. 閱讀前：預教生字詞，搭配圖片或實物（緞帶、風箏）。2. 閱讀中：教師示範朗讀、分段閱讀，搭配故事地圖。3. 閱讀後：用圖像、排序或口語重述完成理解，降低書寫負擔。</td></tr>
+  </table>
+
+  <h3>模組三｜閱讀理解需求分析：表 3-1</h3>
+  <table>
+    <tr><th style="width:7%">順序</th><th style="width:15%">閱讀理解能力</th><th>與本課內容的關聯</th><th style="width:28%">教學重點</th></tr>
+    <tr><td>1</td><td>因果分析</td><td>本課核心是「飛不起來→發現尾巴太短→接長→飛起來」，因果是理解全文的關鍵。</td><td>建立事件間的因果連結。</td></tr>
+    <tr><td>2</td><td>人物情緒理解</td><td>阿樂從生氣、失望到開心，心情變化是故事的主線。</td><td>理解人物情緒與事件的關聯。</td></tr>
+    <tr><td>3</td><td>推論理解</td><td>需從「嘟著嘴」推論心情，從奶奶的話推論道理。</td><td>從文字線索推論想法與寓意。</td></tr>
+    <tr><td>4</td><td>主旨統整</td><td>最後一句「不是風箏壞了，是還沒找到方法」點出主旨。</td><td>歸納作者想傳達的價值。</td></tr>
+    <tr><td>5</td><td>情節統整</td><td>依起因、經過、結果整理故事。</td><td>掌握故事結構與事件順序。</td></tr>
+    <tr><td>6</td><td>提取訊息</td><td>找出時間、地點、人物與做法，是後續推論的基礎。</td><td>擷取課文中的重要資訊。</td></tr>
+    <tr><td>7</td><td>評鑑反思</td><td>思考阿樂一開始的反應與後來的做法。</td><td>建立面對挫折的正向態度。</td></tr>
+    <tr><td>8</td><td>生活連結</td><td>連結自己做事失敗再嘗試的經驗。</td><td>將閱讀所得遷移到生活。</td></tr>
+  </table>
+  <h3>模組三｜閱讀理解策略決策：表 3-2</h3>
+  <table>
+    <tr><th style="width:20%">閱讀策略</th><th style="width:14%">建議程度</th><th>選擇理由</th></tr>
+    <tr><td>PIRLS 閱讀提問</td><td>★★★★★</td><td>能循序培養提取、推論、詮釋與評鑑，最符合本課的閱讀歷程與班上學生需求。</td></tr>
+    <tr><td>Thinking Maps（思考地圖）</td><td>★★★★☆</td><td>事件順序、因果與人物特質明確，適合用流程圖、因果圖整理。</td></tr>
+    <tr><td>4F 反思</td><td>★★★★☆</td><td>主旨與面對失敗有關，適合讀後連結生活。</td></tr>
+    <tr><td>KWL</td><td>★★★☆☆</td><td>可於閱讀前喚起放風箏、做事失敗的經驗，提高動機。</td></tr>
+  </table>
+  <h3>模組三｜策略應用規劃：表 3-3</h3>
+  <table>
+    <tr><th style="width:15%">閱讀策略</th><th style="width:13%">教學階段</th><th>培養能力</th><th>建議搭配活動</th><th>可規劃教材類型</th></tr>
+    <tr><td>PIRLS</td><td>閱讀中、閱讀後</td><td>提取訊息、推論理解、主旨統整、評鑑反思</td><td>分層提問、重點討論</td><td>閱讀理解學習單、分層提問單</td></tr>
+    <tr><td>Thinking Maps</td><td>閱讀中</td><td>情節統整、因果分析、人物特質</td><td>事件排序、因果分析</td><td>圖像組織教材、故事結構整理單</td></tr>
+    <tr><td>4F</td><td>閱讀後</td><td>評鑑反思、生活連結</td><td>個人反思、經驗分享</td><td>反思紀錄單</td></tr>
+    <tr><td>KWL</td><td>閱讀前</td><td>建立先備知識、閱讀預測</td><td>經驗分享、預測故事</td><td>閱讀前引導單、預測單</td></tr>
+  </table>
+  <h3>模組三｜後續教材規劃建議：表 3-4</h3>
+  <table>
+    <tr><th style="width:16%">建議教材方向</th><th style="width:20%">對應策略</th><th style="width:20%">設計目的</th><th>建議理由</th></tr>
+    <tr><td>PIRLS 閱讀提問</td><td>PIRLS</td><td>培養閱讀理解歷程</td><td>依提取、推論、詮釋、評鑑設計分層提問（本份學習單）。</td></tr>
+    <tr><td>因果圖</td><td>Thinking Maps、PIRLS</td><td>建立因果概念</td><td>理解「尾巴太短→接長→飛起來」的核心歷程。</td></tr>
+    <tr><td>人物情緒分析</td><td>Thinking Maps</td><td>理解人物心理歷程</td><td>掌握阿樂心情變化與事件的關聯。</td></tr>
+    <tr><td>事件排序</td><td>Thinking Maps、PIRLS</td><td>建立故事發展順序</td><td>協助學生掌握故事脈絡。</td></tr>
+    <tr><td>4F 反思</td><td>4F</td><td>促進閱讀遷移</td><td>把「找方法」連結到自己的學習與生活。</td></tr>
+  </table>
+  <p style="margin:6px 0 0"><b>決策：</b>依分析本課採用「PIRLS 閱讀提問」。本份是故事結構（故事地圖）學習單範例，適合記敘文與讀後即忘、抓不到重點的學生，示範老師改用或直接指定策略時的產出。</p>
+</section>
+<canvas id="inkCanvas"></canvas>
+<div id="penBar">
+  <span>畫筆</span>
+  <button class="sw on" style="background:#111827" data-c="#111827" title="黑"></button>
+  <button class="sw" style="background:#dc2626" data-c="#dc2626" title="紅"></button>
+  <button class="sw" style="background:#2563eb" data-c="#2563eb" title="藍"></button>
+  <button class="sw" style="background:#16a34a" data-c="#16a34a" title="綠"></button>
+  <button class="sw" style="background:#ea580c" data-c="#ea580c" title="橘"></button>
+  <button class="sw" style="background:#9333ea" data-c="#9333ea" title="紫"></button>
+  <input type="color" id="penColor" value="#db2777" title="自選顏色">
+  <span class="sep"></span>
+  <span>螢光筆</span>
+  <button class="sw" style="background:#fde047" data-c="#fde047" data-hl="1" title="黃"></button>
+  <button class="sw" style="background:#86efac" data-c="#86efac" data-hl="1" title="綠"></button>
+  <button class="sw" style="background:#f9a8d4" data-c="#f9a8d4" data-hl="1" title="粉紅"></button>
+  <button class="sw" style="background:#7dd3fc" data-c="#7dd3fc" data-hl="1" title="藍"></button>
+  <span class="sep"></span>
+  <button class="t sz" data-w="2">細</button><button class="t sz on" data-w="4">中</button><button class="t sz" data-w="8">粗</button><button class="t sz" data-w="14">特粗</button>
+  <span class="sep"></span>
+  <button class="t" id="eraseBtn">橡皮擦</button>
+  <button class="t" onclick="undoInk()">復原</button>
+  <button class="t" onclick="clearInk()">全部清除</button>
+  <button class="t on" onclick="togglePen(false)">完成</button>
+</div>
+<script>
+const FONTS=[['','芫荽'],['kai','標楷'],['bpmf','芫荽注音']];
+function setFont(i){const b=document.body;b.classList.remove('kai','bpmf');if(FONTS[i][0])b.classList.add(FONTS[i][0]);
+  document.getElementById('fontBtn').textContent='字型：'+FONTS[i][1];try{localStorage.setItem('rsw-font',FONTS[i][0])}catch(e){}
+  if(typeof drawInk==='function')setTimeout(drawInk,300);}
+function curFont(){const c=document.body.classList;return c.contains('kai')?1:c.contains('bpmf')?2:0;}
+function toggleFont(){setFont((curFont()+1)%FONTS.length);}
+(function(){let k=null;try{k=localStorage.getItem('rsw-font')}catch(e){}
+  const i=k!==null?FONTS.findIndex(f=>f[0]===k):curFont();setFont(i<0?0:i);})();
+function showVer(v){document.querySelectorAll('.sheet[data-version]').forEach(x=>{const d=x.dataset.version;x.style.display=(!v||d===v||d==='teacher'||d==='passage'||d==='analysis')?'':'none';});if(typeof drawInk==='function')requestAnimationFrame(drawInk);}
+
+/* ---------- 報讀（瀏覽器內建語音，免網路、免安裝） ---------- */
+let ttsOn=true, voice=null;
+const synth=window.speechSynthesis;
+function pickVoice(){
+  if(!synth)return;
+  const vs=synth.getVoices();
+  voice=vs.find(v=>/zh[-_]TW/i.test(v.lang))||vs.find(v=>/zh[-_](HK|Hant)/i.test(v.lang))||vs.find(v=>/^zh/i.test(v.lang))||null;
+}
+if(synth){pickVoice();synth.onvoiceschanged=pickVoice;}
+function clean(t){
+  return t.replace(/[☐☑✓]/g,'').replace(/＿{2,}|_{2,}/g,'，空格，')
+          .replace(/①/g,'第一層').replace(/②/g,'第二層').replace(/③/g,'第三層').replace(/④/g,'第四層')
+          .replace(/→/g,'，然後，').replace(/\s+/g,' ').trim();
+}
+function textOf(el){
+  const c=el.cloneNode(true);
+  c.querySelectorAll('.tts,.fb,sup').forEach(x=>x.remove());
+  c.querySelectorAll('.blank,.line').forEach(b=>{if(!b.textContent.trim())b.textContent='＿＿';});
+  c.querySelectorAll('.opts span,.pics span').forEach(o=>o.append('，'));
+  return clean(c.textContent);
+}
+function say(list){ // list: [[元素, 文字], ...]
+  if(!synth){alert('這個瀏覽器不支援報讀，請改用 Chrome 或 Edge。');return;}
+  stopTTS();
+  list.forEach(([el,t])=>{
+    const u=new SpeechSynthesisUtterance(t);
+    u.lang='zh-TW'; if(voice)u.voice=voice;
+    u.rate=parseFloat(document.getElementById('rate').value);
+    u.onstart=()=>{document.querySelectorAll('.speak').forEach(x=>x.classList.remove('speak'));el&&el.classList.add('speak');};
+    u.onend=()=>el&&el.classList.remove('speak');
+    synth.speak(u);
+  });
+}
+function speakEl(el){ if(ttsOn) say([[el,textOf(el)]]); }
+function stopTTS(){ if(synth)synth.cancel(); document.querySelectorAll('.speak').forEach(x=>x.classList.remove('speak')); }
+function toggleTTS(){
+  ttsOn=!ttsOn; const b=document.getElementById('ttsBtn');
+  b.textContent='報讀：'+(ttsOn?'開':'關'); b.classList.toggle('on',ttsOn);
+  document.body.classList.toggle('no-tts',!ttsOn); if(!ttsOn)stopTTS();
+}
+function readPassage(){
+  const ps=[...document.querySelectorAll('.passage .text p')];
+  const t=document.querySelector('.passage .title');
+  say([[t,textOf(t)],...ps.map(p=>[p,textOf(p)])]);
+}
+function addBtn(el,target){
+  const b=document.createElement('button'); b.className='tts'; b.type='button'; b.textContent='🔊'; b.title='唸給我聽';
+  b.onclick=e=>{e.stopPropagation(); if(!ttsOn)return; say([[target||el,textOf(target||el)]]);};
+  // 放在題幹後面、選項區塊前面
+  const blk=[...el.children].find(c=>c.tagName==='DIV');
+  blk?el.insertBefore(b,blk):el.appendChild(b);
+}
+
+/* ---------- 作答互動 ---------- */
+function initInteractive(){
+  // 報讀按鈕：大題標頭、題目、學習目標、作答方式
+  document.querySelectorAll('.sheet:not(.answer) .sec-h, .sheet:not(.answer) .goal h3, .sheet:not(.answer) .how').forEach(h=>{
+    addBtn(h, h.classList.contains('sec-h')||h.classList.contains('how')?h:h.parentElement);
+  });
+  document.querySelectorAll('.sheet:not(.answer) div.q').forEach(q=>{
+    const first=q.classList.contains('side')?q.firstElementChild:(q.classList.contains('layer')?q.querySelector('.lb'):q);
+    // 題目只唸題幹與選項
+    addBtn(first, q);
+  });
+  // 課文段落：點一下就唸
+  document.querySelectorAll('.text p').forEach(p=>p.addEventListener('click',()=>speakEl(p)));
+  // 選項：點選＝作答＋唸出選項
+  document.querySelectorAll('.opts, .pics').forEach(g=>{
+    const multi=g.hasAttribute('data-multi');
+    g.querySelectorAll(':scope > span').forEach(o=>{
+      o.addEventListener('click',()=>{
+        if(!multi) g.querySelectorAll(':scope > span').forEach(x=>{if(x!==o)x.classList.remove('sel','right','retry')});
+        o.classList.toggle('sel'); o.classList.remove('right','retry');
+        const fb=g.parentElement.querySelector(':scope > .fb'); if(fb)fb.remove();
+        if(o.classList.contains('sel')) speakEl(o);
+      });
+    });
+  });
+  // 詞語盒：點一下詞語，填進同一欄第一個空格
+  document.querySelectorAll('.chips span').forEach(c=>{
+    c.addEventListener('click',()=>{
+      const way=c.closest('.way')||c.closest('.q');
+      const b=[...way.querySelectorAll('.blank')].find(x=>!x.textContent.trim());
+      if(b){b.textContent=c.textContent;b.classList.remove('right','retry');}
+      speakEl(c);
+    });
+  });
+  // 填空與書寫線：可直接打字
+  document.querySelectorAll('.sheet:not(.answer) .blank, .sheet:not(.answer) .line').forEach(b=>{
+    b.setAttribute('contenteditable','true'); b.setAttribute('spellcheck','false');
+  });
+}
+const praise=['答對了，你真棒！','找到了，很仔細！','你回到課文找答案，做得好！'];
+function checkAns(){
+  let right=0,total=0;
+  document.querySelectorAll('.sheet:not(.answer) .opts, .sheet:not(.answer) .pics').forEach(g=>{
+    const opts=[...g.querySelectorAll(':scope > span')];
+    if(!opts.some(o=>o.hasAttribute('data-ok')))return; // 開放題不批改
+    if(g.closest('.ways')&&!opts.some(o=>o.classList.contains('sel')))return; // 通用版：學生選了別的作答方式
+    total++;
+    const old=g.parentElement.querySelector(':scope > .fb'); if(old)old.remove();
+    const sel=opts.filter(o=>o.classList.contains('sel'));
+    const ok=sel.length&&sel.every(o=>o.hasAttribute('data-ok'))&&opts.filter(o=>o.hasAttribute('data-ok')).every(o=>o.classList.contains('sel'));
+    sel.forEach(o=>o.classList.add(o.hasAttribute('data-ok')?'right':'retry'));
+    const fb=document.createElement('span'); fb.className='fb '+(ok?'ok':'no');
+    fb.textContent=ok?praise[total%praise.length]:(sel.length?'再回到課文找找看！':'還沒選喔');
+    g.after(fb); if(ok)right++;
+  });
+  // 選詞填空：.blank 有 data-ans（多個答案用 | 分隔）就批改
+  document.querySelectorAll('.sheet:not(.answer) .blank[data-ans]').forEach(b=>{
+    const v=b.textContent.trim(); b.classList.remove('right','retry'); if(!v)return;
+    total++; const ok=b.dataset.ans.split('|').some(a=>v.includes(a)||a.includes(v)&&v.length>1);
+    b.classList.add(ok?'right':'retry'); if(ok)right++;
+  });
+  if(ttsOn&&total) say([[null,`可以批改的有 ${total} 題，你答對 ${right} 題。`+(right===total?'全部答對，太厲害了！':'再想想看橘色的題目。')]]);
+}
+function clearAns(){
+  document.querySelectorAll('.sel,.right,.retry').forEach(x=>x.classList.remove('sel','right','retry'));
+  document.querySelectorAll('.fb').forEach(x=>x.remove());
+  document.querySelectorAll('[contenteditable]').forEach(x=>x.textContent='');
+}
+
+/* ---------- 作答紀錄（給老師做進步監控） ---------- */
+const startAt=new Date();
+function secName(q){
+  const lb=q.classList.contains('layer')&&q.querySelector('.lb');
+  const h=lb||(q.closest('.sec')||{}).querySelector?.call(q.closest('.sec'),'.sec-h');
+  if(!h)return '';
+  const c=h.cloneNode(true); c.querySelectorAll('small,.tts,.n').forEach(x=>x.remove());
+  return c.textContent.replace(/\s+/g,' ').trim();
+}
+function nextSteps(d){
+  const out=[], uniq=a=>[...new Set(a)];
+  const used=Object.values(d.count).reduce((a,b)=>a+b,0)||1;
+  const tick=(d.count['勾一勾']||0)+(d.count['勾選']||0), write=(d.count['寫一寫']||0)+(d.count['書寫']||0), fill=d.count['選詞填空']||0;
+  if(d.total&&d.done<d.total/2)out.push('完成不到一半：下次把任務切小、一次做一節，或先用圖示加強版，完成後再回到通用版。');
+  if(d.blankSec.length&&d.done>=d.total/2)out.push('沒有作答的部分：'+uniq(d.blankSec).join('、')+'。可先口頭引導這一節，或確認是否需要報讀。');
+  if(d.wrongSec.length)out.push('需要再練習：'+uniq(d.wrongSec).join('、')+'。下次在這一節加上段落號、關鍵句提示或示範一題。');
+  if(tick/used>=0.6)out.push('多數用「勾一勾」：理解可能已建立，表達需要鷹架。下次多鼓勵「選詞填空」的句型，再逐步撤到「寫一寫」。');
+  else if(fill/used>=0.5)out.push('多數用「選詞填空」：句型鷹架有效。下次可減少詞語盒的詞，或試著改用「寫一寫」。');
+  else if(write/used>=0.6&&d.judged&&d.right===d.judged)out.push('多數用「寫一寫」且都答對：可以挑戰⭐題，或試下一層次的策略。');
+  if(d.judged&&d.right/d.judged>=0.8&&!d.wrongSec.length)out.push('答對率高：可減少提示、提高層次（例如多做詮釋整合、比較評估題）。');
+  if(d.tts)out.push('有開報讀：持續提供報讀，並觀察是否能逐步自己朗讀。');
+  return out.length?out.map((x,i)=>(i+1)+'. '+x).join('\n'):'1. 作答量還不夠，請完成更多題目後再看建議。';
+}
+function pathOf(q){
+  const used=[];
+  const ws=q.querySelectorAll(':scope .way');
+  if(ws.length){
+    const [w,f,t]=ws;
+    if(w&&[...w.querySelectorAll('[contenteditable]')].some(x=>x.textContent.trim()))used.push('寫一寫');
+    if(f&&[...f.querySelectorAll('.blank')].some(x=>x.textContent.trim()))used.push('選詞填空');
+    if(t&&t.querySelector('.sel'))used.push('勾一勾');
+  }else{
+    if(q.querySelector('.sel'))used.push('勾選');
+    if([...q.querySelectorAll('[contenteditable]')].some(x=>x.textContent.trim()))used.push('書寫');
+  }
+  return used;
+}
+function judge(q){ // 回傳 true／false／null（不批改）
+  let has=false,ok=true;
+  q.querySelectorAll('.opts,.pics').forEach(g=>{
+    const o=[...g.querySelectorAll(':scope > span')];
+    if(!o.some(x=>x.hasAttribute('data-ok'))||!o.some(x=>x.classList.contains('sel')))return;
+    has=true;
+    if(!(o.filter(x=>x.classList.contains('sel')).every(x=>x.hasAttribute('data-ok'))))ok=false;
+  });
+  q.querySelectorAll('.blank[data-ans]').forEach(b=>{
+    const v=b.textContent.trim(); if(!v)return; has=true;
+    if(!b.dataset.ans.split('|').some(a=>v.includes(a)||a.includes(v)&&v.length>1))ok=false;
+  });
+  return has?ok:null;
+}
+function buildRecord(){
+  const now=new Date(), mins=Math.max(1,Math.round((now-startAt)/60000));
+  const name=(document.getElementById('recName').value||'＿＿＿').trim();
+  const tEl=document.querySelector('.sheet:not(.answer):not(.passage):not(.vocab) .title');
+  const title=tEl?[...tEl.childNodes].filter(n=>!(n.classList&&n.classList.contains('ver'))).map(n=>n.textContent).join(''):document.title;
+  let sheets=[...document.querySelectorAll('.sheet:not(.answer):not(.passage):not(.vocab)')].filter(x=>x.style.display!=='none');
+  const used=sheets.filter(sh=>[...sh.querySelectorAll('div.q')].some(q=>pathOf(q).length));
+  if(used.length)sheets=used; else sheets=sheets.slice(0,1); // 只列出學生有作答的版本
+  let lines=[],done=0,right=0,judged=0,count={},total=0,wrongSec=[],blankSec=[];
+  sheets.forEach(sh=>{
+    const ver=(sh.querySelector('.ver')||{}).textContent||'';
+    sh.querySelectorAll('div.q').forEach((q,i)=>{
+      const n0=q.childNodes[0], m=(n0&&n0.nodeType===3?n0.textContent:q.textContent).trim().match(/^(\d+)\./), t=m?`第 ${m[1]} 題`:`第 ${i+1} 題`;
+      const used=pathOf(q), r=judge(q), sec=secName(q); total++;
+      if(used.length){done++;used.forEach(u=>count[u]=(count[u]||0)+1);}else if(sec)blankSec.push(sec);
+      if(r!==null){judged++;if(r)right++;else if(sec)wrongSec.push(sec);}
+      lines.push(`${ver?ver+' ':''}${t}：${used.length?used.join('＋'):'未作答'}${r===null?'':(r?'（答對）':'（再練習）')}`);
+    });
+    const star=sh.querySelector('.star [contenteditable]');
+    if(star&&star.textContent.trim())lines.push('⭐ 挑戰題：有作答');
+  });
+  const ways=Object.entries(count).map(([k,v])=>`${k} ${v} 題`).join('、')||'無';
+  const txt=`【作答紀錄】${title.replace(/\s+/g,' ').trim()}
+姓名：${name}
+日期：${now.toLocaleDateString('zh-TW')} ${now.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})}　作答約 ${mins} 分鐘
+完成：${done} 題；可批改 ${judged} 題，答對 ${right} 題
+使用的作答方式：${ways}
+報讀：${ttsOn?'開啟':'關閉'}　字級：${document.body.classList.contains('big')?'放大':'一般'}
+—— 逐題 ——
+${lines.join('\n')}
+—— 給老師的下一步建議 ——
+${nextSteps({total,done,judged,right,count,wrongSec,blankSec,tts:ttsOn})}
+（可以把整段紀錄貼回 AI，請它依「模組六 學生表現回饋」調整下一份學習單。）`;
+  document.getElementById('recText').textContent=txt;
+  return txt;
+}
+function showRecord(){buildRecord();document.getElementById('rec').classList.add('show');}
+function closeRecord(){document.getElementById('rec').classList.remove('show');}
+function copyRecord(){
+  const t=buildRecord();
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert('已複製，可以貼到紀錄表或傳給老師。'),()=>{
+    const r=document.createRange();r.selectNodeContents(document.getElementById('recText'));const s=getSelection();s.removeAllRanges();s.addRange(r);alert('請按 Ctrl＋C 複製。');});
+}
+function printRecord(){buildRecord();document.body.classList.add('rec-print');window.print();setTimeout(()=>document.body.classList.remove('rec-print'),500);}
+/* 詞語預教：點詞卡唸出；點「我會讀」打勾 */
+document.querySelectorAll('.vcard').forEach(c=>{
+  c.addEventListener('click',e=>{
+    if(e.target.closest('.ok span')){e.target.classList.toggle('sel');return;}
+    const w=c.querySelector('.w').textContent, m=c.querySelector('.m').textContent, ex=c.querySelector('.e').textContent;
+    if(ttsOn) say([[c,`${w}。${m}。${ex}`]]);
+  });
+});
+initInteractive();
+
+/* ---------- 語音風格：選擇瀏覽器提供的語音 ---------- */
+let voiceName='';
+try{voiceName=localStorage.getItem('rsw-voice')||'';}catch(e){}
+function fillVoices(){
+  const sel=document.getElementById('voiceSel'); if(!sel||!synth)return;
+  const vs=synth.getVoices(); if(!vs.length)return;
+  const zh=vs.filter(v=>/^zh|cmn|yue/i.test(v.lang)).sort((a,b)=>(/TW/i.test(b.lang)-/TW/i.test(a.lang)));
+  const other=vs.filter(v=>!zh.includes(v));
+  const opt=v=>`<option value="${v.name.replace(/"/g,'&quot;')}">${v.name}（${v.lang}）</option>`;
+  sel.innerHTML='<option value="">自動（中文）</option>'+(zh.length?'<optgroup label="中文語音">'+zh.map(opt).join('')+'</optgroup>':'')+(other.length?'<optgroup label="其他語音">'+other.map(opt).join('')+'</optgroup>':'');
+  if(voiceName&&vs.some(v=>v.name===voiceName)){sel.value=voiceName;voice=vs.find(v=>v.name===voiceName);}
+}
+function setVoice(name){
+  voiceName=name; try{localStorage.setItem('rsw-voice',name);}catch(e){}
+  if(name){voice=synth.getVoices().find(v=>v.name===name)||voice;}else{pickVoice();}
+  testVoice();
+}
+function testVoice(){ if(!ttsOn)toggleTTS(); say([[null,'你好，我是報讀小幫手，這是現在的聲音。']]); }
+if(synth){fillVoices();synth.addEventListener('voiceschanged',()=>{fillVoices();});}
+
+/* ---------- 頁面縮放與全螢幕 ---------- */
+let zoom=1;
+function setZoom(z){
+  zoom=Math.min(2.5,Math.max(0.5,Math.round(z*100)/100));
+  document.documentElement.style.setProperty('--z',zoom);
+  document.getElementById('zoomVal').textContent=Math.round(zoom*100)+'%';
+  requestAnimationFrame(drawInk);
+}
+function zoomBy(d){setZoom(zoom+d);}
+function fitWidth(){
+  const sh=[...document.querySelectorAll('.sheet')].find(x=>x.offsetParent!==null); if(!sh)return;
+  const w=sh.getBoundingClientRect().width/zoom;
+  setZoom((document.documentElement.clientWidth-24)/w);
+}
+function toggleFS(){
+  if(document.fullscreenElement){document.exitFullscreen();}
+  else if(document.documentElement.requestFullscreen){document.documentElement.requestFullscreen();}
+  else{alert('這個瀏覽器不支援全螢幕，可以按 F11。');}
+}
+document.addEventListener('fullscreenchange',()=>{document.getElementById('fsBtn').textContent=document.fullscreenElement?'離開全螢幕':'全螢幕';setTimeout(drawInk,200);});
+
+/* ---------- 畫筆：筆跡跟著頁面位置，捲動、縮放都不會跑掉 ---------- */
+const ink={strokes:[],cur:null,color:'#111827',hl:false,w:4,erase:false};
+const cv=document.getElementById('inkCanvas'), cx=cv.getContext('2d');
+function sheetsVis(){return [...document.querySelectorAll('.sheet')].filter(x=>x.offsetParent!==null);}
+function sizeCanvas(){const d=window.devicePixelRatio||1;cv.width=innerWidth*d;cv.height=innerHeight*d;cx.setTransform(d,0,0,d,0,0);}
+function drawStroke(st,rect){
+  if(st.pts.length<1)return;
+  cx.save();cx.lineCap='round';cx.lineJoin='round';
+  cx.strokeStyle=st.color;cx.globalAlpha=st.hl?.4:1;cx.lineWidth=Math.max(1,st.w*rect.width);
+  cx.beginPath();
+  st.pts.forEach(([x,y],i)=>{const X=rect.left+x*rect.width,Y=rect.top+y*rect.height;i?cx.lineTo(X,Y):cx.moveTo(X,Y);});
+  if(st.pts.length===1){const[x,y]=st.pts[0];cx.lineTo(rect.left+x*rect.width+.1,rect.top+y*rect.height);}
+  cx.stroke();cx.restore();
+}
+function drawInk(){
+  cx.clearRect(0,0,innerWidth,innerHeight);
+  const all=[...document.querySelectorAll('.sheet')];
+  ink.strokes.concat(ink.cur?[ink.cur]:[]).forEach(st=>{
+    const sh=all[st.s]; if(!sh||sh.offsetParent===null)return;
+    const r=sh.getBoundingClientRect(); if(r.bottom<0||r.top>innerHeight)return;
+    drawStroke(st,r);
+  });
+}
+function hitSheet(x,y){const all=[...document.querySelectorAll('.sheet')];for(let i=0;i<all.length;i++){const sh=all[i];if(sh.offsetParent===null)continue;const r=sh.getBoundingClientRect();if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)return[i,r];}return null;}
+function eraseAt(x,y){
+  const all=[...document.querySelectorAll('.sheet')];
+  const before=ink.strokes.length;
+  ink.strokes=ink.strokes.filter(st=>{const sh=all[st.s];if(!sh||sh.offsetParent===null)return true;const r=sh.getBoundingClientRect();
+    return !st.pts.some(([px,py])=>Math.hypot(r.left+px*r.width-x,r.top+py*r.height-y)<14);});
+  if(ink.strokes.length!==before)drawInk();
+}
+cv.addEventListener('pointerdown',e=>{
+  if(!document.body.classList.contains('pen'))return;
+  cv.setPointerCapture(e.pointerId);
+  if(ink.erase){ink.cur=null;eraseAt(e.clientX,e.clientY);ink.erasing=true;return;}
+  const h=hitSheet(e.clientX,e.clientY); if(!h)return;
+  const[i,r]=h;
+  ink.cur={s:i,color:ink.color,hl:ink.hl,w:(ink.hl?ink.w*3:ink.w)/r.width,pts:[[(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]]};
+  drawInk();
+});
+cv.addEventListener('pointermove',e=>{
+  if(ink.erasing){eraseAt(e.clientX,e.clientY);return;}
+  if(!ink.cur)return;
+  const sh=document.querySelectorAll('.sheet')[ink.cur.s], r=sh.getBoundingClientRect();
+  ink.cur.pts.push([(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]);
+  drawInk();
+});
+function endStroke(){ if(ink.cur){ink.strokes.push(ink.cur);ink.cur=null;drawInk();} ink.erasing=false; }
+cv.addEventListener('pointerup',endStroke); cv.addEventListener('pointercancel',endStroke);
+cv.addEventListener('wheel',e=>{window.scrollBy(0,e.deltaY);},{passive:true});
+function togglePen(on){
+  const v=on===undefined?!document.body.classList.contains('pen'):on;
+  document.body.classList.toggle('pen',v);
+  document.getElementById('penBtn').classList.toggle('on',v);
+  if(v)stopTTS();
+}
+function undoInk(){ink.strokes.pop();drawInk();}
+function clearInk(){if(!ink.strokes.length||confirm('要清除全部筆跡嗎？')){ink.strokes=[];drawInk();}}
+document.querySelectorAll('#penBar .sw').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#penBar .sw').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  ink.color=b.dataset.c;ink.hl=!!b.dataset.hl;ink.erase=false;document.body.classList.remove('erase');document.getElementById('eraseBtn').classList.remove('on');
+}));
+document.getElementById('penColor').addEventListener('input',e=>{ink.color=e.target.value;ink.hl=false;ink.erase=false;document.body.classList.remove('erase');document.getElementById('eraseBtn').classList.remove('on');document.querySelectorAll('#penBar .sw').forEach(x=>x.classList.remove('on'));});
+document.querySelectorAll('#penBar .sz').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#penBar .sz').forEach(x=>x.classList.remove('on'));b.classList.add('on');ink.w=+b.dataset.w;}));
+document.getElementById('eraseBtn').addEventListener('click',e=>{ink.erase=!ink.erase;e.target.classList.toggle('on',ink.erase);document.body.classList.toggle('erase',ink.erase);});
+addEventListener('scroll',()=>requestAnimationFrame(drawInk),{passive:true});
+addEventListener('resize',()=>{sizeCanvas();drawInk();});
+new MutationObserver(()=>requestAnimationFrame(drawInk)).observe(document.body,{attributes:true,attributeFilter:['class'],subtree:false});
+sizeCanvas();
+</script>
+</body>
+</html>

@@ -9,7 +9,7 @@
    讀不到時改讀精簡版：
    https://raw.githubusercontent.com/sesns365/reading-strategy-worksheet/main/gpt-gemini/instructions.md
 2. **讀取模板**：
-   https://raw.githubusercontent.com/sesns365/reading-strategy-worksheet/main/reading-strategy-worksheet/references/blueprints.md （六種策略的固定分區與題型）
+   https://raw.githubusercontent.com/sesns365/reading-strategy-worksheet/main/reading-strategy-worksheet/references/blueprints.md （九種策略的固定分區與題型）
    https://raw.githubusercontent.com/sesns365/reading-strategy-worksheet/main/reading-strategy-worksheet/references/template.html （完整可運作的互動學習單範例，以它為骨架）
 3. **在本次對話中扮演「閱讀策略學習單小幫手」**，用繁體中文回覆：
    - 一句話確認已啟用。
