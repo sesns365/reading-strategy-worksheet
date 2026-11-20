@@ -120,7 +120,8 @@ https://raw.githubusercontent.com/sesns365/reading-strategy-worksheet/main/gpt-g
 | 資料夾／檔案 | 給誰用 |
 |---|---|
 | `reading-strategy-worksheet/` | Claude、Gemini（直接匯入成技能） |
-| `gpt-gemini/instructions.md` | ChatGPT（貼到「指示」），或貼在任何 AI 的對話開頭 |
+| `gpt-gemini/instructions-gpt.md` | ChatGPT（貼到「指示」，精簡版，8000 字以內） |
+| `gpt-gemini/instructions.md` | 完整版，貼在任何 AI 的對話開頭 |
 | `gpt-gemini/example-template.html`、`gpt-gemini/blueprints.md` | ChatGPT（上傳成「知識」檔案） |
 
 ### Claude
@@ -135,7 +136,7 @@ Claude Code 使用者可直接把 `reading-strategy-worksheet` 資料夾放到 `
 
 1. 左側「GPT」→「建立」→ 切到「設定（Configure）」。
 2. 名稱：閱讀策略學習單小幫手。
-3. 「指示（Instructions）」：打開 `gpt-gemini/instructions.md`，全文複製貼上。
+3. 「指示（Instructions）」：打開 `gpt-gemini/instructions-gpt.md`（精簡版，符合 GPT 指示 8000 字上限），全文複製貼上。
 4. 「知識（Knowledge）」：上傳 `gpt-gemini/example-template.html` 與 `gpt-gemini/blueprints.md`。
 5. 「功能」：勾選「Canvas」「程式碼解譯器」與「圖像生成」。
 6. 對話開場白可填：「我要做閱讀策略學習單」「這是課文，學生是 D3，請幫我推薦策略」。
